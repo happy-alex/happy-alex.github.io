@@ -84,10 +84,10 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="transform对普通元素的副作用">
 <meta property="og:url" content="https://happy-alex.github.io/2017/06/06/css/transform/index.html">
-<meta property="og:site_name" content="郭鹏波的小站">
+<meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="前言 父元素如果有transform属性，会导致子元素的fixed失效（相当于absolute定位）。暂时没有好的解决办法。  移动端如果用到了fixed定位，建议使用position:absolute来实现类似效果。 问题最近在做一个移动端页面开发的时候遇到了一个fixed的问题。 使用场景：页面中有一个筛选栏绝对定位，当页面滚动过一定距离，筛选栏固定定位在页面头部。但是我在开发过程中，发现修改">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.499Z">
+<meta property="og:updated_time" content="2018-06-08T12:25:25.977Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="transform对普通元素的副作用">
 <meta name="twitter:description" content="前言 父元素如果有transform属性，会导致子元素的fixed失效（相当于absolute定位）。暂时没有好的解决办法。  移动端如果用到了fixed定位，建议使用position:absolute来实现类似效果。 问题最近在做一个移动端页面开发的时候遇到了一个fixed的问题。 使用场景：页面中有一个筛选栏绝对定位，当页面滚动过一定距离，筛选栏固定定位在页面头部。但是我在开发过程中，发现修改">
@@ -126,7 +126,7 @@
 
 
 
-  <title>transform对普通元素的副作用 | 郭鹏波的小站</title>
+  <title>transform对普通元素的副作用 | alex的小站</title>
   
 
 
@@ -156,7 +156,7 @@
     <div class="custom-logo-site-title">
       <a href="/"  class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">郭鹏波的小站</span>
+        <span class="site-title">alex的小站</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -272,7 +272,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭鹏波的小站">
+      <meta itemprop="name" content="alex的小站">
     </span>
 
     
@@ -368,9 +368,11 @@
 <h3 id="总结几点："><a href="#总结几点：" class="headerlink" title="总结几点："></a>总结几点：</h3><ol>
 <li>父元素如果有transform，会导致子元素的fixed定位失效。</li>
 <li>transform会提升元素的垂直地位，可以理解为transform将元素的z-index设置变大。</li>
-<li>存在关系树 a -&gt; b -&gt; … -&gt; f -&gt; g,如果g是absolute定位，且a的overflow属性不为visible（设置overflow:hidden;），那么g不会受到overflow属性的影响，溢出部分不会隐藏。<br>如果b到f之间的元素使用了transform属性，则元素g受overflow属性影响，溢出部分会隐藏。<br>设置a采用transform，g的表现因浏览器而异。</li>
+<li>存在关系树从上到下 a -&gt; b -&gt; … -&gt; f -&gt; g,如果g是absolute定位，且a的overflow属性不为visible（设置overflow:hidden;），那么g不会受到overflow属性的影响，溢出部分不会隐藏。<br>如果b到f之间的元素使用了transform属性，则元素g受overflow属性影响，溢出部分会隐藏。<br>设置a采用transform，g的表现因浏览器而异。</li>
 <li>元素采用absolute定位，设置其宽度为100%，则宽度相对于元素最近已定位祖先元素宽度计算。但是如果元素的祖先链上存在设置了transform的元素，那么元素的宽度会相对于transform元素计算。</li>
 </ol>
+<h3 id="补充："><a href="#补充：" class="headerlink" title="补充："></a>补充：</h3><p>最近踩了另一个坑：<br>1.子元素如果存在transform，则父元素的border-radius和overflow:hidden均不生效（可参考上述第三点）<br>2.其兄弟元素如果是绝对定位，在ios上发现有闪烁的问题<br>解决方案：translateZ(0) 或者 transform-style: preserve-3d; 等等。</p>
+<p>总结：猜测是不是开启gpu加速后，通过建立一个新的渲染图层fix的。感觉这种方法可以解决90%以上的webkit css bug.</p>
 
       
     </div>
@@ -579,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结几点："><span class="nav-number">3.</span> <span class="nav-text">总结几点：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">2.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结几点："><span class="nav-number">3.</span> <span class="nav-text">总结几点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#补充："><span class="nav-number">4.</span> <span class="nav-text">补充：</span></a></li></ol></div>
             
 
           </div>
