@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="简单对比下flux和redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现">
+<meta name="description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
-<meta property="og:title" content="flux vs redux">
+<meta property="og:title" content="flux&#x2F;redux&#x2F;mobx">
 <meta property="og:url" content="https://happy-alex.github.io/2017/05/11/javascript/react/flux/index.html">
 <meta property="og:site_name" content="alex的小站">
-<meta property="og:description" content="简单对比下flux和redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现">
+<meta property="og:description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.503Z">
+<meta property="og:updated_time" content="2018-08-01T07:52:44.359Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="flux vs redux">
-<meta name="twitter:description" content="简单对比下flux和redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现">
+<meta name="twitter:title" content="flux&#x2F;redux&#x2F;mobx">
+<meta name="twitter:description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>flux vs redux | alex的小站</title>
+  <title>flux/redux/mobx | alex的小站</title>
   
 
 
@@ -266,7 +266,7 @@
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/05/11/javascript/react/flux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pengbo.guo">
+      <meta itemprop="name" content="alex">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
     </span>
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">flux vs redux</h2>
+          <h2 class="post-title" itemprop="name headline">flux/redux/mobx</h2>
         
 
         <div class="post-meta">
@@ -352,8 +352,9 @@
       
 
       
-        <h3 id="简单对比下flux和redux"><a href="#简单对比下flux和redux" class="headerlink" title="简单对比下flux和redux"></a>简单对比下flux和redux</h3><p>1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）<br>2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现<br>3.flux里store有多个；redux全局只维护一个store，其包含整个应用的state。<br>4.redux里的store只有一个，包含了整个应用的state。<br>  action用来描述改变的行为。action是一个简单对象，包含需要执行的操作类型（type指定）和一些其他负载（payload）。<br>  reducer(state，action)=&gt; newState。改变由reducers 来执行，reducers 是没有副作用的纯函数，将先前的state和一个action作为参数。它们会返回由应用action产生的新的state。<br>  reducer有多个，每个reducer维护state树的一支，redux用combineReducers()方法将多个reducer合并起来。</p>
-
+        <h3 id="flux-vs-redux"><a href="#flux-vs-redux" class="headerlink" title="flux vs redux"></a>flux vs redux</h3><p>1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）<br>2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现<br>3.flux里store有多个；redux全局只维护一个store，其包含整个应用的state。<br>4.redux里的store只有一个，包含了整个应用的state。<br>  action用来描述改变的行为。action是一个简单对象，包含需要执行的操作类型（type指定）和一些其他负载（payload）。<br>  reducer(state，action)=&gt; newState。改变由reducers 来执行，reducers 是没有副作用的纯函数，将先前的state和一个action作为参数。它们会返回由应用action产生的新的state。<br>  reducer有多个，每个reducer维护state树的一支，redux用combineReducers()方法将多个reducer合并起来。</p>
+<p>补充：<br>在hybrid架构中，每次打开一个页面，都是新建一个webview。因此spa + redux模式在这种场景下并不适用，因为redux只有一个全局store，维护了多个子页面的store, 而在一个webview中，非本页面的store都没被利用，无疑是一种浪费</p>
+<h3 id="mobx-vs-redux"><a href="#mobx-vs-redux" class="headerlink" title="mobx vs redux"></a>mobx vs redux</h3>
       
     </div>
     
@@ -407,8 +408,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/19/javascript/react/fiber/" rel="prev" title="fiber">
-                fiber <i class="fa fa-chevron-right"></i>
+              <a href="/2017/05/19/javascript/other/shadowDom/" rel="prev" title="shadowDom">
+                shadowDom <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -477,9 +478,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="https://avatars2.githubusercontent.com/u/11572394?v=4"
-                alt="pengbo.guo" />
+                alt="alex" />
             
-              <p class="site-author-name" itemprop="name">pengbo.guo</p>
+              <p class="site-author-name" itemprop="name">alex</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -490,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +513,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -561,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单对比下flux和redux"><span class="nav-number">1.</span> <span class="nav-text">简单对比下flux和redux</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#flux-vs-redux"><span class="nav-number">1.</span> <span class="nav-text">flux vs redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mobx-vs-redux"><span class="nav-number">2.</span> <span class="nav-text">mobx vs redux</span></a></li></ol></div>
             
 
           </div>
@@ -585,7 +586,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">pengbo.guo</span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
 
   
 </div>
@@ -599,7 +600,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 

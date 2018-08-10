@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="在更新react组件时，我们常常使用setState方法传入一个对象来更新组价的状态。但其实除了状态对象，该方法还允许传入一个状态计算函数。 setState()的参数支持对象和函数两种。  对象式setState —&amp;gt; this.setState({ showModal: true}); 函数式setState12345this.setState((state, props) =&amp;gt;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.504Z">
+<meta property="og:updated_time" content="2018-08-07T13:42:04.912Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="setState">
 <meta name="twitter:description" content="在更新react组件时，我们常常使用setState方法传入一个对象来更新组价的状态。但其实除了状态对象，该方法还允许传入一个状态计算函数。 setState()的参数支持对象和函数两种。  对象式setState —&amp;gt; this.setState({ showModal: true}); 函数式setState12345this.setState((state, props) =&amp;gt;">
@@ -266,7 +266,7 @@
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/07/19/javascript/react/setstate/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pengbo.guo">
+      <meta itemprop="name" content="alex">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
     </span>
@@ -368,6 +368,7 @@
 <p>###补充：</p>
 <p>React推荐的构造组件的写法是 class Card extends React.Component{};<br>这条原型链是 Card -&gt; React.Component -&gt; React内部自定义对象（定义了setState，forceUpdate等方法） -&gt; Object</p>
 <p>###疑惑<br>1.“多次”调用setState会合并state更新操作，那这个“多次”React究竟是怎么算的？</p>
+<h3 id="setState到底是同步的还是异步的"><a href="#setState到底是同步的还是异步的" class="headerlink" title="setState到底是同步的还是异步的"></a>setState到底是同步的还是异步的</h3><p>正确的回答是：可能同步可能异步。</p>
 
       
     </div>
@@ -412,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/06/css/transform/" rel="next" title="transform对普通元素的副作用">
-                <i class="fa fa-chevron-left"></i> transform对普通元素的副作用
+              <a href="/2017/07/10/javascript/node/module/" rel="next" title="node模块机制">
+                <i class="fa fa-chevron-left"></i> node模块机制
               </a>
             
           </div>
@@ -476,16 +477,25 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <img class="site-author-image" itemprop="image"
                 src="https://avatars2.githubusercontent.com/u/11572394?v=4"
-                alt="pengbo.guo" />
+                alt="alex" />
             
-              <p class="site-author-name" itemprop="name">pengbo.guo</p>
+              <p class="site-author-name" itemprop="name">alex</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -496,7 +506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -518,7 +528,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -558,6 +568,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#setState到底是同步的还是异步的"><span class="nav-number">1.</span> <span class="nav-text">setState到底是同步的还是异步的</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -575,7 +601,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">pengbo.guo</span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
 
   
 </div>
@@ -589,7 +615,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 

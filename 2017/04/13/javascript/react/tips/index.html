@@ -88,7 +88,7 @@
 <meta property="og:description" content="组件的props.children其实本质是一个数组，JSX会把插入表达式数组中的JSX一个个罗列显示(map函数渲染列表的核心原理)。  推荐在有复杂状态的组件上使用key属性，确保根据key在合适的时机销毁和重建组件，提供性能（http://www.tuicool.com/articles/UVvaMz）。  更新style时不要直接去修改原始style对象，这会引起react的警告，更好的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20180213144507338?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGh6eDI2NWJvYm8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.504Z">
+<meta property="og:updated_time" content="2018-08-08T11:20:32.058Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记录一些 react的相关tips">
 <meta name="twitter:description" content="组件的props.children其实本质是一个数组，JSX会把插入表达式数组中的JSX一个个罗列显示(map函数渲染列表的核心原理)。  推荐在有复杂状态的组件上使用key属性，确保根据key在合适的时机销毁和重建组件，提供性能（http://www.tuicool.com/articles/UVvaMz）。  更新style时不要直接去修改原始style对象，这会引起react的警告，更好的">
@@ -268,7 +268,7 @@
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/04/13/javascript/react/tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pengbo.guo">
+      <meta itemprop="name" content="alex">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
     </span>
@@ -361,6 +361,10 @@
 </li>
 <li><p>更新style时不要直接去修改原始style对象，这会引起react的警告，更好的办法是使用一个新的style对象。<br>(<a href="http://stackoverflow.com/questions/33295615/why-was-mutating-style-deprecated" target="_blank" rel="noopener">http://stackoverflow.com/questions/33295615/why-was-mutating-style-deprecated</a>)<br><img src="http://img.blog.csdn.net/20180213144507338?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGh6eDI2NWJvYm8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
 </li>
+<li><p>ref属性有两种形式，一种设置字符串，一种设置回调函数。字符串形式的ref，由于是字符串引用，所以无法知道组件何时被卸载，易造成内存泄漏。回调函数形式的ref，当组件挂载/卸载/渲染时，均会触发函数的执行。当组件卸载时，把ref指向null，从而可以防止内存泄漏</p>
+</li>
+<li><p>setState({}, cb); react会在setState完成后触发回调函数cb，从而可以拿掉更新后的state。</p>
+</li>
 </ol>
 
       
@@ -406,8 +410,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/04/13/javascript/react/book_list/" rel="next" title="react学习资料">
-                <i class="fa fa-chevron-left"></i> react学习资料
+              <a href="/2017/04/12/javascript/mvvm/mvvm/" rel="next" title="mvvm">
+                <i class="fa fa-chevron-left"></i> mvvm
               </a>
             
           </div>
@@ -416,8 +420,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/05/10/other/book-list/" rel="prev" title="文章杂烩">
-                文章杂烩 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/04/13/javascript/react/book_list/" rel="prev" title="react学习资料">
+                react学习资料 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -477,9 +481,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="https://avatars2.githubusercontent.com/u/11572394?v=4"
-                alt="pengbo.guo" />
+                alt="alex" />
             
-              <p class="site-author-name" itemprop="name">pengbo.guo</p>
+              <p class="site-author-name" itemprop="name">alex</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -490,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -512,7 +516,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -569,7 +573,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">pengbo.guo</span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
 
   
 </div>
@@ -583,7 +587,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 

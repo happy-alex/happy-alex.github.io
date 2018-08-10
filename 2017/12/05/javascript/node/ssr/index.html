@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.502Z">
+<meta property="og:updated_time" content="2018-08-10T08:53:01.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务端渲染ssr">
 <meta name="twitter:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
@@ -266,7 +266,7 @@
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/12/05/javascript/node/ssr/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pengbo.guo">
+      <meta itemprop="name" content="alex">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
     </span>
@@ -368,11 +368,13 @@
 <li>服务端渲染：服务端直接返回已经拼接好的html片段，减少了浏览器拼接html的过程，这样会更快，特别适合那些简单的运营活动页。</li>
 <li>服务端渲染，如果前后端代码可以复用，这就是前后端同构了。服务端和浏览器共用一套组件代码，实现渲染。</li>
 </ul>
-<p><br><br>截止到目前，我们团队在部分业务中已经尝试了ssr。比如去哪儿App首页的发现频道，部分运营活动类页面都是通过ssr的方式渲染的。<br>在这些页面中我们采用了前后端同构的方案，但在具体操作上遇到了一些问题。</p>
+<p><br><br>截止到目前，我们团队在部分业务中已经尝试了ssr。比如去哪儿App首页的发现频道，酒店宫格详情页底部更多入口，部分运营活动类页面都是通过ssr的方式渲染的。</p>
+<p>mark下问题</p>
 <ul>
-<li>如何有效利用cdn？<br>前后端同构为了能实现共用一份组件代码，因此需要把前端工程和后端逻辑放在了一个工程下。这种结构用cdn比较麻烦，并且在实际的开发中颇有不便耦合度高。前端在打包编译部署的时候会做一堆与前端脚本本身无关的操作，比如安装很多无用的模块。解决办法：通过git父子模块，后端关联了一个独立的前端工程，只有在发布的时候后端才会去拉取前端工程代码。</li>
-<li>环境判断。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：自己在工程中建立了一个sniff文件，根据请求html时候携带的ua来提前做一些处理。</li>
-<li>模块管理。前端使用的是es6 module。后端使用的是commonJS。需要通过commonJS的方式来引用前端组件同时提前完成转码工作。</li>
+<li>如何有效利用cdn？</li>
+<li>环境判断。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：需要根据请求html时候携带的ua来提前做一些处理。</li>
+<li>模块管理。前端使用的是es6 module。后端使用的是commonJS。node端如何对ESModule进行转码。</li>
+<li>spa模式不适用</li>
 </ul>
 
       
@@ -500,9 +502,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="https://avatars2.githubusercontent.com/u/11572394?v=4"
-                alt="pengbo.guo" />
+                alt="alex" />
             
-              <p class="site-author-name" itemprop="name">pengbo.guo</p>
+              <p class="site-author-name" itemprop="name">alex</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -513,7 +515,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -535,7 +537,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -608,7 +610,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">pengbo.guo</span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
 
   
 </div>
@@ -622,7 +624,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 

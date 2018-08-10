@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="redux源码分析注意区分redux和react-reduxredux是一个状态管理库，理论上可以和任何库合作。react-redux是针对react做的适配。 react-redux只有两个东西Provider 和 connect1&amp;lt;Provider store=&amp;#123;store&amp;#125; /&amp;gt;  //这个地方把store作为一个普通props传入，Provider内部把传入">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.503Z">
+<meta property="og:updated_time" content="2018-08-10T08:46:39.449Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react-redux">
 <meta name="twitter:description" content="redux源码分析注意区分redux和react-reduxredux是一个状态管理库，理论上可以和任何库合作。react-redux是针对react做的适配。 react-redux只有两个东西Provider 和 connect1&amp;lt;Provider store=&amp;#123;store&amp;#125; /&amp;gt;  //这个地方把store作为一个普通props传入，Provider内部把传入">
@@ -266,7 +266,7 @@
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/05/28/javascript/react/redux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="pengbo.guo">
+      <meta itemprop="name" content="alex">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
     </span>
@@ -363,7 +363,7 @@
 <h3 id="实际工作中使用action"><a href="#实际工作中使用action" class="headerlink" title="实际工作中使用action"></a>实际工作中使用action</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    loadData() &#123;</span><br><span class="line">        <span class="keyword">this</span>.props.fetchData().catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>标准写法是store.dispatch(action)，为什么实际业务开发中能够通过this.props.fetchData()这种方式来dispatch？</p>
 <p>答案就是bindActionCreators。this.props.fetchData是通过@connect被bindActionCreators包装过的。逻辑上把bindActionCreators(action, dispatch)处理成{action: dispatch(action)}，并作为props传入UI组件，这样UI组件就可以直接this.props.action()来触发dispatch了</p>
-
+<h3 id="redux-sage-vs-redux-thunk"><a href="#redux-sage-vs-redux-thunk" class="headerlink" title="redux-sage vs redux-thunk"></a>redux-sage vs redux-thunk</h3>
       
     </div>
     
@@ -489,9 +489,9 @@
             
               <img class="site-author-image" itemprop="image"
                 src="https://avatars2.githubusercontent.com/u/11572394?v=4"
-                alt="pengbo.guo" />
+                alt="alex" />
             
-              <p class="site-author-name" itemprop="name">pengbo.guo</p>
+              <p class="site-author-name" itemprop="name">alex</p>
               <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
@@ -502,7 +502,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">47</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -524,7 +524,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -573,7 +573,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#react-redux"><span class="nav-number">1.</span> <span class="nav-text">react-redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际工作中使用action"><span class="nav-number">2.</span> <span class="nav-text">实际工作中使用action</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#react-redux"><span class="nav-number">1.</span> <span class="nav-text">react-redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际工作中使用action"><span class="nav-number">2.</span> <span class="nav-text">实际工作中使用action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redux-sage-vs-redux-thunk"><span class="nav-number">3.</span> <span class="nav-text">redux-sage vs redux-thunk</span></a></li></ol></div>
             
 
           </div>
@@ -597,7 +597,7 @@
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">pengbo.guo</span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
 
   
 </div>
@@ -611,7 +611,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
 
 
 
