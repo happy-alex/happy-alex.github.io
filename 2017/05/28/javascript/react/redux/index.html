@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="redux源码分析注意区分redux和react-reduxredux是一个状态管理库，理论上可以和任何库合作。react-redux是针对react做的适配。 react-redux只有两个东西Provider 和 connect1&amp;lt;Provider store=&amp;#123;store&amp;#125; /&amp;gt;  //这个地方把store作为一个普通props传入，Provider内部把传入">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-10T08:46:39.449Z">
+<meta property="og:updated_time" content="2018-10-16T04:00:21.150Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react-redux">
 <meta name="twitter:description" content="redux源码分析注意区分redux和react-reduxredux是一个状态管理库，理论上可以和任何库合作。react-redux是针对react做的适配。 react-redux只有两个东西Provider 和 connect1&amp;lt;Provider store=&amp;#123;store&amp;#125; /&amp;gt;  //这个地方把store作为一个普通props传入，Provider内部把传入">
@@ -363,7 +363,11 @@
 <h3 id="实际工作中使用action"><a href="#实际工作中使用action" class="headerlink" title="实际工作中使用action"></a>实际工作中使用action</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    loadData() &#123;</span><br><span class="line">        <span class="keyword">this</span>.props.fetchData().catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>标准写法是store.dispatch(action)，为什么实际业务开发中能够通过this.props.fetchData()这种方式来dispatch？</p>
 <p>答案就是bindActionCreators。this.props.fetchData是通过@connect被bindActionCreators包装过的。逻辑上把bindActionCreators(action, dispatch)处理成{action: dispatch(action)}，并作为props传入UI组件，这样UI组件就可以直接this.props.action()来触发dispatch了</p>
-<h3 id="redux-sage-vs-redux-thunk"><a href="#redux-sage-vs-redux-thunk" class="headerlink" title="redux-sage vs redux-thunk"></a>redux-sage vs redux-thunk</h3>
+<h3 id="applyMiddleware"><a href="#applyMiddleware" class="headerlink" title="applyMiddleware"></a>applyMiddleware</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">applyMiddleware</span>(<span class="params">...middlewares</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function">(<span class="params">createStore</span>) =&gt;</span> (reducer, preloadedState, enhancer) =&gt; &#123;</span><br><span class="line">    <span class="keyword">const</span> store = createStore(reducer, preloadedState, enhancer)</span><br><span class="line">    <span class="keyword">let</span> dispatch = store.dispatch</span><br><span class="line">    <span class="keyword">let</span> chain = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> middlewareAPI = &#123;</span><br><span class="line">      getState: store.getState,</span><br><span class="line">      dispatch: <span class="function">(<span class="params">action</span>) =&gt;</span> dispatch(action)</span><br><span class="line">    &#125;</span><br><span class="line">    chain = middlewares.map(<span class="function"><span class="params">middleware</span> =&gt;</span> middleware(middlewareAPI))</span><br><span class="line">    dispatch = compose(...chain)(store.dispatch)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      ...store,</span><br><span class="line">      dispatch</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="redux-thunk"><a href="#redux-thunk" class="headerlink" title="redux-thunk"></a>redux-thunk</h3><p>核心思想：扩展action的类型，使其支持function</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createThunkMiddleware</span>(<span class="params">extraArgument</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// &#123;dispatch, getState&#125;和next均由redux在执行applyMiddlaware方法时注入，next实质上仍然指向store.dispatch</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function">(<span class="params">&#123; dispatch, getState &#125;</span>) =&gt;</span> next =&gt; <span class="function"><span class="params">action</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> action === <span class="string">'function'</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> action(dispatch, getState, extraArgument);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> next(action);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> thunk = createThunkMiddleware();</span><br><span class="line">thunk.withExtraArgument = createThunkMiddleware;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> thunk;</span><br></pre></td></tr></table></figure>
+<h3 id="redux-sage"><a href="#redux-sage" class="headerlink" title="redux-sage"></a>redux-sage</h3><p>实现更精细的异步action管理<br>利用generator实现。</p>
+
       
     </div>
     
@@ -502,7 +506,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -513,7 +517,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -524,7 +528,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -573,7 +577,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#react-redux"><span class="nav-number">1.</span> <span class="nav-text">react-redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际工作中使用action"><span class="nav-number">2.</span> <span class="nav-text">实际工作中使用action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redux-sage-vs-redux-thunk"><span class="nav-number">3.</span> <span class="nav-text">redux-sage vs redux-thunk</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#react-redux"><span class="nav-number">1.</span> <span class="nav-text">react-redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际工作中使用action"><span class="nav-number">2.</span> <span class="nav-text">实际工作中使用action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#applyMiddleware"><span class="nav-number">3.</span> <span class="nav-text">applyMiddleware</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redux-thunk"><span class="nav-number">4.</span> <span class="nav-text">redux-thunk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redux-sage"><span class="nav-number">5.</span> <span class="nav-text">redux-sage</span></a></li></ol></div>
             
 
           </div>

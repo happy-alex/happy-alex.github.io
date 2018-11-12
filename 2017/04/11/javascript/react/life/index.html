@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="讨论一下react的几个生命周期：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount componentWillMount有人会在">
+<meta name="description" content="react v15mark一下v15 react的几个生命周期函数：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount compo">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="react的生命周期">
 <meta property="og:url" content="https://happy-alex.github.io/2017/04/11/javascript/react/life/index.html">
 <meta property="og:site_name" content="alex的小站">
-<meta property="og:description" content="讨论一下react的几个生命周期：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount componentWillMount有人会在">
+<meta property="og:description" content="react v15mark一下v15 react的几个生命周期函数：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount compo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-17T13:19:14.503Z">
+<meta property="og:updated_time" content="2018-11-05T11:59:17.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react的生命周期">
-<meta name="twitter:description" content="讨论一下react的几个生命周期：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount componentWillMount有人会在">
+<meta name="twitter:description" content="react v15mark一下v15 react的几个生命周期函数：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount compo">
 
 
 
@@ -352,14 +352,14 @@
       
 
       
-        <p>讨论一下react的几个生命周期：<br>1.componentWillMount<br>2.componentDidMount<br>3.componentWillReceiveProps<br>4.shouldComponentUpdate<br>5.componentWillUpdate<br>6.render<br>7.componentDidUpdate<br>8.componentWillUnmount</p>
-<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>有人会在这个方法里调用ajax来请求后端数据。这种做法是不妥的，原因如下：<br>1.会阻碍组件的实例化，影响组件渲染。渲染应该是纯粹的，不该触发I/O操作。<br>2.如果将ajax放在willMount中，可能会导致在一个尚未挂载的组件上进行setState，这可能会导致某些不确定隐患。在componentDidMount中执行ajax，将是十分安全的。<br>不建议调用setState, 如果想在render之前指定state，应该使用default state</p>
-<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>我没有啥要说的</p>
+        <h2 id="react-v15"><a href="#react-v15" class="headerlink" title="react v15"></a>react v15</h2><p>mark一下v15 react的几个生命周期函数：<br>1.componentWillMount<br>2.componentDidMount<br>3.componentWillReceiveProps<br>4.shouldComponentUpdate<br>5.componentWillUpdate<br>6.render<br>7.componentDidUpdate<br>8.componentWillUnmount</p>
+<h3 id="componentWillMount"><a href="#componentWillMount" class="headerlink" title="componentWillMount"></a>componentWillMount</h3><p>有人会在这个方法里调用ajax来请求后端数据。这种做法是不妥的，原因如下：<br>1.会阻碍组件的实例化，影响组件渲染。渲染应该是纯粹的，不该触发I/O操作。<br>2.如果将ajax放在willMount中，可能会导致在一个尚未挂载的组件上进行setState，这可能会导致某些不确定隐患。在componentDidMount中执行ajax，将是十分安全的。<br>可以执行setState,但不建议这样做, 如果想在render之前指定state，应该使用default state</p>
+<h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><p>将jsx渲染到实际dom中</p>
 <h3 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount"></a>componentDidMount</h3><p>在这个方法里，组件已经成功挂载，可以处理许多跟dom有关的操作，可以处理需要组件未挂载之前不能做的事情，比如事件监听。<br>可以调用setState，这里setState调用的效果会在下一次render进行。不理解？就是说如果这里进行了setState操作，会导致render执行两次。</p>
-<h3 id="componentWillReceiveProps"><a href="#componentWillReceiveProps" class="headerlink" title="componentWillReceiveProps"></a>componentWillReceiveProps</h3><p>**首次渲染的时候，不会调用这个方法的，只有当后续props改变时才会执行。<br>可以setState</p>
-<h3 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h3><p>禁止setState<br>很多人喜欢在这个地方来控制组件是否进行更新，来优化性能。<br><a href="http://www.infoq.com/cn/news/2016/07/react-shouldComponentUpdate" target="_blank" rel="noopener">这里有另一种不同意见</a>，过度使用这个特性可能会导致的问题。主要是scu会拖慢组件的更新速度，如果要比较的对象很大，比如层层嵌套的大家伙，很明显将会很耗时,假设比较花费了1ms，而直接渲染花费时间还不到1ms，那么个时候这种比较反而是累赘的，有副作用。请谨慎使用。</p>
+<h3 id="componentWillReceiveProps"><a href="#componentWillReceiveProps" class="headerlink" title="componentWillReceiveProps"></a>componentWillReceiveProps</h3><p>**首次渲染的时候，不会调用这个方法的，只有当后续props改变时才会执行。<br>一个典型使用场景是，通过对传入的props做处理，得到组件的state。比如一个tab选项卡，当前tab项应该是组件内部状态，但有时候业务要求可以任意指定当前选中tab，就需要根据传入的props做处理。<br>有些人会在这里diff新老props的不同，从而做些其他操作，比如动画。<br>严格说来这些都是副作用，应该尽力避免。这些副作用容易破坏state的，引入其他影响，可能导致组件状态变得不可预测。<br>可以setState</p>
+<h3 id="shouldComponentUpdate"><a href="#shouldComponentUpdate" class="headerlink" title="shouldComponentUpdate"></a>shouldComponentUpdate</h3><p>禁止setState<br>很多人喜欢在这个地方来控制组件是否进行更新，来优化性能。<br><a href="http://www.infoq.com/cn/news/2016/07/react-shouldComponentUpdate" target="_blank" rel="noopener">这里有另一种不同意见</a>，过度使用这个特性可能会导致的问题。主要是scu会拖慢组件的更新速度，如果要比较的对象很大，比如层层嵌套的大家伙，很明显将会很耗时,假设比较花费了1ms，而直接渲染花费时间还不到1ms，那么个时候这种比较反而是累赘的，有副作用。请谨慎使用。<br>在比较两个层级比较复杂的对象时，这种比较就很难进行，因此引入了不可变数据–immutable。</p>
 <h3 id="componentWillUpdate"><a href="#componentWillUpdate" class="headerlink" title="componentWillUpdate"></a>componentWillUpdate</h3><p>在组件更新之前执行，跟willReceiveProps的功能部分重复，除了这里不允许调用setState。willReceiveProps接受到了新的props，但组件并不一定会更新（scu）,但willUpdate一定发生在render之前。因此如果组件里面存在scu方法，同时还想组件在更新之前做点什么的话，代码应该放在这里执行。</p>
-<h3 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h3><p>可以调用setState。<br>这里可以进行一些更新dom的操作，来响应props或state的改变</p>
+<h3 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate"></a>componentDidUpdate</h3><p>可以调用setState，但要避免死循环。<br>这里可以进行一些dom相关操作，比如获取更新后的dom宽高。</p>
 <h3 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount"></a>componentWillUnmount</h3><p>禁止setState<br>清理组件的残留，比如abort请求，解绑事件等</p>
 <h3 id="各生命周期是否可以调用setState方法"><a href="#各生命周期是否可以调用setState方法" class="headerlink" title="各生命周期是否可以调用setState方法"></a>各生命周期是否可以调用setState方法</h3><table>
 <thead>
@@ -402,7 +402,10 @@
 </tr>
 </tbody>
 </table>
-
+<h2 id="react-v16"><a href="#react-v16" class="headerlink" title="react v16"></a>react v16</h2><p>react 16采用fiber架构实现了异步渲染，对原来的声明周期做了改变<br>逐步废弃了下面3个生命周期函数<br>componentWillMount<br>componentWillReceiveProps<br>componentWillUpdate</p>
+<p>这3个函数都容易引发副作用，在15版本可能中这些副作用只是会影响性能；但在16的异步渲染模式中可能直接引起bug。</p>
+<p>新增两个生命周期函数</p>
+<h3 id="static-getDerivedStateFromProps"><a href="#static-getDerivedStateFromProps" class="headerlink" title="static getDerivedStateFromProps"></a>static getDerivedStateFromProps</h3><h3 id="getSnapShortBeforeUpdate"><a href="#getSnapShortBeforeUpdate" class="headerlink" title="getSnapShortBeforeUpdate"></a>getSnapShortBeforeUpdate</h3>
       
     </div>
     
@@ -539,7 +542,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -550,7 +553,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -561,7 +564,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -610,7 +613,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillMount"><span class="nav-number">1.</span> <span class="nav-text">componentWillMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidMount"><span class="nav-number">3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillReceiveProps"><span class="nav-number">4.</span> <span class="nav-text">componentWillReceiveProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">5.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUpdate"><span class="nav-number">6.</span> <span class="nav-text">componentWillUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">7.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">8.</span> <span class="nav-text">componentWillUnmount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各生命周期是否可以调用setState方法"><span class="nav-number">9.</span> <span class="nav-text">各生命周期是否可以调用setState方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v15"><span class="nav-number">1.</span> <span class="nav-text">react v15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillMount"><span class="nav-number">1.1.</span> <span class="nav-text">componentWillMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">1.2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidMount"><span class="nav-number">1.3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillReceiveProps"><span class="nav-number">1.4.</span> <span class="nav-text">componentWillReceiveProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">1.5.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUpdate"><span class="nav-number">1.6.</span> <span class="nav-text">componentWillUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">1.7.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">1.8.</span> <span class="nav-text">componentWillUnmount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各生命周期是否可以调用setState方法"><span class="nav-number">1.9.</span> <span class="nav-text">各生命周期是否可以调用setState方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v16"><span class="nav-number">2.</span> <span class="nav-text">react v16</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#static-getDerivedStateFromProps"><span class="nav-number">2.1.</span> <span class="nav-text">static getDerivedStateFromProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getSnapShortBeforeUpdate"><span class="nav-number">2.2.</span> <span class="nav-text">getSnapShortBeforeUpdate</span></a></li></ol></li></ol></div>
             
 
           </div>

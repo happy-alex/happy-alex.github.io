@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-01T12:12:57.096Z">
+<meta property="og:updated_time" content="2018-09-07T06:48:59.961Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="守护进程daemon">
 <meta name="twitter:description" content="区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍">
@@ -358,7 +358,7 @@
 <h3 id="守护进程不等于后台进程。"><a href="#守护进程不等于后台进程。" class="headerlink" title="守护进程不等于后台进程。"></a>守护进程不等于后台进程。</h3><p>node index.js &amp; 产生了一个后台进程。<br>但这个后台进程并不是一个守护进程，因为它没有脱离终端，如果关闭终端，这个进程还是会被杀死。</p>
 <h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><p>守护进程是在后台运行不受终端控制（输入，输出）的进程。一般的网络服务都是以守护进程的方式运行。<br>node项目常常需要用守护进程的方式启动服务，常见3种方式：nohup, forever, pm2。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup node index.js &amp;    <span class="comment">// nohup不能自动把前台进程变为后台进程，必须加&amp;</span></span><br><span class="line">forever start index.js</span><br><span class="line">pm2 start index.js</span><br></pre></td></tr></table></figure></p>
 <p>其中forever和pm2是node应用专有的启动工具，两者都能保证当进程意外退出时立即重启，但pm2提供比forever更强大的功能，日志收集和监控。</p>
-<p>sudo service xx start/stop 启动/停止执行脚本</p>
+<p>sudo service xx.sh start/stop 启动/停止执行脚本</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[<a href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html]" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html]</a></p>
 
       
@@ -497,7 +497,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -508,7 +508,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -519,7 +519,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

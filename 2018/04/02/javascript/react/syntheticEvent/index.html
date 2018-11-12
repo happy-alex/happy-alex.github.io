@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="总结起来就一句话， 合成事件就是事件代理。  合成事件和dom原生事件机制是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在">
+<meta name="description" content="react 的合成事件和 dom 原生事件是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在冒泡阶段执行， onClick">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React 合成事件">
 <meta property="og:url" content="https://happy-alex.github.io/2018/04/02/javascript/react/syntheticEvent/index.html">
 <meta property="og:site_name" content="alex的小站">
-<meta property="og:description" content="总结起来就一句话， 合成事件就是事件代理。  合成事件和dom原生事件机制是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在">
+<meta property="og:description" content="react 的合成事件和 dom 原生事件是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在冒泡阶段执行， onClick">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-08T03:27:41.543Z">
+<meta property="og:updated_time" content="2018-08-29T11:56:40.549Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React 合成事件">
-<meta name="twitter:description" content="总结起来就一句话， 合成事件就是事件代理。  合成事件和dom原生事件机制是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在">
+<meta name="twitter:description" content="react 的合成事件和 dom 原生事件是两个东西，都有各自的“捕获冒泡”机制，防止混用。 react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。 react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在冒泡阶段执行， onClick">
 
 
 
@@ -352,9 +352,8 @@
       
 
       
-        <p>总结起来就一句话， 合成事件就是事件代理。</p>
-<ol>
-<li>合成事件和dom原生事件机制是两个东西，都有各自的“捕获冒泡”机制，防止混用。</li>
+        <ol>
+<li>react 的合成事件和 dom 原生事件是两个东西，都有各自的“捕获冒泡”机制，防止混用。</li>
 <li>react中绑定的事件最终都绑定在document上，类似于事件委托的性质，dom原生事件通过冒泡机制到doc上，然后依次触发doc上绑定的react回调函数。</li>
 <li>react绑定的事件如果想区分是在冒泡还是捕获阶段执行，通过事件函数后缀Capture区别。比如onClick在冒泡阶段执行， onClickCapture发生在捕获阶段。</li>
 <li>事实上合成事件都是注册在真实dom事件的冒泡阶段，并不存在所谓的“捕获”，onClickCapture所谓的捕获阶段执行只是react把doc上事件绑定的监听序列从后往前依次触发执行。</li>
@@ -405,8 +404,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/02/javascript/other/onerror/" rel="next" title="关于window.onerror的一二事">
-                <i class="fa fa-chevron-left"></i> 关于window.onerror的一二事
+              <a href="/2018/04/02/javascript/react/transaction/" rel="next" title="React 事务 Transaction">
+                <i class="fa fa-chevron-left"></i> React 事务 Transaction
               </a>
             
           </div>
@@ -415,8 +414,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/02/javascript/react/transaction/" rel="prev" title="React 事务 Transaction">
-                React 事务 Transaction <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/13/javascript/react/ref/" rel="prev" title="ref">
+                ref <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -489,7 +488,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">47</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -500,7 +499,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -511,7 +510,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

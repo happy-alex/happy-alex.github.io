@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。 react 执行render()和setState()进行渲染时主要有两个阶段：调度阶段 （Reconciler）: 用">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fiber">
+<meta property="og:url" content="https://happy-alex.github.io/2018/09/26/javascript/react/fiber/index.html">
+<meta property="og:site_name" content="alex的小站">
+<meta property="og:description" content="背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。 react 执行render()和setState()进行渲染时主要有两个阶段：调度阶段 （Reconciler）: 用">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-12T03:42:39.980Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fiber">
+<meta name="twitter:description" content="背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。 react 执行render()和setState()进行渲染时主要有两个阶段：调度阶段 （Reconciler）: 用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://happy-alex.github.io/2018/09/26/javascript/react/fiber/"/>
+
+
+
+
+
+  <title>fiber | alex的小站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">alex的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">好记性不如烂笔头</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2018/09/26/javascript/react/fiber/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">fiber</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-26T00:00:00+08:00">
+                2018-09-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景React15"><a href="#背景React15" class="headerlink" title="背景React15"></a>背景React15</h2><h3 id="react核心思想："><a href="#react核心思想：" class="headerlink" title="react核心思想："></a>react核心思想：</h3><p>内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。</p>
+<h3 id="react-执行render-和setState-进行渲染时主要有两个阶段："><a href="#react-执行render-和setState-进行渲染时主要有两个阶段：" class="headerlink" title="react 执行render()和setState()进行渲染时主要有两个阶段："></a>react 执行render()和setState()进行渲染时主要有两个阶段：</h3><p>调度阶段 （Reconciler）: 用新数据生成一颗新树，遍历虚拟dom，diff新老virtual dom树，搜集具体的UI差异，找到需要更新的元素，放到更新队列中。<br>渲染阶段（Renderer）: 遍历更新队列，通过调用宿主环境的API，实际更新渲染对应元素。宿主环境，比如dom,native等。</p>
+<h3 id="3种实例"><a href="#3种实例" class="headerlink" title="3种实例"></a>3种实例</h3><p>1.DOM，  对应真实的DOM节点<br>2.Element   描述UI，通过React.createElement()得到<br>3.Instance      React维护的虚拟DOM, 根据Element创建，对组件和DOM节点的抽象表示，维护组件内部状态和与DOM树的关系</p>
+<h3 id="优化实践"><a href="#优化实践" class="headerlink" title="优化实践"></a>优化实践</h3><p>react本身为了提高页面渲染性能，推出了一些最佳实践<br>1.vdom 减少对dom的直接操作<br>2.无状态组件   减少组件内部状态和复杂度<br>3.shouldComponentUpdate  减少diff的次数<br>4.immutable   减少diff的成本<br>但以上都是针对js执行而提出的方法，具体到浏览器渲染，如何避免长时间的线程占用并没有给出好的建议。</p>
+<h2 id="why-Fiber的来源"><a href="#why-Fiber的来源" class="headerlink" title="why Fiber的来源"></a>why Fiber的来源</h2><p>Fiber之前的Reconciler阶段采用的是Stack Reconciler， 其自顶向下遍历vdom tree, 递归组件执行任务，过程无法中断。<br>假设有一个层级很复杂的组件，在顶层组件内执行setState, 那么调用栈可能会很长。由于调用栈过长，中间可能还有一些复杂操作，这些任务无法中断，就导致主线程被长时间阻塞。由于浏览器里渲染和js执行共一个主线程，在对响应要求高的场景，比如手势，动画等，就容易造成卡顿，延迟等现象，从而影响用户体验。</p>
+<p>Fiber的出现就是为了解决这个问题。<br>Fiber 的解决思路：把渲染更新过程拆分成多个子任务，每次只做一小部分，做完看是否还有剩余时间，如果有继续下一个任务；如果没有，挂起当前任务，将时间控制权交给主线程，等主线程不忙的时候在继续执行。</p>
+<h2 id="what-Fiber是什么"><a href="#what-Fiber是什么" class="headerlink" title="what Fiber是什么"></a>what Fiber是什么</h2><p>计算机通常追踪程序执行的方式是使用调用堆栈。执行函数时，不断的把堆栈帧加入到堆栈中，一个堆栈帧就表示一个要执行的工作。<br>在处理UI时，如果执行太多的工作，就可能导致动画丢帧。</p>
+<p>新版本的浏览器实现了有助于解决这个问题的API：requestIdleCallback 和 requestAnimationFrame.<br>requestIdleCallback 调度在空闲期间调用的低优先级函数<br>requestAnimationFrame调度在下一个动画帧上调用的高优先级函数。</p>
+<p>问题是，为了使用这些API，就需要一种方法将渲染工作分解为增量单元。如果仅依赖于调用堆栈，它将继续工作直到堆栈为空，无法中断。<br>为了实现增量渲染的调度，就必须重新实现这个堆栈帧，以便可以将堆栈帧保留在内存中，然后按照自己的调度算法执行他们。同时由于这些堆栈栈是我们手动处理的，我们还可以加入并发或者错误边界等功能。</p>
+<p>因此Fiber就是重新实现的堆栈帧，本质上Fiber也可以理解为是一个虚拟的堆栈帧，将可中断的任务拆分成多个子任务，通过按照优先级来自由调度子任务，分段更新，从而将之前的同步渲染改为异步渲染。<br>react内部有自己的优先级判断逻辑，比如动画，用户交互等任务优先级就明显要高。</p>
+<h3 id="Fiber的目标"><a href="#Fiber的目标" class="headerlink" title="Fiber的目标"></a>Fiber的目标</h3><ul>
+<li>将耗时长可中断的任务拆分成多个子任务</li>
+<li>对正在做的工作调整优先级，可以重做，复用上次的结果</li>
+</ul>
+<h3 id="Fiber特性"><a href="#Fiber特性" class="headerlink" title="Fiber特性"></a>Fiber特性</h3><ul>
+<li>增量渲染，把一个渲染任务拆分成多个子任务，平均到多个渲染帧中执行，每次只做一小段，做完后就把时间控制权上交给主线程</li>
+<li>在渲染更新时，能够暂停，复用任务</li>
+<li>不同类型的任务具有不同的优先级</li>
+<li>并发方面的其他能力</li>
+<li>错误边界</li>
+</ul>
+<h2 id="how-Fiber实现"><a href="#how-Fiber实现" class="headerlink" title="how Fiber实现"></a>how Fiber实现</h2><p>简单来说就是，<strong>时间分片 + 链表结构</strong> 。<br>fiber就是维护每一个分片的数据结构。</p>
+<h3 id="fiber-amp-amp-fiber-tree"><a href="#fiber-amp-amp-fiber-tree" class="headerlink" title="fiber &amp;&amp; fiber tree"></a>fiber &amp;&amp; fiber tree</h3><p>react中没有明确的Virtual Dom， 可以把fiber理解为我们习惯上的虚拟Dom概念。<br>react在render中第一次渲染时，利用React.createElement会创建一课Element树，同时会创建一颗结构一模一样的fiber tree，不同的Element类型对应不同类型的Fiber Node。<br>一个Fiber Node可以认为是一个对象，它表示组件需要做的工作。一个Element对应一个或多个Fiber Node。</p>
+<p>上面提到Fiber要做增量更新，所以就要额外维护一些上下文信息，所以react 扩展出了 fiber tree 的概念，更新过程就是根据输入的数据以及当前fiber tree，构造出新的fiber tree(workInProgress tree)。上面我们提到了Instance, Fiber基于此进行了扩展，添加了一些其他概念：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 搜集diff结果，每个workInProgress tree节点都有一个effect list</span></span><br><span class="line">    <span class="comment">// 当前节点更新完毕，会向上merge effect list</span></span><br><span class="line">    effect</span><br><span class="line"></span><br><span class="line">    <span class="comment">// reconcile过程中的快照，用于断电恢复</span></span><br><span class="line">    workInProgress</span><br><span class="line"></span><br><span class="line">    <span class="comment">// fiber tree 与vdom tree类似，描述增量更新需要的上下文信息</span></span><br><span class="line">    fiber</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &lt;Card /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// FiberNode 结构如下：</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// fiber类型</span></span><br><span class="line">    type: Card,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// type对应标记</span></span><br><span class="line">    tag: <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// tag类型，二进制，不同tag代表不同类型</span></span><br><span class="line">    effectTag: <span class="number">1</span>,</span><br><span class="line">    firstEffect: <span class="literal">null</span>,</span><br><span class="line">    lastEffect: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 单链表结构，方便遍历fiber树上游副作用的节点</span></span><br><span class="line">    nextEffect: FiberNode|<span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 标记子树上待更新任务的优先级</span></span><br><span class="line">    pendingWorkPriority: number，</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第一个子fiber</span></span><br><span class="line">    child: FiberNode|<span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指向父fiber，表示当前节点处理完毕后，应该向谁提交自己的结果effect list</span></span><br><span class="line">    <span class="keyword">return</span>: FiberNode|<span class="literal">null</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 兄弟fiber</span></span><br><span class="line">    slibing: FiberNode|<span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前父fiber中的位置</span></span><br><span class="line">    index: <span class="number">0</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// fiber实例对象，指向当前组件实例</span></span><br><span class="line">    stateNode: Card,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// setState待更新状态</span></span><br><span class="line">    updateQueue: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// component中的相关props、state</span></span><br><span class="line">    memoizedProps: &#123;&#125;,</span><br><span class="line">    memoizedState: &#123;&#125;</span><br><span class="line">    pendingProps: &#123;&#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 和组件中的key,ref保持一致</span></span><br><span class="line">    key: <span class="literal">null</span>,</span><br><span class="line">    ref: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// fiber更新时基于当前fiber克隆出的镜像，更新时记录两个fiber diff的变化；更新结束后alternate替换之前的fiber成为新的fiber节点</span></span><br><span class="line">    alternate: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上述fiber数据结构，可以看出fiber tree 是一个单链表结构，通过child, slibing, return完成结构关联。</p>
+<h3 id="Fiber-Reconciler"><a href="#Fiber-Reconciler" class="headerlink" title="Fiber Reconciler"></a>Fiber Reconciler</h3><p>reconciler过程分为两个阶段:</p>
+<h4 id="Reconciliation"><a href="#Reconciliation" class="headerlink" title="Reconciliation"></a>Reconciliation</h4><p>过程可中断。<br>将每个fiber节点作为最小工作单位，通过自顶向下逐个遍历fiber node，构造workInProgress tree(一颗新的fiber tree), 得到patch结果<br>具体过程如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 如果当前节点不需要更新，直接<span class="built_in">clone</span> 子节点， 跳到步骤5；如果需要更新，则修改tag，记录更新类型</span><br><span class="line">2. 更新当前节点状态，context，props，state等</span><br><span class="line">3. 调用shouldComponentUpdate, 如果返回值为<span class="literal">false</span>，则跳转步骤5</span><br><span class="line">4. 调用组件实例的render方法，得到一个新的子节点，同时为子节点创建Fiber Node（会尽量复用现有fiber，子节点的增删也发生在这里）</span><br><span class="line">5. 如果没有产生child fiber, 该工作单元结束，把effect list归并到<span class="built_in">return</span>上，并把当前FiberNode的sibling作为下一个工作单元。如果有child fiber，将child指向作为下一个工作单元。</span><br><span class="line">6. 检查有没有剩余时间，如果有继续执行下一个工作单元；如果没有，等到下一次主线程空闲时再开始执行下一个工作单元</span><br><span class="line">7. 如果没有下一个工作单元，回到workInProgress tree 根节点，reconciliation节点结束，进入pendingCommit状态。</span><br></pre></td></tr></table></figure></p>
+<p>从上述过程可以看出，1-6的实际执行逻辑其实是一个work loop，每执行完一次loop，都要检查有没有剩余时间，进行控制权的交换。<br>由于每做完一个loop，都要把effect list向上归并到return，因此等到loop结束时，workInProgress根节点上的effect list就是收集到的所有effect。</p>
+<p><strong>构建workInProgress tree的过程就是diff的过程</strong>。<br>通过requestIdleCallback来调度执行一个任务，每完成一个任务，都回来检查下有没有优先级更高的任务。每完成一个任务，都要把时间控制权交换给主线程，知道下一个requestIdleCallback回调再继续构建workInProgress tree.</p>
+<p>PS.Fiber之前的Reconciler被叫做Stack Reconciler，就是因为这些调度上下文信息是由系统堆栈来保存的，以便和Fiber Reconciler区分开。</p>
+<p>componentWillMount<br>componentWillReceiveProps<br>shouldComponentUpdate<br>componentWillUpdate</p>
+<p>由于Reconciliation阶段是可中断的，因此处在这一阶段的生命周期钩子函数可能被多次调用，存在副作用，从而引起bug。所以版本16之后会逐渐废除掉这些API（不包括scu函数）</p>
+<p>但 componentWillReceiveProps 和 componentWillUpdate 在实际业务场景中比较有用，所以16新增了两个API static getDerivedStateFromProps 和 getSnapshotBeforeUpdate 用以解决相同场景下的业务问题。</p>
+<h4 id="Commit"><a href="#Commit" class="headerlink" title="Commit"></a>Commit</h4><p>过程不可中断，一直执行直到更新完成。对dom应用上一个过程得到的patch<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1.处理effect list, 更新dom树，调用组件生命周期函数，更新ref等内部状态</span><br><span class="line">2.Commit结束时，把所有更新commit到DOM树上</span><br></pre></td></tr></table></figure></p>
+<p>componentDidMount<br>componentDidUpdate<br>componentWillUnmount</p>
+<h3 id="fiber-tree-amp-amp-workInProgress-tree"><a href="#fiber-tree-amp-amp-workInProgress-tree" class="headerlink" title="fiber tree &amp;&amp; workInProgress tree"></a>fiber tree &amp;&amp; workInProgress tree</h3><h2 id="v15-vs-v16"><a href="#v15-vs-v16" class="headerlink" title="v15 vs v16"></a>v15 vs v16</h2><p>源码结构的简单变化：<br>name | v15 | v16 | 备注<br>—–|—-|——|—–<br>tree | vdom tree | fiber tree | vdom是个简单树结构，fiber tree是个单链表<br>内部方法 | mountComponent/updateComponent | beginWork/completeWork/commitWork<br>内部组件 | ReactDomComponent/ReactCompositeComponent | ReactDomFiberComponent/ReactFiberClassComponent<br>核心机制 | Stack Reconciler | Fiber Scheduler</p>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><p>(<a href="https://zhuanlan.zhihu.com/p/37095662）" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/37095662）</a><br>1.<a href="http://www.ayqy.net/blog/dive-into-react-fiber/" target="_blank" rel="noopener">完全理解Fiber</a><br>2.<a href="http://makersden.io/blog/look-inside-fiber" target="_blank" rel="noopener">fiber</a> 如果404，请先访问<a href="http://makersden.io" target="_blank" rel="noopener">http://makersden.io</a><br>3.<a href="https://github.com/acdlite/react-fiber-architecture" target="_blank" rel="noopener">https://github.com/acdlite/react-fiber-architecture</a><br>4.(<a href="http://zxc0328.github.io/2017/09/28/react-16-source/" target="_blank" rel="noopener">http://zxc0328.github.io/2017/09/28/react-16-source/</a>)</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/25/javascript/builder/webpack/" rel="next" title="webpack">
+                <i class="fa fa-chevron-left"></i> webpack
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/27/javascript/react/fiber2/" rel="prev" title="suspense">
+                suspense <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/11572394?v=4"
+                alt="alex" />
+            
+              <p class="site-author-name" itemprop="name">alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/happy-alex" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景React15"><span class="nav-number">1.</span> <span class="nav-text">背景React15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#react核心思想："><span class="nav-number">1.1.</span> <span class="nav-text">react核心思想：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#react-执行render-和setState-进行渲染时主要有两个阶段："><span class="nav-number">1.2.</span> <span class="nav-text">react 执行render()和setState()进行渲染时主要有两个阶段：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3种实例"><span class="nav-number">1.3.</span> <span class="nav-text">3种实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化实践"><span class="nav-number">1.4.</span> <span class="nav-text">优化实践</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#why-Fiber的来源"><span class="nav-number">2.</span> <span class="nav-text">why Fiber的来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#what-Fiber是什么"><span class="nav-number">3.</span> <span class="nav-text">what Fiber是什么</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber的目标"><span class="nav-number">3.1.</span> <span class="nav-text">Fiber的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber特性"><span class="nav-number">3.2.</span> <span class="nav-text">Fiber特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how-Fiber实现"><span class="nav-number">4.</span> <span class="nav-text">how Fiber实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fiber-amp-amp-fiber-tree"><span class="nav-number">4.1.</span> <span class="nav-text">fiber &amp;&amp; fiber tree</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-Reconciler"><span class="nav-number">4.2.</span> <span class="nav-text">Fiber Reconciler</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Reconciliation"><span class="nav-number">4.2.1.</span> <span class="nav-text">Reconciliation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Commit"><span class="nav-number">4.2.2.</span> <span class="nav-text">Commit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fiber-tree-amp-amp-workInProgress-tree"><span class="nav-number">4.3.</span> <span class="nav-text">fiber tree &amp;&amp; workInProgress tree</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#v15-vs-v16"><span class="nav-number">5.</span> <span class="nav-text">v15 vs v16</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">6.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
