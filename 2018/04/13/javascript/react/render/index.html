@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="react," />
+  <meta name="keywords" content="react,jsx," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="JSX生成element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=&quot;refPage&quot;&amp;gt;            &amp;lt;Header title=&quot;去哪儿&quot; /&amp;gt;            &amp;lt;p&amp;gt;this is a div&amp;lt;/p&amp;gt;">
-<meta name="keywords" content="react">
+<meta name="description" content="总结： React Component Render -&amp;gt; JSX -&amp;gt; React.createElement -&amp;gt; Virtual DOM -&amp;gt; DOM  JSX -&amp;gt; React Element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=">
+<meta name="keywords" content="react,jsx">
 <meta property="og:type" content="article">
-<meta property="og:title" content="render">
+<meta property="og:title" content="React渲染DOM的奥秘">
 <meta property="og:url" content="https://happy-alex.github.io/2018/04/13/javascript/react/render/index.html">
 <meta property="og:site_name" content="alex的小站">
-<meta property="og:description" content="JSX生成element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=&quot;refPage&quot;&amp;gt;            &amp;lt;Header title=&quot;去哪儿&quot; /&amp;gt;            &amp;lt;p&amp;gt;this is a div&amp;lt;/p&amp;gt;">
+<meta property="og:description" content="总结： React Component Render -&amp;gt; JSX -&amp;gt; React.createElement -&amp;gt; Virtual DOM -&amp;gt; DOM  JSX -&amp;gt; React Element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-22T07:19:02.873Z">
+<meta property="og:updated_time" content="2018-11-27T14:31:35.486Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="render">
-<meta name="twitter:description" content="JSX生成element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=&quot;refPage&quot;&amp;gt;            &amp;lt;Header title=&quot;去哪儿&quot; /&amp;gt;            &amp;lt;p&amp;gt;this is a div&amp;lt;/p&amp;gt;">
+<meta name="twitter:title" content="React渲染DOM的奥秘">
+<meta name="twitter:description" content="总结： React Component Render -&amp;gt; JSX -&amp;gt; React.createElement -&amp;gt; Virtual DOM -&amp;gt; DOM  JSX -&amp;gt; React Element一个基本的JSX语法：123456789render() &amp;#123;    return (        &amp;lt;div className=&quot;page&quot; ref=">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>render | alex的小站</title>
+  <title>React渲染DOM的奥秘 | alex的小站</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">render</h2>
+          <h2 class="post-title" itemprop="name headline">React渲染DOM的奥秘</h2>
         
 
         <div class="post-meta">
@@ -352,11 +352,15 @@
       
 
       
-        <h2 id="JSX生成element"><a href="#JSX生成element" class="headerlink" title="JSX生成element"></a>JSX生成element</h2><p>一个基本的JSX语法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div className=<span class="string">"page"</span> ref=<span class="string">"refPage"</span>&gt;</span><br><span class="line">            &lt;Header title=<span class="string">"去哪儿"</span> /&gt;</span><br><span class="line">            &lt;p&gt;<span class="keyword">this</span> is a div&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">            this is a text</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上述代码会被编译为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> React.createElement(</span><br><span class="line">    <span class="string">'div'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        className: <span class="string">'page'</span>,</span><br><span class="line">        ref: <span class="string">'refPage'</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自定义组件</span></span><br><span class="line">    React.createElement(</span><br><span class="line">        Header, </span><br><span class="line">        &#123;</span><br><span class="line">            title: <span class="string">'去哪儿'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">null</span></span><br><span class="line">    ),</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 原生DOM节点</span></span><br><span class="line">    React.createElement(</span><br><span class="line">        <span class="string">'p'</span>,</span><br><span class="line">        <span class="literal">null</span>,</span><br><span class="line">        <span class="string">'this is a div'</span></span><br><span class="line">    ),</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通文本</span></span><br><span class="line">    <span class="string">'this is a text'</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
-<p>通过 React.createElement(type, config, …children) 方法生成element;<br>最终得到结构形如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    type: <span class="string">'div'</span>,</span><br><span class="line">    ref: <span class="string">'refPage'</span>,</span><br><span class="line">    key: <span class="literal">null</span></span><br><span class="line">    props: &#123;</span><br><span class="line">        className: <span class="string">'page'</span>,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                type: Header,</span><br><span class="line">                ref: <span class="literal">null</span>,</span><br><span class="line">                key: <span class="literal">null</span>,</span><br><span class="line">                props: &#123;</span><br><span class="line">                    title: <span class="string">'去哪儿'</span>,</span><br><span class="line">                    children: []</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                type: <span class="string">'p'</span>,</span><br><span class="line">                ref: <span class="literal">null</span>,</span><br><span class="line">                key: <span class="literal">null</span>,</span><br><span class="line">                props: &#123;</span><br><span class="line">                    chidren: <span class="string">'this is a p'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'this is a text'</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <blockquote>
+<p>总结： React Component Render -&gt; JSX -&gt; React.createElement -&gt; Virtual DOM -&gt; DOM</p>
+</blockquote>
+<h2 id="JSX-gt-React-Element"><a href="#JSX-gt-React-Element" class="headerlink" title="JSX -&gt; React Element"></a>JSX -&gt; React Element</h2><p>一个基本的JSX语法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div className=<span class="string">"page"</span> ref=<span class="string">"refPage"</span>&gt;</span><br><span class="line">            &lt;Header title=<span class="string">"去哪儿"</span> /&gt;</span><br><span class="line">            &lt;p&gt;<span class="keyword">this</span> is a div&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">            this is a text</span></span><br><span class="line"><span class="regexp">        &lt;/</span>div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码通过babel（JSX -&gt; React.createElement()）的帮助，会被编译为<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> React.createElement(</span><br><span class="line">    <span class="string">'div'</span>,</span><br><span class="line">    &#123;</span><br><span class="line">        className: <span class="string">'page'</span>,</span><br><span class="line">        ref: <span class="string">'refPage'</span></span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自定义组件，当发现类型为class或者function时，递归完成构建</span></span><br><span class="line">    React.createElement(</span><br><span class="line">        Header, </span><br><span class="line">        &#123;</span><br><span class="line">            title: <span class="string">'去哪儿'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="literal">null</span></span><br><span class="line">    ),</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 原生DOM节点</span></span><br><span class="line">    React.createElement(</span><br><span class="line">        <span class="string">'p'</span>,</span><br><span class="line">        <span class="literal">null</span>,</span><br><span class="line">        <span class="string">'this is a div'</span></span><br><span class="line">    ),</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 普通文本</span></span><br><span class="line">    <span class="string">'this is a text'</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure></p>
+<p>通过调用React.createElement(type, config, …children) 方法生成对dom的抽象描述–element;<br>最终得到结构形如：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    type: <span class="string">'div'</span>,</span><br><span class="line">    ref: <span class="string">'refPage'</span>,</span><br><span class="line">    key: <span class="literal">null</span></span><br><span class="line">    props: &#123;</span><br><span class="line">        className: <span class="string">'page'</span>,</span><br><span class="line">        children: [</span><br><span class="line">            &#123;</span><br><span class="line">                type: Header,</span><br><span class="line">                ref: <span class="literal">null</span>,</span><br><span class="line">                key: <span class="literal">null</span>,</span><br><span class="line">                props: &#123;</span><br><span class="line">                    title: <span class="string">'去哪儿'</span>,</span><br><span class="line">                    children: []</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                type: <span class="string">'p'</span>,</span><br><span class="line">                ref: <span class="literal">null</span>,</span><br><span class="line">                key: <span class="literal">null</span>,</span><br><span class="line">                props: &#123;</span><br><span class="line">                    chidren: <span class="string">'this is a p'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">'this is a text'</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>上面的例子列举了children中的3个类型：自定义组件，原生DOM节点，String；此外还有 null, undefined, number, boolean, array等。</p>
-<h2 id="element-生成-vNode"><a href="#element-生成-vNode" class="headerlink" title="element 生成 vNode"></a>element 生成 vNode</h2><p>jsx -&gt; element -&gt; vnode  -&gt; dom</p>
+<h2 id="Reace-Element-gt-Dom"><a href="#Reace-Element-gt-Dom" class="headerlink" title="Reace Element -&gt; Dom"></a>Reace Element -&gt; Dom</h2><p>调用ReactDOM.render() 将element渲染到真实DOM.</p>
+<h2 id="深入"><a href="#深入" class="headerlink" title="深入"></a>深入</h2><p>React在生成最终描述DOM的轻量对象–Element的过程，其实就是React reconciliation(调和)过程。一般这个过程在首次渲染和setState之后触发。</p>
 
       
     </div>
@@ -390,6 +394,8 @@
           
             <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
           
+            <a href="/tags/jsx/" rel="tag"><i class="fa fa-tag"></i> jsx</a>
+          
         </div>
       
 
@@ -401,8 +407,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/13/javascript/react/ref/" rel="next" title="ref">
-                <i class="fa fa-chevron-left"></i> ref
+              <a href="/2018/04/02/javascript/react/transaction/" rel="next" title="React 事务 Transaction">
+                <i class="fa fa-chevron-left"></i> React 事务 Transaction
               </a>
             
           </div>
@@ -411,8 +417,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/07/31/javascript/base/prototype/" rel="prev" title="解析js中的原型">
-                解析js中的原型 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/04/13/javascript/react/ref/" rel="prev" title="ref">
+                ref <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -494,7 +500,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -516,7 +522,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -565,7 +571,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSX生成element"><span class="nav-number">1.</span> <span class="nav-text">JSX生成element</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#element-生成-vNode"><span class="nav-number">2.</span> <span class="nav-text">element 生成 vNode</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSX-gt-React-Element"><span class="nav-number">1.</span> <span class="nav-text">JSX -&gt; React Element</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reace-Element-gt-Dom"><span class="nav-number">2.</span> <span class="nav-text">Reace Element -&gt; Dom</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深入"><span class="nav-number">3.</span> <span class="nav-text">深入</span></a></li></ol></div>
             
 
           </div>
