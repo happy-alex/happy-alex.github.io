@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-10T08:53:01.657Z">
+<meta property="og:updated_time" content="2018-12-03T07:51:56.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务端渲染ssr">
 <meta name="twitter:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
@@ -369,12 +369,18 @@
 <li>服务端渲染，如果前后端代码可以复用，这就是前后端同构了。服务端和浏览器共用一套组件代码，实现渲染。</li>
 </ul>
 <p><br><br>截止到目前，我们团队在部分业务中已经尝试了ssr。比如去哪儿App首页的发现频道，酒店宫格详情页底部更多入口，部分运营活动类页面都是通过ssr的方式渲染的。</p>
-<p>mark下问题</p>
-<ul>
-<li>如何有效利用cdn？</li>
-<li>环境判断。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：需要根据请求html时候携带的ua来提前做一些处理。</li>
-<li>模块管理。前端使用的是es6 module。后端使用的是commonJS。node端如何对ESModule进行转码。</li>
-<li>spa模式不适用</li>
+<h3 id="要考虑的问题"><a href="#要考虑的问题" class="headerlink" title="要考虑的问题"></a>要考虑的问题</h3><ul>
+<li>如何打通公司现有的前端发布流程</li>
+<li>环境嗅探。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：需要根据请求html时候携带的ua来提前做一些处理。</li>
+<li>模块管理。前端使用的是es6 module。后端使用的是commonJS。node端如何引用ESModule定义的组件</li>
+<li>node如何接入传统后端RPC服务，比如java的dubbo</li>
+<li>应用的健壮性，日志处理，监控报警，logstash + kibana</li>
+</ul>
+<h3 id="性能优化tips"><a href="#性能优化tips" class="headerlink" title="性能优化tips"></a>性能优化tips</h3><ul>
+<li>模板缓存，不要每次都去硬盘读文件</li>
+<li>路由查找，匹配正则路由和匹配字符串路由耗时不一致，字符串路由耗时更短</li>
+<li>去除不必要的中间件，过多的中间件代表业务链路耗时更长</li>
+<li>ejs模板的include总是去硬盘里查找模板文件，优化点</li>
 </ul>
 
       
@@ -422,8 +428,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/11/hybrid/1/" rel="next" title="native和js交互">
-                <i class="fa fa-chevron-left"></i> native和js交互
+              <a href="/2017/11/11/javascript/other/graphql/" rel="next" title="graphql在dsp系统中的尝试">
+                <i class="fa fa-chevron-left"></i> graphql在dsp系统中的尝试
               </a>
             
           </div>
@@ -432,8 +438,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/10/javascript/node/cluster/" rel="prev" title="cluster">
-                cluster <i class="fa fa-chevron-right"></i>
+              <a href="/2017/12/10/javascript/node/koa-compose/" rel="prev" title="koa2中间件机制">
+                koa2中间件机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -515,7 +521,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -526,7 +532,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -586,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景："><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssr"><span class="nav-number">2.</span> <span class="nav-text">ssr</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景："><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssr"><span class="nav-number">2.</span> <span class="nav-text">ssr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#要考虑的问题"><span class="nav-number">3.</span> <span class="nav-text">要考虑的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能优化tips"><span class="nav-number">4.</span> <span class="nav-text">性能优化tips</span></a></li></ol></div>
             
 
           </div>
