@@ -87,17 +87,17 @@
 <meta property="og:site_name" content="alex的小站">
 <meta property="og:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_1.png">
-<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_2.png">
-<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_runhttpquery.png">
-<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_runhttpquery2.png">
-<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp_restful_graphql.png">
+<meta property="og:image" content="https://happy-alex.github.io/images/job/dsp/dsp_1.png">
+<meta property="og:image" content="https://happy-alex.github.io/images/job/dsp/dsp_2.png">
+<meta property="og:image" content="https://happy-alex.github.io/images/job/dsp/dsp_runhttpquery.png">
+<meta property="og:image" content="https://happy-alex.github.io/images/job/dsp/dsp_runhttpquery2.png">
+<meta property="og:image" content="https://happy-alex.github.io/images/job/dsp_restful_graphql.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2018-12-07T13:47:19.590Z">
+<meta property="og:updated_time" content="2018-12-07T14:01:21.688Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="graphql在去哪儿dsp系统中的尝试">
 <meta name="twitter:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
-<meta name="twitter:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_1.png">
+<meta name="twitter:image" content="https://happy-alex.github.io/images/job/dsp/dsp_1.png">
 
 
 
@@ -365,13 +365,13 @@
 <p>最初采用后端java提供的restful风格的接口，由于涉及到复杂的嵌套查询，基本是由后端负责封装逻辑，内部查询多次，对外暴露给前端一个接口。<br>后来再想这种场景下前端有没有解决方案，就接触了graphql。（其实前面说的java逻辑某种程度和graphql的工作很像）</p>
 <h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>由于已经有现成的restful接口，这次实践的目的主要是在node层将已有的restful接口包装为graphql</p>
 <p>实现上主要有两个部分：graphql数据定义和对外提供的graphql查询服务。<br>主要基于 apollo-server-koa, apollo-server-core, graphql-tools 实现</p>
-<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><p>graphql数据定义目录结构如下：<br><img src="../../../images/node/dsp/dsp_1.png" alt="graphql数据定义"></p>
+<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><p>graphql数据定义目录结构如下：<br><img src="//happy-alex.github.io/images/job/dsp/dsp_1.png" alt="graphql数据定义"></p>
 <p>现在有3个模块：用户模块auth，推广计划模块plan，素材模板模块material。<br>每个模块都有自己的connector，model，resolver, schema文件，最后由graphql目录下的schema文件合并各个模块的schema定义，通过graphql-tools 提供的 makeExecutableSchema 方法统一导出。</p>
-<p>比如auth模块的简单定义：<br><img src="../../../images/node/dsp/dsp_2.png" alt="auth模块的schema"></p>
+<p>比如auth模块的简单定义：<br><img src="//happy-alex.github.io/images/job/dsp/dsp_2.png" alt="auth模块的schema"></p>
 <h3 id="graphql查询"><a href="#graphql查询" class="headerlink" title="graphql查询"></a>graphql查询</h3><p>graphql查询主要是将restful的接口转换为graphql风格，这里使用了 apollo-server-core 提供的 runHttpQuery 来完成</p>
-<p>runHttpQuery 核心代码<br><img src="../../../images/node/dsp/dsp_runhttpquery.png" alt="runHttpQuery核心代码"></p>
-<p>其中的context由合并各个模块的model而来<br><img src="../../../images/node/dsp/dsp_runhttpquery2.png" alt="runHttpQuery核心代码"></p>
-<p>graphql的一次查询过程，将restful转为graphql<br><img src="../../../images/node/dsp_restful_graphql.png" alt="graphql一次查询"></p>
+<p>runHttpQuery 核心代码<br><img src="//happy-alex.github.io/images/job/dsp/dsp_runhttpquery.png" alt="runHttpQuery核心代码"></p>
+<p>其中的context由合并各个模块的model而来<br><img src="//happy-alex.github.io/images/job/dsp/dsp_runhttpquery2.png" alt="runHttpQuery核心代码"></p>
+<p>graphql的一次查询过程，将restful转为graphql<br><img src="//happy-alex.github.io/images/job/dsp_restful_graphql.png" alt="graphql一次查询"></p>
 <p>最终实现的graphiql效果：</p>
 <p><img src="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70" alt="dsp的graphql查询界面"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="graphql好在哪儿"><a href="#graphql好在哪儿" class="headerlink" title="graphql好在哪儿"></a>graphql好在哪儿</h3><ol>
@@ -437,8 +437,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/11/hybrid/1/" rel="next" title="native和js交互">
-                <i class="fa fa-chevron-left"></i> native和js交互
+              <a href="/2017/08/17/javascript/node/process/" rel="next" title="守护进程daemon">
+                <i class="fa fa-chevron-left"></i> 守护进程daemon
               </a>
             
           </div>
@@ -530,7 +530,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">51</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
