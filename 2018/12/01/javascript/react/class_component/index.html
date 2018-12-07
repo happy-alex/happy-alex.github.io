@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="graphql," />
+  <meta name="keywords" content="react," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
-<meta name="keywords" content="graphql">
+<meta name="description" content="react中class component常见写法1234567891011121314151617class Card extends React.Component &amp;#123;    constructor(props) &amp;#123;        // 此处this还不存在        super(props);        this.state = &amp;#123;">
+<meta name="keywords" content="react">
 <meta property="og:type" content="article">
-<meta property="og:title" content="graphql在dsp系统中的尝试">
-<meta property="og:url" content="https://happy-alex.github.io/2017/11/11/javascript/other/graphql/index.html">
+<meta property="og:title" content="class component 中的 super(props)">
+<meta property="og:url" content="https://happy-alex.github.io/2018/12/01/javascript/react/class_component/index.html">
 <meta property="og:site_name" content="alex的小站">
-<meta property="og:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
+<meta property="og:description" content="react中class component常见写法1234567891011121314151617class Card extends React.Component &amp;#123;    constructor(props) &amp;#123;        // 此处this还不存在        super(props);        this.state = &amp;#123;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20181206221042111.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2018-12-06T14:22:37.972Z">
+<meta property="og:updated_time" content="2018-12-07T03:23:15.463Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="graphql在dsp系统中的尝试">
-<meta name="twitter:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70">
+<meta name="twitter:title" content="class component 中的 super(props)">
+<meta name="twitter:description" content="react中class component常见写法1234567891011121314151617class Card extends React.Component &amp;#123;    constructor(props) &amp;#123;        // 此处this还不存在        super(props);        this.state = &amp;#123;">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://happy-alex.github.io/2017/11/11/javascript/other/graphql/"/>
+  <link rel="canonical" href="https://happy-alex.github.io/2018/12/01/javascript/react/class_component/"/>
 
 
 
 
 
-  <title>graphql在dsp系统中的尝试 | alex的小站</title>
+  <title>class component 中的 super(props) | alex的小站</title>
   
 
 
@@ -266,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/11/11/javascript/other/graphql/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2018/12/01/javascript/react/class_component/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="alex">
@@ -283,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">graphql在dsp系统中的尝试</h2>
+          <h2 class="post-title" itemprop="name headline">class component 中的 super(props)</h2>
         
 
         <div class="post-meta">
@@ -295,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T00:00:00+08:00">
-                2017-11-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-01T00:00:00+08:00">
+                2018-12-01
               </time>
             
 
@@ -318,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/other/" itemprop="url" rel="index">
-                    <span itemprop="name">other</span>
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
                   </a>
                 </span>
 
@@ -355,34 +352,15 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。</p>
-<p>dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点：</p>
-<p>推广计划和素材模板存在多对多的关系<br>一个用户关联着多个计划和素材</p>
-<p>最初采用后端java提供的restful风格的接口，由于涉及到复杂的嵌套查询，基本是由后端负责封装逻辑，内部查询多次，对外暴露给前端一个接口。<br>后来再想这种场景下前端有没有解决方案，就接触了graphql。（其实前面说的java逻辑某种程度和graphql的工作很像）</p>
-<h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>dsp中的graphql效果图</p>
-<p><img src="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70" alt="dsp的graphql查询界面"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>graphql的一次查询过程，将restful转为graphql</p>
-<p><img src="https://img-blog.csdnimg.cn/20181206221042111.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70" alt="graphql一次查询"></p>
-<h3 id="graphql好在哪儿"><a href="#graphql好在哪儿" class="headerlink" title="graphql好在哪儿"></a>graphql好在哪儿</h3><ol>
-<li>一次查询可以请求复杂的数据</li>
-<li>静态类型，类型文档可以详细查询接口字段</li>
-<li>处理多版本的情况，客户端的自行决定请求内容</li>
-</ol>
-<h3 id="潜在问题"><a href="#潜在问题" class="headerlink" title="潜在问题"></a>潜在问题</h3><ol>
-<li>查询通过递归取值完成的，存在性能问题：在一次http请求中，根据要查询的schema结构递归的调用各项资源的resolver，最后返回结果</li>
-<li>安全，http缓存： Ddos攻击，过大查询反复请求，graphql操作经常变化，怎么做http缓存</li>
-<li>查询schema写起来过于繁琐</li>
-<li>如何推动后端改造：graphql主要是前端收益，如何说服后端支持</li>
-</ol>
-<h3 id="graphql-vs-rest"><a href="#graphql-vs-rest" class="headerlink" title="graphql vs rest"></a>graphql vs rest</h3><ol>
-<li>数据格式：rest是千人一面，多个终端设备的请求结果可能都是相同的；而graphql千人千面，支持前端按需获取，可针对不同环境返回不同内容</li>
-<li>API调用：rest访问每个资源，其都是一个endpoint；而graphql对外只暴露一个endpoint,差别只在请求体不同</li>
-<li>复杂数据处理：复杂数据嵌套查询的场景，rest可能需要多次来返请求；而graphql只有一次，可减少网络开销</li>
-<li>错误码：rest有多种错误码，graphql统一返回200，错误信息在响应体中返回</li>
-</ol>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>BFF + Graphql的场景实践越来越多</p>
-<p>适合：客户端对数据有定制化需求或后端微服务较多，微服务小而美只专注于自己的领域，需要有一层能综合这些服务</p>
-<p>不适合：客户端数据单一，无需定制化；后端服务简单，或本身已经对外提供了综合服务，不存在多个微服务的场景</p>
+        <p>react中class component常见写法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Card</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 此处this还不存在</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">super</span>(props);</span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            name: <span class="string">''</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    render() &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 我们并没有显示定义this.props，这里的值怎么来的</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.props)</span><br><span class="line">        <span class="keyword">return</span> &lt;p&gt;demo&lt;/p&gt;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="this-props是怎么来的？"><a href="#this-props是怎么来的？" class="headerlink" title="this.props是怎么来的？"></a>this.props是怎么来的？</h3><p>React.Component中会帮你自动绑定好this.props<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Component的构造器中自动赋值，super(props)就是用来执行这里的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="keyword">this</span>.props = props;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在调用开发者自定义的构造器后，二次赋值</span></span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Card(props);</span><br><span class="line">instance.props = props;</span><br></pre></td></tr></table></figure></p>
+<h3 id="为什么子类构造器内要调用super-props"><a href="#为什么子类构造器内要调用super-props" class="headerlink" title="为什么子类构造器内要调用super(props)?"></a>为什么子类构造器内要调用super(props)?</h3><p>上面可以看到React会有一个this.props二次赋值的情况，即使super()不传props，react也能正常工作，那为什么还需要把props传给super？</p>
+<p>考虑这种情况：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Card</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="keyword">super</span>();                    <span class="comment">// 😬 We forgot to pass props</span></span><br><span class="line">        <span class="built_in">console</span>.log(props);         <span class="comment">// ✅ &#123;&#125;</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.props);    <span class="comment">// 😬 undefined </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因此react始终建议调用 super(props)</p>
+<h3 id="context"><a href="#context" class="headerlink" title="context"></a>context</h3><p>react中context会当做第二个参数传给类的constructor，那为什么我们没有调用super(props, context)?</p>
+<p>本来这样做是对的，但实际上context并不经常使用，尤其在constructor中，所以就没那么强调了</p>
+<h3 id="银弹"><a href="#银弹" class="headerlink" title="银弹"></a>银弹</h3><p>如果有一天提案通过，类的实例属性可以不再写在构造器中，就不需要关心constructor里的this.props问题了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 彻底抛弃构造器写法</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Card</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    state = &#123;&#125;</span><br><span class="line">    render() &#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><a href="https://overreacted.io/why-do-we-write-super-props/" target="_blank" rel="noopener">以上翻译自Dan的博客</a></p>
 
       
     </div>
@@ -414,7 +392,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/graphql/" rel="tag"><i class="fa fa-tag"></i> graphql</a>
+            <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
           
         </div>
       
@@ -427,8 +405,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/11/hybrid/1/" rel="next" title="native和js交互">
-                <i class="fa fa-chevron-left"></i> native和js交互
+              <a href="/2018/11/01/browser/passive/" rel="next" title="passive">
+                <i class="fa fa-chevron-left"></i> passive
               </a>
             
           </div>
@@ -437,8 +415,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/05/javascript/node/ssr/" rel="prev" title="服务端渲染ssr">
-                服务端渲染ssr <i class="fa fa-chevron-right"></i>
+              <a href="/2018/12/07/javascript/job/cms/" rel="prev" title="cms活动搭建平台">
+                cms活动搭建平台 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -520,7 +498,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -542,7 +520,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -591,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试"><span class="nav-number">2.</span> <span class="nav-text">尝试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#graphql好在哪儿"><span class="nav-number">3.1.</span> <span class="nav-text">graphql好在哪儿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#潜在问题"><span class="nav-number">3.2.</span> <span class="nav-text">潜在问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graphql-vs-rest"><span class="nav-number">3.3.</span> <span class="nav-text">graphql vs rest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">3.4.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#this-props是怎么来的？"><span class="nav-number">1.</span> <span class="nav-text">this.props是怎么来的？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么子类构造器内要调用super-props"><span class="nav-number">2.</span> <span class="nav-text">为什么子类构造器内要调用super(props)?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#context"><span class="nav-number">3.</span> <span class="nav-text">context</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#银弹"><span class="nav-number">4.</span> <span class="nav-text">银弹</span></a></li></ol></div>
             
 
           </div>

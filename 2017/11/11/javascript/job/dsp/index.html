@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="graphql," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
+<meta name="keywords" content="graphql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="graphql在去哪儿dsp系统中的尝试">
+<meta property="og:url" content="https://happy-alex.github.io/2017/11/11/javascript/job/dsp/index.html">
+<meta property="og:site_name" content="alex的小站">
+<meta property="og:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_1.png">
+<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_2.png">
+<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_runhttpquery.png">
+<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_runhttpquery2.png">
+<meta property="og:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp_restful_graphql.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2018-12-07T13:47:19.590Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="graphql在去哪儿dsp系统中的尝试">
+<meta name="twitter:description" content="背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。 dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点： 推广计划和素材模板存在">
+<meta name="twitter:image" content="https://happy-alex.github.io/2017/11/11/images/node/dsp/dsp_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://happy-alex.github.io/2017/11/11/javascript/job/dsp/"/>
+
+
+
+
+
+  <title>graphql在去哪儿dsp系统中的尝试 | alex的小站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">alex的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">好记性不如烂笔头</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/2017/11/11/javascript/job/dsp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">graphql在去哪儿dsp系统中的尝试</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T00:00:00+08:00">
+                2017-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。</p>
+<p>dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点：</p>
+<p>推广计划和素材模板存在多对多的关系<br>一个用户关联着多个计划和素材</p>
+<p>最初采用后端java提供的restful风格的接口，由于涉及到复杂的嵌套查询，基本是由后端负责封装逻辑，内部查询多次，对外暴露给前端一个接口。<br>后来再想这种场景下前端有没有解决方案，就接触了graphql。（其实前面说的java逻辑某种程度和graphql的工作很像）</p>
+<h2 id="尝试"><a href="#尝试" class="headerlink" title="尝试"></a>尝试</h2><p>由于已经有现成的restful接口，这次实践的目的主要是在node层将已有的restful接口包装为graphql</p>
+<p>实现上主要有两个部分：graphql数据定义和对外提供的graphql查询服务。<br>主要基于 apollo-server-koa, apollo-server-core, graphql-tools 实现</p>
+<h3 id="数据定义"><a href="#数据定义" class="headerlink" title="数据定义"></a>数据定义</h3><p>graphql数据定义目录结构如下：<br><img src="../../../images/node/dsp/dsp_1.png" alt="graphql数据定义"></p>
+<p>现在有3个模块：用户模块auth，推广计划模块plan，素材模板模块material。<br>每个模块都有自己的connector，model，resolver, schema文件，最后由graphql目录下的schema文件合并各个模块的schema定义，通过graphql-tools 提供的 makeExecutableSchema 方法统一导出。</p>
+<p>比如auth模块的简单定义：<br><img src="../../../images/node/dsp/dsp_2.png" alt="auth模块的schema"></p>
+<h3 id="graphql查询"><a href="#graphql查询" class="headerlink" title="graphql查询"></a>graphql查询</h3><p>graphql查询主要是将restful的接口转换为graphql风格，这里使用了 apollo-server-core 提供的 runHttpQuery 来完成</p>
+<p>runHttpQuery 核心代码<br><img src="../../../images/node/dsp/dsp_runhttpquery.png" alt="runHttpQuery核心代码"></p>
+<p>其中的context由合并各个模块的model而来<br><img src="../../../images/node/dsp/dsp_runhttpquery2.png" alt="runHttpQuery核心代码"></p>
+<p>graphql的一次查询过程，将restful转为graphql<br><img src="../../../images/node/dsp_restful_graphql.png" alt="graphql一次查询"></p>
+<p>最终实现的graphiql效果：</p>
+<p><img src="https://img-blog.csdnimg.cn/20181206221207909.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3RoengyNjVib2Jv,size_16,color_FFFFFF,t_70" alt="dsp的graphql查询界面"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="graphql好在哪儿"><a href="#graphql好在哪儿" class="headerlink" title="graphql好在哪儿"></a>graphql好在哪儿</h3><ol>
+<li>一次查询可以请求复杂的数据</li>
+<li>静态类型，类型文档可以详细查询接口字段</li>
+<li>处理多版本的情况，客户端的自行决定请求内容</li>
+</ol>
+<h3 id="潜在问题"><a href="#潜在问题" class="headerlink" title="潜在问题"></a>潜在问题</h3><ol>
+<li>查询通过递归取值完成的，存在性能问题：在一次http请求中，根据要查询的schema结构递归的调用各项资源的resolver，最后返回结果</li>
+<li>安全，http缓存： Ddos攻击，过大查询反复请求，graphql操作经常变化，怎么做http缓存</li>
+<li>查询schema写起来过于繁琐</li>
+<li>如何推动后端改造：graphql主要是前端收益，如何说服后端支持</li>
+</ol>
+<h3 id="graphql-vs-restful"><a href="#graphql-vs-restful" class="headerlink" title="graphql vs restful"></a>graphql vs restful</h3><ol>
+<li>数据格式：restful是千人一面，多个终端设备的请求结果可能都是相同的；而graphql千人千面，支持前端按需获取，可针对不同环境返回不同内容</li>
+<li>API调用：restful访问每个资源，其都是一个endpoint；而graphql对外只暴露一个endpoint,差别只在请求体不同</li>
+<li>复杂数据处理：复杂数据嵌套查询的场景，restful可能需要多次来返请求；而graphql只有一次，可减少网络开销</li>
+</ol>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>BFF + Graphql的场景实践越来越多</p>
+<p>适合：客户端对数据有定制化需求或后端微服务较多，微服务小而美只专注于自己的领域，需要有一层能综合这些服务</p>
+<p>不适合：客户端数据单一，无需定制化；后端服务简单，或本身已经对外提供了综合服务，不存在多个微服务的场景</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/graphql/" rel="tag"><i class="fa fa-tag"></i> graphql</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/11/hybrid/1/" rel="next" title="native和js交互">
+                <i class="fa fa-chevron-left"></i> native和js交互
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/05/javascript/node/ssr/" rel="prev" title="服务端渲染ssr">
+                服务端渲染ssr <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/11572394?v=4"
+                alt="alex" />
+            
+              <p class="site-author-name" itemprop="name">alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/happy-alex" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尝试"><span class="nav-number">2.</span> <span class="nav-text">尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据定义"><span class="nav-number">2.1.</span> <span class="nav-text">数据定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graphql查询"><span class="nav-number">2.2.</span> <span class="nav-text">graphql查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#graphql好在哪儿"><span class="nav-number">3.1.</span> <span class="nav-text">graphql好在哪儿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#潜在问题"><span class="nav-number">3.2.</span> <span class="nav-text">潜在问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#graphql-vs-restful"><span class="nav-number">3.3.</span> <span class="nav-text">graphql vs restful</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">3.4.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

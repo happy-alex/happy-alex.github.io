@@ -88,7 +88,7 @@
 <meta property="og:description" content="一张图来说明：  总结：  只有函数才拥有prototype属性，构造函数的.prototype为一个对象 每个对象都有一个隐式的原型属性[[prototype]], 但由于[[prototype]]是内部属性，不能访问，用 proto 代替， 浏览器实现存在兼容性 每个对象的 proto 指向了其构造函数的原型对象，形成原型链，因此对象可以访问到不属于其定义的属性  Object.prototy">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://camo.githubusercontent.com/71cab2efcf6fb8401a2f0ef49443dd94bffc1373/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031382f332f31332f313632316538613962636230383732643f773d34383826683d35393026663d706e6726733d313531373232">
-<meta property="og:updated_time" content="2018-08-06T08:04:36.084Z">
+<meta property="og:updated_time" content="2018-12-07T03:07:09.422Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解析js中的原型">
 <meta name="twitter:description" content="一张图来说明：  总结：  只有函数才拥有prototype属性，构造函数的.prototype为一个对象 每个对象都有一个隐式的原型属性[[prototype]], 但由于[[prototype]]是内部属性，不能访问，用 proto 代替， 浏览器实现存在兼容性 每个对象的 proto 指向了其构造函数的原型对象，形成原型链，因此对象可以访问到不属于其定义的属性  Object.prototy">
@@ -342,14 +342,16 @@
 </li>
 <li><p>Object.prototype 和 Function.prototype是由js引擎创建的, 引擎将Function.prototype.<strong>proto</strong>指向Object.prototype，Object.prototype.<strong>proto</strong>指向null</p>
 </li>
-<li><p>Object 是所有对象的爸爸，所有对象都可以通过 <strong>proto</strong> 找到它</p>
+<li><p>Object.prototype 是所有对象的爸爸，所有对象都可以通过 <strong>proto</strong> 找到它</p>
 </li>
 <li><p>Function 是所有函数的爸爸，所有函数都可以通过 <strong>proto</strong> 找到它</p>
 </li>
-<li><p>对象的 <strong>proto</strong> 指向原型， <strong>proto</strong> 将对象和原型连接起来组成了原型链</p>
+<li><p>对象的 <strong>proto</strong> 指向原型， <strong>proto</strong> 将对象和原型连接起来组成了原型链, 所以准确的原型链描述应该是{}.<strong>proto</strong>.<strong>proto</strong>等等</p>
 </li>
-<li>所有的函数都可以认为是通过new Function出来的，所以所有函数都能通过原型链 <strong>proto</strong> 找到Function.prototype, 即Function.<strong>proto</strong> === Function.prototype。</li>
-<li>Object和Function都是构造函数，所以Object也是Function的实例对象。Object.<strong>proto</strong> === Function.<strong>proto</strong></li>
+<li><p>所有的函数都可以认为是通过new Function出来的，所以所有函数都能通过原型链 <strong>proto</strong> 找到Function.prototype, Function本身也一样，即Function.<strong>proto</strong> === Function.prototype。</p>
+</li>
+<li><p>Object和Function都是构造函数，所以Object也是Function的实例对象。Object.<strong>proto</strong> === Function.<strong>proto</strong> === Function.prototype</p>
+</li>
 </ol>
 <p><a href="https://github.com/KieSun/Blog/issues/2" target="_blank" rel="noopener">深度解析原型中的各个难点</a></p>
 
@@ -480,7 +482,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -502,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
