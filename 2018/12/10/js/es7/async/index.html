@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="es7 | js," />
+  <meta name="keywords" content="js,es7," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
-<meta name="keywords" content="es7 | js">
+<meta name="description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行。 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
+<meta name="keywords" content="js,es7">
 <meta property="og:type" content="article">
 <meta property="og:title" content="async&#x2F;await动手实现">
 <meta property="og:url" content="https://happy-alex.github.io/2018/12/10/js/es7/async/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
+<meta property="og:description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行。 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-10T10:38:37.757Z">
+<meta property="og:updated_time" content="2018-12-10T12:05:50.826Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="async&#x2F;await动手实现">
-<meta name="twitter:description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
+<meta name="twitter:description" content="async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行。 generator/yield的实现可参考上一篇 generator动手实现 自动执行器123456789101112131415161718192021222324252627282930// 一个简单的自动执行器var autoGen = function(fn) &amp;#123;">
 
 
 
@@ -352,14 +352,14 @@
       
 
       
-        <p>async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行</p>
-<p>generator/yield的实现可参考上一篇 <a href="/2018/12/10/javascript/es6/generator/">generator动手实现</a></p>
+        <p><strong>async/await本质上是一个generator/yield的语法糖，通过内置一个执行器，来实现自动执行。</strong></p>
+<p>generator/yield的实现可参考上一篇 <a href="/2018/12/10/js/es6/generator/">generator动手实现</a></p>
 <h2 id="自动执行器"><a href="#自动执行器" class="headerlink" title="自动执行器"></a>自动执行器</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 一个简单的自动执行器</span></span><br><span class="line"><span class="keyword">var</span> autoGen = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> gen = fn.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回Promise,是因为async要求总是返回一个Promise</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params">key, arg</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">var</span> info = gen[key](arg);</span><br><span class="line">            &#125; <span class="keyword">catch</span>(err) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 捕获异常，以便抛出</span></span><br><span class="line">                <span class="keyword">return</span> reject(err);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (info.done) &#123;</span><br><span class="line">                <span class="keyword">return</span> resolve(info.value);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// info.value可能是一个promise, 所以应当在then之后再恢复执行</span></span><br><span class="line">            <span class="built_in">Promise</span>.resolve(info.value).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">                step(<span class="string">'next'</span>, info.value);</span><br><span class="line">            &#125;, err =&gt; &#123;</span><br><span class="line">                step(<span class="string">'throw'</span>, err);</span><br><span class="line">            &#125;);</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> step(<span class="string">'next'</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面验证下我们刚才写的执行器是否能正常工作<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> *<span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="keyword">yield</span> <span class="number">1</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">    <span class="keyword">var</span> b = <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(b)</span><br><span class="line">&#125;</span><br><span class="line">autoGen(test);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'after gen'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line"><span class="comment">// after gen</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="comment">// Promise &#123;&lt;resolved&gt;: undefined&#125;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="async-await"><a href="#async-await" class="headerlink" title="async/await"></a>async/await</h2><p>async/await的实现可以看做是先把async/await转换为generator/yield语法，再通过上面的自动执行器包裹执行</p>
 <h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach"></a>forEach</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">v</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(v); &#125;</span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">arr.forEach(<span class="keyword">async</span> item =&gt; &#123;</span><br><span class="line">    <span class="keyword">await</span> fn(item)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>这种写法实际上并不是顺序执行的, 它等同于<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> temp = <span class="keyword">async</span> <span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">await</span> fn(item)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; i++) &#123;</span><br><span class="line">    temp(arr[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>every/some等函数都存在这个问题</p>
+<p>every/some等函数都存在这个问题，如果希望顺序执行可直接使用for循环</p>
 <h2 id="补充：一个细微差别"><a href="#补充：一个细微差别" class="headerlink" title="补充：一个细微差别"></a>补充：一个细微差别</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="built_in">Promise</span>.resolve();</span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> p; <span class="built_in">console</span>.log(<span class="string">'after:await'</span>);</span><br><span class="line">&#125;)();</span><br><span class="line">p.then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'tick:a'</span>))</span><br><span class="line"> .then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'tick:b'</span>));</span><br></pre></td></tr></table></figure>
 <p>以上在node8下运行结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">after:await </span><br><span class="line">tick:a </span><br><span class="line">tick:b</span><br></pre></td></tr></table></figure></p>
 <p>node10下运行结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tick:a </span><br><span class="line">tick:b</span><br><span class="line">after:await</span><br></pre></td></tr></table></figure></p>
@@ -394,7 +394,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/es7-js/" rel="tag"><i class="fa fa-tag"></i> es7 | js</a>
+            <a href="/tags/js/" rel="tag"><i class="fa fa-tag"></i> js</a>
+          
+            <a href="/tags/es7/" rel="tag"><i class="fa fa-tag"></i> es7</a>
           
         </div>
       
@@ -407,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/12/07/job/cms/" rel="next" title="cms活动搭建平台">
-                <i class="fa fa-chevron-left"></i> cms活动搭建平台
+              <a href="/2018/12/10/js/es6/generator/" rel="next" title="generator动手实现">
+                <i class="fa fa-chevron-left"></i> generator动手实现
               </a>
             
           </div>
@@ -416,10 +418,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/12/10/js/es6/generator/" rel="prev" title="generator动手实现">
-                generator动手实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -511,7 +509,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -522,7 +520,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
