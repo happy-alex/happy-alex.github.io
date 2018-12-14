@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react,router," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言用户通过访问不同的url，获得不同的页面展示。很长一段时间这部分工作都是后端MVC来做的。后端通过配置不同的controller从而决定不同url应该展示不同的view。 无论是传统的MVC模式还是方兴未艾的前端SPA模式，路由设计的目的只有一个，即保证url和视图的同步。 网上有很多文章讲了spa，以及相关路由的问题。这些基础科学我就不写了，主要谈下我对前端路由设计的认识。 前端路由是一个状">
+<meta name="keywords" content="react,router">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端路由设计杂谈">
+<meta property="og:url" content="https://happy-alex.github.io/js/react/router/index.html">
+<meta property="og:site_name" content="Alex的小站">
+<meta property="og:description" content="前言用户通过访问不同的url，获得不同的页面展示。很长一段时间这部分工作都是后端MVC来做的。后端通过配置不同的controller从而决定不同url应该展示不同的view。 无论是传统的MVC模式还是方兴未艾的前端SPA模式，路由设计的目的只有一个，即保证url和视图的同步。 网上有很多文章讲了spa，以及相关路由的问题。这些基础科学我就不写了，主要谈下我对前端路由设计的认识。 前端路由是一个状">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-17T13:19:14.504Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端路由设计杂谈">
+<meta name="twitter:description" content="前言用户通过访问不同的url，获得不同的页面展示。很长一段时间这部分工作都是后端MVC来做的。后端通过配置不同的controller从而决定不同url应该展示不同的view。 无论是传统的MVC模式还是方兴未艾的前端SPA模式，路由设计的目的只有一个，即保证url和视图的同步。 网上有很多文章讲了spa，以及相关路由的问题。这些基础科学我就不写了，主要谈下我对前端路由设计的认识。 前端路由是一个状">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://happy-alex.github.io/js/react/router/"/>
+
+
+
+
+
+  <title>前端路由设计杂谈 | Alex的小站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alex的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">好记性不如烂笔头</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/router/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">前端路由设计杂谈</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-13T00:00:00+08:00">
+                2018-02-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>用户通过访问不同的url，获得不同的页面展示。很长一段时间这部分工作都是后端MVC来做的。后端通过配置不同的controller从而决定不同url应该展示不同的view。</p>
+<p>无论是传统的MVC模式还是方兴未艾的前端SPA模式，路由设计的目的只有一个，即<strong>保证url和视图的同步</strong>。</p>
+<p>网上有很多文章讲了spa，以及相关路由的问题。这些基础科学我就不写了，主要谈下我对前端路由设计的认识。</p>
+<p>前端路由是一个状态机，监听location的变化，经过控制器(比如react-redux中的Router组件)的处理，渲染出不同的UI。</p>
+<p>前端路由的匹配，基本上是根据下面3个条件来完成的匹配。</p>
+<ul>
+<li>路径</li>
+<li>嵌套关系</li>
+<li>优先级<br><br></li>
+</ul>
+<h2 id="SPA路由的实现"><a href="#SPA路由的实现" class="headerlink" title="SPA路由的实现"></a>SPA路由的实现</h2><p>spa路由需要完成两件事：</p>
+<ul>
+<li>更新url页面不刷新</li>
+<li>监听url的变化，渲染不同的UI.</li>
+</ul>
+<h3 id="实现更新url页面不刷新？"><a href="#实现更新url页面不刷新？" class="headerlink" title="实现更新url页面不刷新？"></a>实现更新url页面不刷新？</h3><p>1.hash方式<br>url有很多组成部分，其中哈希片段部分（即#部分）更新导致url变化，但页面是不会刷新的。</p>
+<p>2.h5的historyAPI<br>History API主要有两个方法：history.pushState()，history.replaceState()。这两个方法可以对浏览器的历史栈进行操作，将传入的url和相关数据压栈，并将浏览器地址栏的url替换成传入的url，且不刷新页面。</p>
+<h3 id="监听url变化"><a href="#监听url变化" class="headerlink" title="监听url变化"></a>监听url变化</h3><p>1.hash方式<br>通过window.onhashchange来监听<br>2.h5的historyAPI<br>window.onpopstate可以监听history的变化。</p>
+<p>这两种方式都存在一定的兼容性问题，推荐使用history库，react-router核心也是用的这个库。</p>
+<p><br></p>
+<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p>history提供3种历史管理模式：browserHistory，hashHistory，memoryHistory.</p>
+<p>1.BrowserHistory<br>需要服务端路由支持，假设当前路由为qunar.com/index,那么刷新浏览器后，将会请求服务器上的/index，如果服务器不支持对/index的访问，页面将404，因此实现上需要服务器拦截这种前端发出的特定路由请求并返回一个html文件</p>
+<p>2.HashHistory<br>完全由前端控制实现的路由，不依赖服务端任何配置。 qunar.com/#/index 刷新后页面由前端控制渲染。<br>使用这种路由的url，其末尾经常会有类似#?_k=koomro这样的字符。那么_k是什么？<br>每一个location允许有自己的state，<strong>state存储在sessionStorage当中</strong>。<br>当一个history在路由间跳转时，我们直接通过window.location.hash = newhash完成，且不用传输state。<strong>_k就是state在sessionStorage中存储的key</strong>。<br>当浏览器发生前进和后退时，可以根据这些_k取出state。<br>url中hash部分浏览器是不会发送给服务端的(可以通过代理工具抓包验证下)。因此如果后端需要依赖参数处理请求，请不要把参数放在hash部分。这一点尤其应该在hashHistory的应用中注意下。</p>
+<p>3.MemoryHistory 我还没找到这种模式的应用场景，待后续补充…</p>
+<p>4.线上生产环境推荐使用browserHistory。why？</p>
+<ul>
+<li>上面讲hashHistory的时候说过，hash部分是不会被发送到服务端的，服务端只能知道页面级别.htm。而hash部分的参数服务端处理不了</li>
+<li>理论上服务端应该知道一次请求的所有细节，而hashHistory明显跳出了服务端可控范围，作为线上生产环境这可能会带来风险。</li>
+<li>history这个库在实现browserHistory是使用的浏览器自带的h5提供的API，但hash由于没有替换历史记录的功能，hashHistory使用了polyfill实现功能，因此在处理一些边边角角浏览器时可能解决的并不好，存在隐患。</li>
+</ul>
+<p><br></p>
+<h2 id="react-router"><a href="#react-router" class="headerlink" title="react-router"></a>react-router</h2><p>react-router是官方推荐的react应用的路由库。最新版本是v4。之前我用的都是v2版本，最近在项目中切到了v4.</p>
+<h3 id="router-v2"><a href="#router-v2" class="headerlink" title="router v2"></a>router v2</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法一：传入一个独立的routes配置文件。然后通过this.props.children渲染子路由</span></span><br><span class="line">&lt;Router history=&#123;history&#125; routes=&#123;routes&#125; /&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法二：</span></span><br><span class="line">&lt;Router history=&#123;browserHistory&#125;&gt;</span><br><span class="line">    &lt;Route path=<span class="string">'/'</span> component=&#123;App&#125;&gt;</span><br><span class="line">        &lt;IndexRoute component=&#123;Home&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">'about'</span> component=&#123;About&#125; /&gt;</span><br><span class="line">        &lt;Route path=<span class="string">'features'</span> component=&#123;Features&#125; /&gt;</span><br><span class="line">    &lt;<span class="regexp">/Route&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>Router&gt;</span><br></pre></td></tr></table></figure>
+<p>后来官方觉得v2组件化的不够彻底，尤其routes文件这种方式不伦不类，所以在v4的时候本着<strong>一切皆组件</strong>的理念彻底来了一次彻底重构。所有匹配的路由都应当显式声明在jsx文件中。</p>
+<h3 id="router-v4"><a href="#router-v4" class="headerlink" title="router v4"></a>router v4</h3><p>react-router            // 核心库，提供router，route等概念<br>react-router-dom        // 适配web端，提供browserHistory,hashHistory等组件，在web应用中应当直接从这个库里引用组件<br>react-router-native     // 适配诸如react-native等<br>react-router-redux      // 将redux和history结合起来</p>
+<p>v2为了同步路由状态到redux中，经常还要搭配react-router-redux来使用。v4中可以不再使用react-router-redux这个库了。</p>
+<p>Router作为根组件，没有做什么特别的东西，只是把当前应用的路由状态设为整颗组件树的context。context.router = {history, route}，使其子组件route可以拿到当前路由相关数据。<br>Route组件从context.router中拿到当前的路由进行匹配从而渲染。</p>
+<h3 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h3><p>1.url发生改变，Route组件如何重新匹配？</p>
+<blockquote>
+<p>Router组件内部维护了一个state={match: {}}。这个match的值是一个对象。通过history.listen方法监听url，只要url发生了变化，就会重新setState，把match设置为一个新的对象，由于match总是指向一个全新的对象引用，所以state总被认为发生了改变，从而导致Router组件进行更新。</p>
+</blockquote>
+<blockquote>
+<p>Router作为路由管理中的顶层父组件，添加了一个名字为router的context。被Router包裹的所有子组件，都拥有这个router，当Router组件更新的时候，会重新设置context.router，子组件Route知道context.router发生了改变，进行重新匹配进而渲染不同组件。</p>
+</blockquote>
+<p>2.被react-reudx的@connect包裹的组件接收不到this.context.router上的变化。所以如果connect包裹了Route组件，会导致UI不能不正常渲染。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 不知道有没有人写过这样的代码，如果有你就知道我在说什么了。</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</span><br><span class="line">    render () &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">            &lt;div&gt;</span><br><span class="line">                &lt;div&gt;</span><br><span class="line">                    &lt;Link to=<span class="string">"/index"</span> /&gt;</span><br><span class="line">                    &lt;Link to=<span class="string">"about"</span> /&gt;</span><br><span class="line">                &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">                &lt;div&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;Route path="/i</span>ndex<span class="string">" component=&#123;Index&#125;&gt;&lt;/Route&gt;</span></span><br><span class="line"><span class="string">                    &lt;Route path="</span>/about<span class="string">" component=&#123;About&#125;&gt;&lt;/Route&gt;</span></span><br><span class="line"><span class="string">                &lt;/div&gt;</span></span><br><span class="line"><span class="string">            &lt;/div&gt;</span></span><br><span class="line"><span class="string">        );</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">const myApp = connect()(App);</span></span><br><span class="line"><span class="string">&lt;Provider store=&#123;store&#125;&gt;</span></span><br><span class="line"><span class="string">    &lt;HashRouter&gt;</span></span><br><span class="line"><span class="string">        &lt;App /&gt;</span></span><br><span class="line"><span class="string">    &lt;/HashRouter&gt;</span></span><br><span class="line"><span class="string">&lt;/Provider&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>现象：如果使用上面这样的代码，你会发现点击切换Link，浏览器地址栏的url一直在变，但是对应的视图却不更新。why?</p>
+<p>connect作为高阶组件，它在wrappedComponent之上进行了一些处理。<strong>connect重写了shouldComponentUpdate方法，只会对比显式传给他的props</strong>，从而决定是否要更新组件。而context.router的变化并不会导致其props的改变，所以connect高阶组件的shouldComponentUpdate方法总是返回false，其被包裹组件不更新，所以Route组件也就不再响应路由了。</p>
+<p>结论：<strong>Route组件不能被connect包裹</strong>，否则路由管理将会失效，而正确的打开方式是connect作为Route的子组件。</p>
+<p><br></p>
+<h2 id="vue-router"><a href="#vue-router" class="headerlink" title="vue-router"></a>vue-router</h2><p>TODO…</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
+          
+            <a href="/tags/router/" rel="tag"><i class="fa fa-tag"></i> router</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/js/es6/expansion_operator/" rel="next" title="展开运算符-深拷贝">
+                <i class="fa fa-chevron-left"></i> 展开运算符-深拷贝
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/other/onerror/" rel="prev" title="关于window.onerror">
+                关于window.onerror <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/11572394?v=4"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/happy-alex" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPA路由的实现"><span class="nav-number">2.</span> <span class="nav-text">SPA路由的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实现更新url页面不刷新？"><span class="nav-number">2.1.</span> <span class="nav-text">实现更新url页面不刷新？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听url变化"><span class="nav-number">2.2.</span> <span class="nav-text">监听url变化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#History"><span class="nav-number">3.</span> <span class="nav-text">History</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-router"><span class="nav-number">4.</span> <span class="nav-text">react-router</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#router-v2"><span class="nav-number">4.1.</span> <span class="nav-text">router v2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#router-v4"><span class="nav-number">4.2.</span> <span class="nav-text">router v4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">4.3.</span> <span class="nav-text">Q&amp;A</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-router"><span class="nav-number">5.</span> <span class="nav-text">vue-router</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

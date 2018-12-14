@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="此前在React Conf 2018 上 react公布了自己最新的实验性API: hooks 之前我们提到react组件中复用代码主要有两个方式：高阶组件以及render props。hooks给函数式组件引入了state的概念，可以更方便的抽离业务逻辑代码，实现业务逻辑复用和组件复用 hooks的基本介绍有很多文章，这里就不再赘述。下面我们主要来聊聊hooks背后的设计思想 允许多次调用use">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hooks背后的设计思想">
+<meta property="og:url" content="https://happy-alex.github.io/js/react/hooks/index.html">
+<meta property="og:site_name" content="Alex的小站">
+<meta property="og:description" content="此前在React Conf 2018 上 react公布了自己最新的实验性API: hooks 之前我们提到react组件中复用代码主要有两个方式：高阶组件以及render props。hooks给函数式组件引入了state的概念，可以更方便的抽离业务逻辑代码，实现业务逻辑复用和组件复用 hooks的基本介绍有很多文章，这里就不再赘述。下面我们主要来聊聊hooks背后的设计思想 允许多次调用use">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-12-13T09:13:54.152Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hooks背后的设计思想">
+<meta name="twitter:description" content="此前在React Conf 2018 上 react公布了自己最新的实验性API: hooks 之前我们提到react组件中复用代码主要有两个方式：高阶组件以及render props。hooks给函数式组件引入了state的概念，可以更方便的抽离业务逻辑代码，实现业务逻辑复用和组件复用 hooks的基本介绍有很多文章，这里就不再赘述。下面我们主要来聊聊hooks背后的设计思想 允许多次调用use">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://happy-alex.github.io/js/react/hooks/"/>
+
+
+
+
+
+  <title>hooks背后的设计思想 | Alex的小站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alex的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">好记性不如烂笔头</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/hooks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">hooks背后的设计思想</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-13T00:00:00+08:00">
+                2018-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>此前在React Conf 2018 上 react公布了自己最新的实验性API: hooks</p>
+<p>之前我们提到react组件中复用代码主要有两个方式：高阶组件以及render props。<br>hooks给函数式组件引入了state的概念，可以更方便的抽离业务逻辑代码，实现业务逻辑复用和组件复用</p>
+<p>hooks的基本介绍有很多文章，这里就不再赘述。下面我们主要来聊聊hooks背后的设计思想</p>
+<h3 id="允许多次调用useState"><a href="#允许多次调用useState" class="headerlink" title="允许多次调用useState"></a>允许多次调用useState</h3><p>Q: 为什么hooks支持useState多次调用， 而不是一次useState维护所有状态？</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Card</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 示例1 多次调用useState</span></span><br><span class="line">    <span class="keyword">const</span> [name, setName] = useState(<span class="string">'bobo'</span>);</span><br><span class="line">    <span class="keyword">const</span> [age, setAge] = useState(<span class="number">25</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 示例2 只调用一次useState, 这种方式hooks也支持，但并不推荐</span></span><br><span class="line">    <span class="keyword">const</span> [person, setPerson] = useState(&#123;</span><br><span class="line">        name: <span class="string">'bobo'</span>,</span><br><span class="line">        age: <span class="number">25</span></span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单个useState维护一个复杂状态（参考上述示例2），hooks也支持。但hooks更建议将这种复杂状态拆分成多次调用useState(), 保证每一个useState尽可能简单（示例1）。<br>多个useState调用的好处在于，方便随时提取state和effect到自定义的hook中，以复用逻辑<br>另一个很重要的原因是，如果hooks只允许调用一次useSatate, 那么外部代码逻辑就无法引入到函数组件内执行，自定义hook复用也就无从谈起</p>
+<h3 id="为什么要依赖调用顺序"><a href="#为什么要依赖调用顺序" class="headerlink" title="为什么要依赖调用顺序"></a>为什么要依赖调用顺序</h3><p>hooks的一大特性就是只能用在函数顶层作用域内，不能用在if/else等条件判断，循环语句内，原因就是react内部并不真正保存state，它通过调用顺序来追踪state。</p>
+<p><strong>多个useState的调用是借由一个数组来维护的，数组内的索引来实现对多个state的“识别”。</strong></p>
+<p>如果用在if/else等语句内，当函数组件重新执行时可能会改变调用顺序，导致错误。</p>
+<p>那么为什么要这么设计？</p>
+<p>useState()可以接收一个参数， 能否通过这个参数来来作为react追踪的依据？</p>
+<p>由于函数组件内useState会被多次调用，传入useState()的参数如果一样，就会出现名字冲突，react追踪时就会混乱。<br>虽然开发者可以通过代码检查避免这种错误写法，但显然这并不是一个好的API设计</p>
+<p>既然简单的命名区分有冲突问题，那能否使用Symbol特性来保证传入useState的值唯一不重复？<br>这看似能解决上边的问题，但其实并没有解决，假设我们从外部引入了一个公共函数, 这个函数内部封装的hook使用Symbol作参数，在函数组件内多次调用这个公共函数时，还是会造成react追踪错误<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// useFormInput.js</span></span><br><span class="line"><span class="keyword">const</span> valueKey = <span class="built_in">Symbol</span>();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">useFormInput</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> [value, setValue] = useState(valueKey);</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    value,</span><br><span class="line">    onChange(e) &#123;</span><br><span class="line">      setValue(e.target.value);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// function component</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> name = useFormInput();</span><br><span class="line">  <span class="keyword">const</span> age = useFormInput();</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;input &#123;...name&#125; /&gt;</span><br><span class="line">      &lt;input &#123;...age&#125; /&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;    </span></span><br><span class="line"><span class="regexp">  );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<p>上面的写法等同于下面这样，并没有解决问题<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [name, setName] = useState(valueKey);</span><br><span class="line"><span class="keyword">const</span> [age, setAge] = useState(valueKey);</span><br></pre></td></tr></table></figure></p>
+<h3 id="更深层次的考虑"><a href="#更深层次的考虑" class="headerlink" title="更深层次的考虑"></a>更深层次的考虑</h3><p>上面我们尝试过一些让react保持对函数组件内state追踪的方式，都存在一些问题。事实上即便不使用调用顺序，也有许多其他方式来实现hook效果，像是闭包，参数加密等等。</p>
+<p>比如上面提到过使用简单的Symbol作追踪，依然有冲突的问题，但通过闭包隔离的方式就能解决名字冲突的问题。实现如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createUseFormInput</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 这样能保证每次调用，实例都是唯一的</span></span><br><span class="line">  <span class="keyword">const</span> valueKey = <span class="built_in">Symbol</span>();  </span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">useFormInput</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> [value, setValue] = useState(valueKey);</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      value,</span><br><span class="line">      onChange(e) &#123;</span><br><span class="line">        setValue(e.target.value);</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>问题是这些方式不见得比现有的维护调用顺序的hook规则更简单。<br>比如上面的方案，你就需要额外注意createUseFormInput工厂函数和useFormInput hook实例的区别</p>
+<p><a href="https://overreacted.io/why-do-hooks-rely-on-call-order/" target="_blank" rel="noopener">关于hooks更多的考虑可以看这里</a></p>
+<p>尽管hooks的实现机制还有很多争议，但就像Dan在文章中指出的，目前依赖调用顺序的hooks也有很多优点：</p>
+<blockquote>
+<p>由于没有命名空间的概念，开发人员复制粘贴组件代码，抽离code，提升成为一个自定义Hook的过程将更加简单，安全。<br>hook规则足够简单，一定程度上减少了bundle size<br>数组的方式是一个相对高效的实现，避免了Map查找的过程</p>
+</blockquote>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>hooks并不完美，但目前它是解决现有问题的一个权衡。<br>因为hooks是实验性质的API, 所以上面我们的讨论在未来某个时候可能就是过时的，甚至是错误的，你需要注意到这一点</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/js/es7/async/" rel="next" title="async/await动手实现">
+                <i class="fa fa-chevron-left"></i> async/await动手实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/articles/react-or-vue/" rel="prev" title="简单聊下react和vue之争">
+                简单聊下react和vue之争 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/11572394?v=4"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/happy-alex" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#允许多次调用useState"><span class="nav-number">1.</span> <span class="nav-text">允许多次调用useState</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么要依赖调用顺序"><span class="nav-number">2.</span> <span class="nav-text">为什么要依赖调用顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更深层次的考虑"><span class="nav-number">3.</span> <span class="nav-text">更深层次的考虑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
