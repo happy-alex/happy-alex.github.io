@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
+<meta name="description" content="flux vs redux1reducer(state, action) -&amp;gt; newState 1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="flux&#x2F;redux&#x2F;mobx">
 <meta property="og:url" content="https://happy-alex.github.io/js/react/flux/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
+<meta property="og:description" content="flux vs redux1reducer(state, action) -&amp;gt; newState 1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-22T07:30:21.314Z">
+<meta property="og:updated_time" content="2018-12-17T13:08:48.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="flux&#x2F;redux&#x2F;mobx">
-<meta name="twitter:description" content="flux vs redux1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现3.">
+<meta name="twitter:description" content="flux vs redux1reducer(state, action) -&amp;gt; newState 1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供">
 
 
 
@@ -352,9 +352,15 @@
       
 
       
-        <h3 id="flux-vs-redux"><a href="#flux-vs-redux" class="headerlink" title="flux vs redux"></a>flux vs redux</h3><p>1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）<br>2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现<br>3.flux里store有多个；redux全局只维护一个store，其包含整个应用的state。<br>4.redux里的store只有一个，包含了整个应用的state。<br>  action用来描述改变的行为。action是一个简单对象，包含需要执行的操作类型（type指定）和一些其他负载（payload）。<br>  reducer(state，action)=&gt; newState。改变由reducers 来执行，reducers 是没有副作用的纯函数，将先前的state和一个action作为参数。它们会返回由应用action产生的新的state。<br>  reducer有多个，每个reducer维护state树的一支，redux用combineReducers()方法将多个reducer合并起来。</p>
+        <h3 id="flux-vs-redux"><a href="#flux-vs-redux" class="headerlink" title="flux vs redux"></a>flux vs redux</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reducer(state, action) -&gt; newState</span><br></pre></td></tr></table></figure>
+<p>1.flux是一种架构设计思想，用来在大型项目中实现数据的单向流动，而redux是flux这种设计思想下的一种具体实现。（也有人不同意这种意见）<br>2.flux里的概念：store，action，dispatcher；redux的概念：store，action，reducer。redux中不额外提供专门的派发器dispatcher，而是通过store.dispatch实现<br>3.flux里store有多个；redux全局只维护一个store，其包含整个应用的state。<br>4.redux里的store只有一个，包含了整个应用的state。<br>  action用来描述改变的行为。action是一个简单对象，包含需要执行的操作类型（type指定）和一些其他负载（payload）。<br>  reducer(state，action)=&gt; newState。改变由reducers 来执行，reducers 是没有副作用的纯函数，将先前的state和一个action作为参数。它们会返回由应用action产生的新的state。<br>  reducer有多个，每个reducer维护state树的一支，redux用combineReducers()方法将多个reducer合并起来。</p>
 <p>补充：<br>在hybrid架构中，每次打开一个页面，都是新建一个webview。因此spa + redux模式在这种场景下并不适用，因为redux只有一个全局store，维护了多个子页面的store, 而在一个webview中，非本页面的store都没被利用，无疑是一种浪费</p>
-<h3 id="mobx-vs-redux"><a href="#mobx-vs-redux" class="headerlink" title="mobx vs redux"></a>mobx vs redux</h3>
+<h3 id="mobx-vs-redux"><a href="#mobx-vs-redux" class="headerlink" title="mobx vs redux"></a>mobx vs redux</h3><p>核心理念：数据驱动<br>mobx看起来更像是把vue的数据绑定机制单拎出来，再做增强，同时使用es7的decorator语法让API更简单</p>
+<p>mobx的工作方式：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">        change          Derivations</span><br><span class="line">action --------&gt; state -------------&gt; computed </span><br><span class="line">                      |    </span><br><span class="line">                       -------------&gt; reaction</span><br></pre></td></tr></table></figure></p>
+<p>1.redux中的action要求是一个简单对象，用以描述发生了什么改变；而mobx的action是一个函数，用来修改状态<br>2.redux里reducer(state, action) -&gt; newState； mobx里彻底抛弃了reducer，原本reducer要做的工作全在action里完成<br>3.mobx能精确知道数据的变化，所以可以减少diff的成本，一定程度上性能会比redux更快<br>4.redux要求state应该是一个纯对象，且全局单一；而mobx里的state更自由，不要求state的数据结构和类型</p>
+<h3 id="mobx-vs-vuex"><a href="#mobx-vs-vuex" class="headerlink" title="mobx vs vuex"></a>mobx vs vuex</h3><p>vuex的典型工作流<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">        commit             mutate          render</span><br><span class="line">action --------&gt; mutation --------&gt; state --------&gt; view</span><br></pre></td></tr></table></figure></p>
+<p>vuex从设计上区分了异步任务和同步任务，分别放在对应的action和mutation里实现；而mobx并不区分这个，同步和异步都在action里完成<br>vuex里的getters就是mobx里的computed</p>
+
       
     </div>
     
@@ -408,8 +414,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/other/shadowDom/" rel="prev" title="shadowDom">
-                shadowDom <i class="fa fa-chevron-right"></i>
+              <a href="/other/new/" rel="prev" title="new 关键字">
+                new 关键字 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -562,7 +568,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#flux-vs-redux"><span class="nav-number">1.</span> <span class="nav-text">flux vs redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mobx-vs-redux"><span class="nav-number">2.</span> <span class="nav-text">mobx vs redux</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#flux-vs-redux"><span class="nav-number">1.</span> <span class="nav-text">flux vs redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mobx-vs-redux"><span class="nav-number">2.</span> <span class="nav-text">mobx vs redux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mobx-vs-vuex"><span class="nav-number">3.</span> <span class="nav-text">mobx vs vuex</span></a></li></ol></div>
             
 
           </div>
