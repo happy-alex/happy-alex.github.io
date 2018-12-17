@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alex的小站">
 <meta property="og:description" content="react v15mark一下v15 react的几个生命周期函数：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount compo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-05T11:59:17.246Z">
+<meta property="og:updated_time" content="2018-12-17T08:49:32.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react的生命周期">
 <meta name="twitter:description" content="react v15mark一下v15 react的几个生命周期函数：1.componentWillMount2.componentDidMount3.componentWillReceiveProps4.shouldComponentUpdate5.componentWillUpdate6.render7.componentDidUpdate8.componentWillUnmount compo">
@@ -404,8 +404,9 @@
 </table>
 <h2 id="react-v16"><a href="#react-v16" class="headerlink" title="react v16"></a>react v16</h2><p>react 16采用fiber架构实现了异步渲染，对原来的声明周期做了改变<br>逐步废弃了下面3个生命周期函数<br>componentWillMount<br>componentWillReceiveProps<br>componentWillUpdate</p>
 <p>这3个函数都容易引发副作用，在15版本可能中这些副作用只是会影响性能；但在16的异步渲染模式中可能直接引起bug。</p>
-<p>新增两个生命周期函数</p>
-<h3 id="static-getDerivedStateFromProps"><a href="#static-getDerivedStateFromProps" class="headerlink" title="static getDerivedStateFromProps"></a>static getDerivedStateFromProps</h3><h3 id="getSnapShortBeforeUpdate"><a href="#getSnapShortBeforeUpdate" class="headerlink" title="getSnapShortBeforeUpdate"></a>getSnapShortBeforeUpdate</h3>
+<p>新增两个生命周期函数，以替代上面废弃的函数<br>static getDerivedStateFromProps<br>getSnapShortBeforeUpdate</p>
+<p>渲染错误相关处理函数<br>static getDerivedStateFromError 专做UI降级处理<br>componentDidCatch 专做错误上报</p>
+
       
     </div>
     
@@ -542,7 +543,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -613,7 +614,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v15"><span class="nav-number">1.</span> <span class="nav-text">react v15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillMount"><span class="nav-number">1.1.</span> <span class="nav-text">componentWillMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">1.2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidMount"><span class="nav-number">1.3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillReceiveProps"><span class="nav-number">1.4.</span> <span class="nav-text">componentWillReceiveProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">1.5.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUpdate"><span class="nav-number">1.6.</span> <span class="nav-text">componentWillUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">1.7.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">1.8.</span> <span class="nav-text">componentWillUnmount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各生命周期是否可以调用setState方法"><span class="nav-number">1.9.</span> <span class="nav-text">各生命周期是否可以调用setState方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v16"><span class="nav-number">2.</span> <span class="nav-text">react v16</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#static-getDerivedStateFromProps"><span class="nav-number">2.1.</span> <span class="nav-text">static getDerivedStateFromProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getSnapShortBeforeUpdate"><span class="nav-number">2.2.</span> <span class="nav-text">getSnapShortBeforeUpdate</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v15"><span class="nav-number">1.</span> <span class="nav-text">react v15</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillMount"><span class="nav-number">1.1.</span> <span class="nav-text">componentWillMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#render"><span class="nav-number">1.2.</span> <span class="nav-text">render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidMount"><span class="nav-number">1.3.</span> <span class="nav-text">componentDidMount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillReceiveProps"><span class="nav-number">1.4.</span> <span class="nav-text">componentWillReceiveProps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shouldComponentUpdate"><span class="nav-number">1.5.</span> <span class="nav-text">shouldComponentUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUpdate"><span class="nav-number">1.6.</span> <span class="nav-text">componentWillUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentDidUpdate"><span class="nav-number">1.7.</span> <span class="nav-text">componentDidUpdate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#componentWillUnmount"><span class="nav-number">1.8.</span> <span class="nav-text">componentWillUnmount</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各生命周期是否可以调用setState方法"><span class="nav-number">1.9.</span> <span class="nav-text">各生命周期是否可以调用setState方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-v16"><span class="nav-number">2.</span> <span class="nav-text">react v16</span></a></li></ol></div>
             
 
           </div>

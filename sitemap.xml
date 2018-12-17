@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://happy-alex.github.io/js/react/reconciliation/</loc>
+    
+    <lastmod>2018-12-17T09:53:51.884Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/js/react/suspense/</loc>
+    
+    <lastmod>2018-12-17T08:49:39.346Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/js/react/life/</loc>
+    
+    <lastmod>2018-12-17T08:49:32.876Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://happy-alex.github.io/about/index.html</loc>
     
     <lastmod>2018-12-14T09:25:51.158Z</lastmod>
@@ -177,13 +198,6 @@
   </url>
   
   <url>
-    <loc>https://happy-alex.github.io/js/react/suspense/</loc>
-    
-    <lastmod>2018-12-07T13:54:09.679Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://happy-alex.github.io/job/ng/</loc>
     
     <lastmod>2018-12-07T13:45:45.878Z</lastmod>
@@ -299,13 +313,6 @@
     <loc>https://happy-alex.github.io/js/react/fiber/</loc>
     
     <lastmod>2018-11-12T03:42:39.980Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://happy-alex.github.io/js/react/life/</loc>
-    
-    <lastmod>2018-11-05T11:59:17.246Z</lastmod>
     
   </url>
   

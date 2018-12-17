@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。 背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。 Time Slicin">
+<meta name="description" content="以下翻译自官网文档，有删减 动机React在下一次render时会返回一棵新的React元素树，React需要弄清楚如何有效地更新UI以匹配最新的树。 这个算法问题有一些通用的解决方案，即生成将一棵树转换成另一棵树的最小操作次数。然而现有技术的算法具有O（n3）的复杂度，其中n是树中元素的数量。 如果我们在React中使用它，显示1000个元素将需要大约10亿次比较。这太贵了。相反，React基于">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
-<meta property="og:title" content="suspense">
-<meta property="og:url" content="https://happy-alex.github.io/js/react/suspense/index.html">
+<meta property="og:title" content="reconciliation">
+<meta property="og:url" content="https://happy-alex.github.io/js/react/reconciliation/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。 背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。 Time Slicin">
+<meta property="og:description" content="以下翻译自官网文档，有删减 动机React在下一次render时会返回一棵新的React元素树，React需要弄清楚如何有效地更新UI以匹配最新的树。 这个算法问题有一些通用的解决方案，即生成将一棵树转换成另一棵树的最小操作次数。然而现有技术的算法具有O（n3）的复杂度，其中n是树中元素的数量。 如果我们在React中使用它，显示1000个元素将需要大约10亿次比较。这太贵了。相反，React基于">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-17T08:49:39.346Z">
+<meta property="og:updated_time" content="2018-12-17T09:53:51.884Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="suspense">
-<meta name="twitter:description" content="Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。 背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。 Time Slicin">
+<meta name="twitter:title" content="reconciliation">
+<meta name="twitter:description" content="以下翻译自官网文档，有删减 动机React在下一次render时会返回一棵新的React元素树，React需要弄清楚如何有效地更新UI以匹配最新的树。 这个算法问题有一些通用的解决方案，即生成将一棵树转换成另一棵树的最小操作次数。然而现有技术的算法具有O（n3）的复杂度，其中n是树中元素的数量。 如果我们在React中使用它，显示1000个元素将需要大约10亿次比较。这太贵了。相反，React基于">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://happy-alex.github.io/js/react/suspense/"/>
+  <link rel="canonical" href="https://happy-alex.github.io/js/react/reconciliation/"/>
 
 
 
 
 
-  <title>suspense | Alex的小站</title>
+  <title>reconciliation | Alex的小站</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/suspense/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/reconciliation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">suspense</h2>
+          <h2 class="post-title" itemprop="name headline">reconciliation</h2>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T00:00:00+08:00">
-                2018-03-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-19T00:00:00+08:00">
+                2017-04-19
               </time>
             
 
@@ -352,25 +352,28 @@
       
 
       
-        <p>Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。<br>本文是根据Dan的ppt整理翻译。</p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。<br>Time Slicing 和 Suspense 分别是React在这两方面的尝试。</p>
-<h2 id="Time-Slicing"><a href="#Time-Slicing" class="headerlink" title="Time Slicing"></a>Time Slicing</h2><p>Time Slicing 是React16+采用的页面异步刷新方案<br>通过采用时间分片的方式，确保像用户输入等高优先级的任务先执行，render等低优先级的任务后执行。</p>
-<h2 id="Suspense"><a href="#Suspense" class="headerlink" title="Suspense"></a>Suspense</h2><p>简单Demo:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fetchMovieDetails为业务请求方法，返回promise</span></span><br><span class="line"><span class="keyword">const</span> movieDetailsFetcher = createFetcher(fetchMovieDetails);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MovieDetails</span>(<span class="params">props</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> movie = movieDetailsFetcher.read(props.id);</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">        &lt;div className=<span class="string">"MovieDetails"</span>&gt;</span><br><span class="line">            &lt;h1&gt;&#123;movie.header&#125;&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">            &lt;Movie &#123;...movie&#125; /</span>&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>在渲染过程中可以发起异步请求，获取数据，具体的请求被createFetcher方法(由react实现)包裹。</p>
-<p>react优先检查缓存，如果有缓存，直接命中缓存；如果没有缓存，抛出一个异常的promise</p>
-<p>当promise完成后，即数据请求成功，react继续执行render函数，渲染出页面。实际上是重新执行一遍render函数。</p>
-<p>从上面的流程可以看出来，suspense赋予了react随意暂停/恢复渲染的功能，从而将传统的异步请求数据的方式都改由同步来实现。</p>
-<p>执行render -&gt; 发现异步请求 -&gt; 检查缓存  -&gt;  无缓存  -&gt;render暂停，等待请求  -&gt; 请求回来，重新执行render<br>                                   |<br>                                    -&gt;  有缓存  -&gt; 直接渲染</p>
-<h3 id="相关特性："><a href="#相关特性：" class="headerlink" title="相关特性："></a>相关特性：</h3><ol>
-<li>在数据准备好之前可以暂停任意state更新</li>
-<li>无需其他“管道”, 可给任意组件添加任意异步数据</li>
-<li>网络状况良好的环境下，render在整棵树准备好之后</li>
-<li>网络状况差的环境下，能精确控制加载状态</li>
-<li>这既是一个高级API 也是一个低级API</li>
-</ol>
-<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>React16.6已经支持部分suspense特性<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> OtherComponent = React.lazy(<span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">import</span>(<span class="string">'./OtherComponent'</span>));</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">MyComponent</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="comment">// Displays &lt;Spinner&gt; until OtherComponent loads</span></span><br><span class="line">    &lt;React.Suspense fallback=&#123;&lt;Spinner /&gt;&#125;&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;OtherComponent /&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>React.Suspense&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>主要用来处理loading的相关场景，允许组件延迟渲染，中间等待状态可以通过fallback来指定渲染内容<br>react组件提供原生支持，避免了之前在处理相关场景时要写大量的条件判断代码，React.Suspense可以出现在组件树的任意位置，更方便控制loading的粒度</p>
-<p>注意：React.lazy和React.suspense总是搭配在一起使用，且不支持ssr，如果需要支持ssr，可以考虑 @loadable/component 这个库代替</p>
+        <p>以下翻译自官网文档，有删减</p>
+<h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>React在下一次render时会返回一棵新的React元素树，React需要弄清楚如何有效地更新UI以匹配最新的树。</p>
+<p>这个算法问题有一些通用的解决方案，即生成将一棵树转换成另一棵树的最小操作次数。然而现有技术的算法具有O（n3）的复杂度，其中n是树中元素的数量。</p>
+<p>如果我们在React中使用它，显示1000个元素将需要大约10亿次比较。这太贵了。相反，React基于两个假设实现了一个启发式O（n）算法：</p>
+<blockquote>
+<p>不同类型的两个元素将产生不同的树。<br>开发人员可以通过key属性来暗示哪些子元素可以在不同渲染中保持稳定。</p>
+</blockquote>
+<p>实际上，这些假设对几乎所有实际用例都有效。</p>
+<h2 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h2><p>在diff两棵树时，React首先比较两个根元素。 根据根元素的类型，行为会有所不同。</p>
+<h3 id="不同类型的元素"><a href="#不同类型的元素" class="headerlink" title="不同类型的元素"></a>不同类型的元素</h3><p>如果两个根元素类型不同，直接卸载旧树，创建新树。</p>
+<h3 id="相同类型的DOM元素"><a href="#相同类型的DOM元素" class="headerlink" title="相同类型的DOM元素"></a>相同类型的DOM元素</h3><p>当比较两个相同类型的React DOM元素时，React查看两者的属性，保持相同的底层DOM节点，并且仅仅更新变化的属性<br>在处理DOM节点之后，React然后对子节点进行递归。</p>
+<h3 id="相同类型的组件"><a href="#相同类型的组件" class="headerlink" title="相同类型的组件"></a>相同类型的组件</h3><p>当组件更新时，实例保持不变，以便在渲染之间保持状态。 React更新底层组件实例的props以匹配新元素，并在底层实例上调用componentWillReceiveProps（）和componentWillUpdate（）。</p>
+<p>接下来，调用render（）方法，diff算法对前一个结果和新结果进行递归。</p>
+<h3 id="递归DOM节点"><a href="#递归DOM节点" class="headerlink" title="递归DOM节点"></a>递归DOM节点</h3><p>默认情况下，当对DOM节点的子节点进行递归时，React会同时迭代两个子节点列表，并在出现差异时生成突变。</p>
+<p>例如直接在子节点末尾添加元素时，下面的例子可以很简单实现<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li&gt;first&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;second&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;ul&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;first&lt;/</span>li&gt;</span><br><span class="line">  &lt;li&gt;second&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;third&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>React可以匹配<li>first</li>和<li>second</li>, 然后插入<li>third</li></p>
+<p>如果只是这样简单的实现它，在子节点列表开头插入一个元素可能会有更糟糕的性能。 例如，在这两棵树之间进行转换效果不佳：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li&gt;Duke&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;Villanova&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;ul&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;Connecticut&lt;/</span>li&gt;</span><br><span class="line">  &lt;li&gt;Duke&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li&gt;Villanova&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>React将突变每个子节点，而不是意识到它可以保持<li> Duke &lt;/ li&gt;和</li><li> Villanova &lt;/ li&gt;子树不变。 这种低效率可能是一个问题。</li></p>
+<h3 id="keys"><a href="#keys" class="headerlink" title="keys"></a>keys</h3><p>为了解决这个问题，React支持一个key属性。 当子节点有key时，React使用key属性将原始树中的子节点和后续树中的子节点相匹配。 例如，在上面的低效demo中添加一个key可以使更新更有效率：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">  &lt;li key=<span class="string">"2015"</span>&gt;Duke&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li key="2016"&gt;Villanova&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;ul&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li key="2014"&gt;Connecticut&lt;/</span>li&gt;</span><br><span class="line">  &lt;li key=<span class="string">"2015"</span>&gt;Duke&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li key="2016"&gt;Villanova&lt;/</span>li&gt;</span><br><span class="line">&lt;<span class="regexp">/ul&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>当用索引作key时，重新排序容易导致组件状态出现问题。 组件实例根据key进行更新和重用。如果key是索引，则移动子节点顺序会更改它的值。 因此，不受控组件比如input，状态可能会出现<a href="https://codepen.io/pen?&amp;editable=true&amp;editors=0010" target="_blank" rel="noopener">意想不到的问题</a>。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>Q: 为什么只有渲染数组时才需要声明key，其他声明式JSX元素不需要？<br>A: 声明式JSX元素在React.createElement()中的参数位置始终是固定的，这个位置就是天然的key，而动态变化的数组其内部索引经常变化</p>
+<p>Q: index作key有什么危险？数组如果不存在动态变化(增加，删除，重新排序)是否可以用index作key？<br>A: 参见上述“意想不到的问题”链接。如果数组内容不存在动态变化，用index作key也是可以的。</p>
 
       
     </div>
@@ -415,8 +418,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/other/jiami/" rel="next" title="RSA + AES">
-                <i class="fa fa-chevron-left"></i> RSA + AES
+              <a href="/js/react/book_list/" rel="next" title="react学习资料">
+                <i class="fa fa-chevron-left"></i> react学习资料
               </a>
             
           </div>
@@ -425,8 +428,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/js/react/render/" rel="prev" title="React渲染DOM的奥秘">
-                React渲染DOM的奥秘 <i class="fa fa-chevron-right"></i>
+              <a href="/other/book-list/" rel="prev" title="文章杂烩">
+                文章杂烩 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -579,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Time-Slicing"><span class="nav-number">2.</span> <span class="nav-text">Time Slicing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Suspense"><span class="nav-number">3.</span> <span class="nav-text">Suspense</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单介绍"><span class="nav-number">3.1.</span> <span class="nav-text">简单介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关特性："><span class="nav-number">3.2.</span> <span class="nav-text">相关特性：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#diff算法"><span class="nav-number">2.</span> <span class="nav-text">diff算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不同类型的元素"><span class="nav-number">2.1.</span> <span class="nav-text">不同类型的元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相同类型的DOM元素"><span class="nav-number">2.2.</span> <span class="nav-text">相同类型的DOM元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相同类型的组件"><span class="nav-number">2.3.</span> <span class="nav-text">相同类型的组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归DOM节点"><span class="nav-number">2.4.</span> <span class="nav-text">递归DOM节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#keys"><span class="nav-number">2.5.</span> <span class="nav-text">keys</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后记"><span class="nav-number">2.6.</span> <span class="nav-text">后记</span></a></li></ol></li></ol></div>
             
 
           </div>
