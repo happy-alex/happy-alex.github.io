@@ -262,6 +262,315 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/suspense/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/js/react/suspense/" itemprop="url">suspense</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T00:00:00+08:00">
+                2018-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。
+背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。
+Time Slicin
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/js/react/suspense/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/jiami/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/other/jiami/" itemprop="url">RSA + AES</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-07T00:00:00+08:00">
+                2018-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/work/" itemprop="url" rel="index">
+                    <span itemprop="name">work</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          宫格的接口传参采用RSA+AES的方式对请求参数做加密。
+具体使用：前端通过RSA加密AES的密钥，然后传输给后端。后端解密得到AES密钥。前后端通过AES密钥来通信。
+对称加密算法：加密和解密使用的密钥相同，适合经常发送数据的场合。优点：加解密速度都很快。缺点：密钥传输麻烦，如果泄漏密钥则报文会被破解。如AES。
+非对称加密算法：加密和解密使用的密钥不同，适合偶尔发送数据的场合。优点：密钥传输方
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/other/jiami/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/onerror/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -723,6 +1032,159 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/excel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/other/excel/" itemprop="url">GET/POST下载excel</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T00:00:00+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/other/" itemprop="url" rel="index">
+                    <span itemprop="name">other</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          一般的后台管理系统有个很常见的需求是下载excel。前端实现有两种方法1.get请求，利用诸如a标签等直接发起一次get请求，浏览器会自行处理后端接口返回的二进制流优点：简单缺点：如果需要先上传大量数据，后端根据上传的数据生成excel，这种场景满足不了。（当然可以先用post提交数据，再用get二次请求，这是另外一回事了）
+2.post请求上面的GET方法不能很好的满足先上传数据，再下载exce
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/other/excel/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/excel-export/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -877,159 +1339,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/excel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alex">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alex的小站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/other/excel/" itemprop="url">GET/POST下载excel</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T00:00:00+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/other/" itemprop="url" rel="index">
-                    <span itemprop="name">other</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一般的后台管理系统有个很常见的需求是下载excel。前端实现有两种方法1.get请求，利用诸如a标签等直接发起一次get请求，浏览器会自行处理后端接口返回的二进制流优点：简单缺点：如果需要先上传大量数据，后端根据上传的数据生成excel，这种场景满足不了。（当然可以先用post提交数据，再用get二次请求，这是另外一回事了）
-2.post请求上面的GET方法不能很好的满足先上传数据，再下载exce
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/other/excel/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/koa-compose/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1129,160 +1438,6 @@
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/node/koa-compose/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/event-loop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alex">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alex的小站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/node/event-loop/" itemprop="url">node中的事件循环</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T00:00:00+08:00">
-                2017-12-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/node/" itemprop="url" rel="index">
-                    <span itemprop="name">node</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          node 异步I/O的4要素：请求对象，线程池，观察者，事件循环
-event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/node/event-loop/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1493,7 +1648,7 @@ event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-ti
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/ssr/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/event-loop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -1512,7 +1667,7 @@ event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-ti
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/node/ssr/" itemprop="url">服务端渲染ssr</a></h2>
+                <a class="post-title-link" href="/node/event-loop/" itemprop="url">node中的事件循环</a></h2>
         
 
         <div class="post-meta">
@@ -1524,8 +1679,8 @@ event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-ti
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T00:00:00+08:00">
-                2017-12-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T00:00:00+08:00">
+                2017-12-10
               </time>
             
 
@@ -1586,166 +1741,13 @@ event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-ti
       
         
           
-          背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。
-最近小半年来团队接了很多运营活动类推广页面。这类活动有个
-          ...
+          node 异步I/O的4要素：请求对象，线程池，观察者，事件循环
+event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
+
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/node/ssr/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/job/dsp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alex">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alex的小站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/job/dsp/" itemprop="url">graphql在去哪儿dsp系统中的尝试</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T00:00:00+08:00">
-                2017-11-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/work/" itemprop="url" rel="index">
-                    <span itemprop="name">work</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          背景去哪儿dsp广告投放系统，是自己17年下半年维护的项目之一，采用的技术栈是egg + antdesign. 最初从0开始搭建，到现在基本稳定大概有一个多月的时间，中间还经历了一次大的迭代改版。这里mark下心得。
-dsp目的主要是为了更好的帮助产品运营在市场营销方面的工作。支持在线管理去哪儿对外的推广计划，相关素材模板，竞价花费等。业务性较强，它有两个很明显的业务特点：
-推广计划和素材模板存在
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/job/dsp/#more" rel="contents">
+            <a class="btn" href="/node/event-loop/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1841,7 +1843,7 @@ dsp目的主要是为了更好的帮助产品运营在市场营销方面的工�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
