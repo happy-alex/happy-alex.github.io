@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event1.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event2.png">
-<meta property="og:updated_time" content="2018-12-20T09:59:51.201Z">
+<meta property="og:updated_time" content="2018-12-20T12:02:35.155Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前后端同构在去哪儿项目中的实践">
 <meta name="twitter:description" content="痛点传统开发模式：模板文件放在后端工程目录下，通过pom文件实现前端资源关联。 1.前后端在view层工作重复，前后端严重依赖vm文件2.前端依赖后端开发环境，mock数据停留在页面级别3.传统的客户端ajax异步请求数据，页面有明显loading时间4.前端无法有效推动后端工作 node如何解决痛点？1.view层彻底交给前端，后端只需要专注于复杂业务逻辑，提供数据2.node做中间层，摆脱对后">
@@ -366,7 +366,7 @@
 <p>经过团队讨论，最后还是选择了阿里开源的egg</p>
 <h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>event立项之初，传统的项目发布方式对node并不友好，项目中常常需要写一个发布脚本，然后交给jekins执行。这带来了很多问题。比如一份脚本如何有效区分beta和prod环境？如何利用发布系统中的端口，部署路径等信息？尤其是写shell命令，大大增加了前端同学的学习成本。</p>
 <p>但实际上不同项目除了部署路径，端口等少部分信息不同外，逻辑大部分是相似的。经过百放老师的努力和推动，最终发布系统优化了jenkins的发布方式，使其对node项目更友好。现在只需要在项目下设置一个简单的start.sh文件（在sh文件中设置npm安装，启动node服务，只有几行命令)，然后在发布系统中选择node类型，然后填入端口，部署路径等信息即可。</p>
-<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><h4 id="服务端如何引用前端组件，如何管理action"><a href="#服务端如何引用前端组件，如何管理action" class="headerlink" title="服务端如何引用前端组件，如何管理action"></a>服务端如何引用前端组件，如何管理action</h4><p><img src="//happy-alex.github.io/images/job/event/event.png" width="50" height="50%"></p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><h4 id="服务端如何引用前端组件，如何管理action"><a href="#服务端如何引用前端组件，如何管理action" class="headerlink" title="服务端如何引用前端组件，如何管理action"></a>服务端如何引用前端组件，如何管理action</h4><p><img src="//happy-alex.github.io/images/job/event/event.png" width="50%" height="50%"></p>
 <h4 id="设备嗅探"><a href="#设备嗅探" class="headerlink" title="设备嗅探"></a>设备嗅探</h4><p>有时候不同的设备，前端可能要渲染不同的UI。但ssr时服务端如何拿到设备信息呢？</p>
 <p>服务端在响应接口请求时，是能拿到设备UA的，我们的做法就是解析UA, 得到设备信息Sniff，然后将这个Sniff注入全局store中，这样服务端在render时就能拿到设备信息了。其实还有一种解法：就是服务端先预设一个UI, 等客户端渲染时再真正填充。这两者我觉得可以结合起来。</p>
 <h4 id="经纬度相关"><a href="#经纬度相关" class="headerlink" title="经纬度相关"></a>经纬度相关</h4><p>需要获取经纬度才能提供服务的场景怎么办？一般经纬度都是由客户端异步获取的，ssr时怎么拿到这个值？</p>
@@ -430,8 +430,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/node/cluster/" rel="next" title="cluster">
-                <i class="fa fa-chevron-left"></i> cluster
+              <a href="/node/event-loop/" rel="next" title="node中的事件循环">
+                <i class="fa fa-chevron-left"></i> node中的事件循环
               </a>
             
           </div>

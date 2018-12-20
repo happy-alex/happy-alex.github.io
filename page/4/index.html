@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/koa-compose/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/cluster/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -281,7 +281,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/node/koa-compose/" itemprop="url">koa2中间件机制</a></h2>
+                <a class="post-title-link" href="/node/cluster/" itemprop="url">cluster</a></h2>
         
 
         <div class="post-meta">
@@ -355,12 +355,15 @@
       
         
           
-          koa2中间件的核心实现：数组 + Promise + 递归
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859// koa1 使用generatorfunction compose(middleware) &#123;    re
+          cluster模块 = net + child_process 组合应用
+进程管理最初的node多进程模型/抢占式：
+发送fd给所有worker: master通过执行cluster.fork()，fork出多个worker进程，worker执行listen()。进程间通过传递文件描述符fd完成通信，由于多个worker间存在竞争问题导致惊群现象。
+改进/Round-Robin：
+不直接将fd分发
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/node/koa-compose/#more" rel="contents">
+            <a class="btn" href="/node/cluster/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
