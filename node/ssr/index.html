@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alex的小站">
 <meta property="og:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-10T10:31:01.499Z">
+<meta property="og:updated_time" content="2018-12-20T09:14:16.913Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="服务端渲染ssr">
 <meta name="twitter:description" content="背景：团队长久以来采用的工作模式都是后端返回一个vm，在vm里引用前端资源文件。当用户请求这个vm，通过在前端脚本异步获取数据来进行渲染。由于页面需要依赖数据来进行渲染，所以总是会有一段时间“白屏”。为了减少白屏的时间，我们采用的方案是页面先展示一个小骆驼loading图来缓解这种尴尬。但这仍然没有解决页面加载时间缓慢，用户体验不好的问题。 最近小半年来团队接了很多运营活动类推广页面。这类活动有个">
@@ -371,7 +371,7 @@
 <p><br><br>截止到目前，我们团队在部分业务中已经尝试了ssr。比如去哪儿App首页的发现频道，酒店宫格详情页底部更多入口，部分运营活动类页面都是通过ssr的方式渲染的。</p>
 <h3 id="要考虑的问题"><a href="#要考虑的问题" class="headerlink" title="要考虑的问题"></a>要考虑的问题</h3><ul>
 <li>如何打通公司现有的前端发布流程</li>
-<li>环境嗅探。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：需要根据请求html时候携带的ua来提前做一些处理。</li>
+<li>设备嗅探。某些场景下页面渲染的效果需要依赖环境，但是服务端渲染时拿不到这些环境参数。解决办法：需要根据请求html时候携带的ua来提前做一些处理。</li>
 <li>模块管理。前端使用的是es6 module。后端使用的是commonJS。node端如何引用ESModule定义的组件</li>
 <li>node如何接入传统后端RPC服务，比如java的dubbo</li>
 <li>应用的健壮性，日志处理，监控报警，logstash + kibana</li>
@@ -438,8 +438,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/node/cluster/" rel="prev" title="cluster">
-                cluster <i class="fa fa-chevron-right"></i>
+              <a href="/node/koa-compose/" rel="prev" title="koa2中间件机制">
+                koa2中间件机制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -521,7 +521,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">60</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
