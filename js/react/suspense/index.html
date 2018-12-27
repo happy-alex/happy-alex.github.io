@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alex的小站">
 <meta property="og:description" content="Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。 背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。 Time Slicin">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-17T08:49:39.346Z">
+<meta property="og:updated_time" content="2018-12-20T12:10:34.278Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="suspense">
 <meta name="twitter:description" content="Dan在今年JSConf的会议上提到React未来的两大特性：Time Slicing(时间分片) 和 Suspense(渲染暂停)。本文是根据Dan的ppt整理翻译。 背景影响页面用户体验的两大因素分别是CPU计算和I/O能力。前者影响DOM元素的创建和更新，后者影响数据的获取和代码的加载。Time Slicing 和 Suspense 分别是React在这两方面的尝试。 Time Slicin">
@@ -359,8 +359,7 @@
 <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>在渲染过程中可以发起异步请求，获取数据，具体的请求被createFetcher方法(由react实现)包裹。</p>
 <p>react优先检查缓存，如果有缓存，直接命中缓存；如果没有缓存，抛出一个异常的promise</p>
 <p>当promise完成后，即数据请求成功，react继续执行render函数，渲染出页面。实际上是重新执行一遍render函数。</p>
-<p>从上面的流程可以看出来，suspense赋予了react随意暂停/恢复渲染的功能，从而将传统的异步请求数据的方式都改由同步来实现。</p>
-<p>执行render -&gt; 发现异步请求 -&gt; 检查缓存  -&gt;  无缓存  -&gt;render暂停，等待请求  -&gt; 请求回来，重新执行render<br>                                   |<br>                                    -&gt;  有缓存  -&gt; 直接渲染</p>
+<p>从上面的流程可以看出来，suspense赋予了react随意暂停/恢复渲染的功能，从而将传统的异步请求数据的方式都改由同步来实现。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">执行render -&gt; 发现异步请求 -&gt; 检查缓存  -&gt;  无缓存  -&gt;render暂停，等待请求  -&gt; 请求回来，重新执行render </span><br><span class="line">                                   |         </span><br><span class="line">                                    -&gt;  有缓存  -&gt; 直接渲染</span><br></pre></td></tr></table></figure></p>
 <h3 id="相关特性："><a href="#相关特性：" class="headerlink" title="相关特性："></a>相关特性：</h3><ol>
 <li>在数据准备好之前可以暂停任意state更新</li>
 <li>无需其他“管道”, 可给任意组件添加任意异步数据</li>
@@ -550,7 +549,7 @@
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:1335536581@qq.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>

@@ -355,8 +355,8 @@
       
         
           
-          背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。
-react 执行render()和setState()进行渲染时主要有两个阶段：调度阶段 （Reconciler）: 用
+          背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。简单说就是：diff + patch。
+react 执行render()和setState()进行渲染时主要有两个阶段：调
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1874,7 +1874,7 @@ Time Slicin
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="mailto:happy265bobo@gmail.com" target="_blank" title="E-Mail">
+                    <a href="mailto:1335536581@qq.com" target="_blank" title="E-Mail">
                       
                         <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>
