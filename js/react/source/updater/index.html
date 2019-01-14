@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber updater每个React 组件实例都有一个updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。 updater主要有4种作用:  在树中查找组件对应的fiber实例 123get: function(key) &amp;#123;    return key._rea">
+<meta name="description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber， 有节选 updater每个React组件都有一个 updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。这允许ReactDOM, ReactNative，SSR以不同方式实现setState。 updater负责检索fiber实例，排队更新，调度工作等工作，主要有">
 <meta name="keywords" content="react">
 <meta property="og:type" content="article">
 <meta property="og:title" content="updater">
 <meta property="og:url" content="https://happy-alex.github.io/js/react/source/updater/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber updater每个React 组件实例都有一个updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。 updater主要有4种作用:  在树中查找组件对应的fiber实例 123get: function(key) &amp;#123;    return key._rea">
+<meta property="og:description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber， 有节选 updater每个React组件都有一个 updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。这允许ReactDOM, ReactNative，SSR以不同方式实现setState。 updater负责检索fiber实例，排队更新，调度工作等工作，主要有">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-12T03:43:26.601Z">
+<meta property="og:updated_time" content="2019-01-11T07:46:42.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="updater">
-<meta name="twitter:description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber updater每个React 组件实例都有一个updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。 updater主要有4种作用:  在树中查找组件对应的fiber实例 123get: function(key) &amp;#123;    return key._rea">
+<meta name="twitter:description" content="以下翻译自：http://makersden.io/blog/look-inside-fiber， 有节选 updater每个React组件都有一个 updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。这允许ReactDOM, ReactNative，SSR以不同方式实现setState。 updater负责检索fiber实例，排队更新，调度工作等工作，主要有">
 
 
 
@@ -352,9 +352,9 @@
       
 
       
-        <p>以下翻译自：<a href="http://makersden.io/blog/look-inside-fiber" target="_blank" rel="noopener">http://makersden.io/blog/look-inside-fiber</a></p>
-<h2 id="updater"><a href="#updater" class="headerlink" title="updater"></a>updater</h2><p>每个React 组件实例都有一个updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。</p>
-<p>updater主要有4种作用:</p>
+        <p>以下翻译自：<a href="http://makersden.io/blog/look-inside-fiber，" target="_blank" rel="noopener">http://makersden.io/blog/look-inside-fiber，</a> 有节选</p>
+<h1 id="updater"><a href="#updater" class="headerlink" title="updater"></a>updater</h1><p>每个React组件都有一个 updater，它在组件reconcilier时被注入，负责组件和react核心间的通信。这允许ReactDOM, ReactNative，SSR以不同方式实现setState。</p>
+<p>updater负责检索fiber实例，排队更新，调度工作等工作，主要有4种作用:</p>
 <ol>
 <li><p>在树中查找组件对应的fiber实例</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">get: <span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> key._reactInternalInstance;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -508,7 +508,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -579,7 +579,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#updater"><span class="nav-number">1.</span> <span class="nav-text">updater</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#render-reconciliation"><span class="nav-number">2.</span> <span class="nav-text">render/reconciliation</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#updater"><span class="nav-number">1.</span> <span class="nav-text">updater</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#render-reconciliation"><span class="nav-number">1.1.</span> <span class="nav-text">render/reconciliation</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -599,7 +599,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

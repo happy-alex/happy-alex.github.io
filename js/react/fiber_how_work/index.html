@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="之前曾经写过一篇介绍fiber的文章，当时提到fiber就是一个实现了时间分片+链表结构的数据结构。这里结合源码介绍下fiber的链表结构是如何工作的。 reconciliation阶段react(v16.6)实现reconciliation/伪代码, 源码位置123456789101112131415161718192021222324252627282930313233343536373839">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fiber是如何工作的">
+<meta property="og:url" content="https://happy-alex.github.io/js/react/fiber_how_work/index.html">
+<meta property="og:site_name" content="Alex的小站">
+<meta property="og:description" content="之前曾经写过一篇介绍fiber的文章，当时提到fiber就是一个实现了时间分片+链表结构的数据结构。这里结合源码介绍下fiber的链表结构是如何工作的。 reconciliation阶段react(v16.6)实现reconciliation/伪代码, 源码位置123456789101112131415161718192021222324252627282930313233343536373839">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-14T12:56:19.653Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fiber是如何工作的">
+<meta name="twitter:description" content="之前曾经写过一篇介绍fiber的文章，当时提到fiber就是一个实现了时间分片+链表结构的数据结构。这里结合源码介绍下fiber的链表结构是如何工作的。 reconciliation阶段react(v16.6)实现reconciliation/伪代码, 源码位置123456789101112131415161718192021222324252627282930313233343536373839">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://happy-alex.github.io/js/react/fiber_how_work/"/>
+
+
+
+
+
+  <title>fiber是如何工作的 | Alex的小站</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alex的小站</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">好记性不如烂笔头</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/react/fiber_how_work/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">fiber是如何工作的</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-08T00:00:00+08:00">
+                2019-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前曾经写过一篇<a href="/js/react/fiber/">介绍fiber的文章</a>，当时提到fiber就是一个实现了时间分片+链表结构的数据结构。这里结合源码介绍下fiber的链表结构是如何工作的。</p>
+<h2 id="reconciliation阶段"><a href="#reconciliation阶段" class="headerlink" title="reconciliation阶段"></a>reconciliation阶段</h2><p>react(v16.6)实现reconciliation/伪代码, <a href="https://github.com/facebook/react/blob/v16.6.0/packages/react-reconciler/src/ReactFiberScheduler.js#L1118" target="_blank" rel="noopener">源码位置</a><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    React的reconciliation过程其实就是执行一个大的while循环，完成树的遍历，搜集副作用effect</span></span><br><span class="line"><span class="comment">    主要函数有:</span></span><br><span class="line"><span class="comment">    completeUnitOfWork, performUnitOfWork 用于完成树的循环遍历</span></span><br><span class="line"><span class="comment">    beginWork, completeWork 具体执行每个节点的处理工作, 更新当前节点的状态，比如context，props，state等等</span></span><br><span class="line"><span class="comment">    nexUnitOfWork 总是指向当前正在工作的单元</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">workLoop</span>(<span class="params">isYieldy</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!isYieldy) &#123;</span><br><span class="line">      <span class="comment">// Flush work without yielding</span></span><br><span class="line">      <span class="keyword">while</span> (nextUnitOfWork !== <span class="literal">null</span>) &#123;</span><br><span class="line">        nextUnitOfWork = performUnitOfWork(nextUnitOfWork);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// Flush asynchronous work until there's a higher priority event</span></span><br><span class="line">      <span class="keyword">while</span> (nextUnitOfWork !== <span class="literal">null</span> &amp;&amp; !shouldYieldToRenderer()) &#123;</span><br><span class="line">        nextUnitOfWork = performUnitOfWork(nextUnitOfWork);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">performUnitOfWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> next = beginWork(workInProgress);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 没有子节点，说明已经来到了分支末尾，查看同级是否有兄弟节点，执行处理，完成后回溯到父节点</span></span><br><span class="line">    <span class="keyword">if</span> (next === <span class="literal">null</span>) &#123;</span><br><span class="line">        next = completeUnitOfWork(workInProgress);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将子节点作为下一个工作单元</span></span><br><span class="line">    <span class="keyword">return</span> next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">beginWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'begin work for '</span> + workInProgress.name);</span><br><span class="line">    <span class="keyword">return</span> workInProgress.child;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">completeUnitOfWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> returnFiber = workInProgress.return;</span><br><span class="line">        <span class="keyword">let</span> siblingFiber = workInProgress.sibling;</span><br><span class="line"></span><br><span class="line">        nextUnitOfWork = completeWork(workInProgress);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果有兄弟节点，返回上层函数，将兄弟节点作为下一个工作单元</span></span><br><span class="line">        <span class="keyword">if</span> (siblingFiber !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// If there is a sibling, return it</span></span><br><span class="line">            <span class="comment">// to perform work for this sibling</span></span><br><span class="line">            <span class="keyword">return</span> siblingFiber;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果没有兄弟节点，说明同级的子节点都已经处理完，如果父节点存在，回到循环开始处，继续完成父节点的工作 </span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (returnFiber !== <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// If there's no more work in this returnFiber,</span></span><br><span class="line">            <span class="comment">// continue the loop to complete the parent.</span></span><br><span class="line">            workInProgress = returnFiber;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 回到fiber树根节点</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">completeWork</span>(<span class="params">workInProgress</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'complete work for '</span> + workInProgress.name);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>来一个简单模拟，结合下文可以更好的理解上面workLoop的工作流程<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 模拟Fiber的链表结构，tiny实现reconciliation中的工作循环</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 假设一颗dom tree</span></span><br><span class="line"><span class="keyword">const</span> a1 = &#123;<span class="attr">name</span>: <span class="string">'a1'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> b1 = &#123;<span class="attr">name</span>: <span class="string">'b1'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> b2 = &#123;<span class="attr">name</span>: <span class="string">'b2'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> b3 = &#123;<span class="attr">name</span>: <span class="string">'b3'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> c1 = &#123;<span class="attr">name</span>: <span class="string">'c1'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> c2 = &#123;<span class="attr">name</span>: <span class="string">'c2'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> d1 = &#123;<span class="attr">name</span>: <span class="string">'d1'</span>&#125;;</span><br><span class="line"><span class="keyword">const</span> d2 = &#123;<span class="attr">name</span>: <span class="string">'d2'</span>&#125;;</span><br><span class="line"></span><br><span class="line">a1.render = <span class="function"><span class="params">()</span> =&gt;</span> [b1, b2, b3];</span><br><span class="line">b1.render = <span class="function"><span class="params">()</span> =&gt;</span> [];</span><br><span class="line">b2.render = <span class="function"><span class="params">()</span> =&gt;</span> [c1];</span><br><span class="line">b3.render = <span class="function"><span class="params">()</span> =&gt;</span> [c2];</span><br><span class="line">c1.render = <span class="function"><span class="params">()</span> =&gt;</span> [d1, d2];</span><br><span class="line">c2.render = <span class="function"><span class="params">()</span> =&gt;</span> [];</span><br><span class="line">d1.render = <span class="function"><span class="params">()</span> =&gt;</span> [];</span><br><span class="line">d2.render = <span class="function"><span class="params">()</span> =&gt;</span> [];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义fiber结构</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fiber</span></span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(instance) &#123;</span><br><span class="line">        <span class="keyword">this</span>.instance = instance;</span><br><span class="line">        <span class="keyword">this</span>.child = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">this</span>.sibling = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">this</span>.return = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将组件实例ReactElement转换为fiber</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createFiberTree</span>(<span class="params">root, children</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!children) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    root.child = children.reduceRight(<span class="function"><span class="keyword">function</span>(<span class="params">pre, current</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">const</span> fiber = <span class="keyword">new</span> Fiber(current);</span><br><span class="line">        fiber.sibling = pre;</span><br><span class="line">        fiber.return = root;</span><br><span class="line">        <span class="keyword">return</span> fiber;</span><br><span class="line">    &#125;, <span class="literal">null</span>);</span><br><span class="line">    <span class="keyword">return</span> root.child;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立当前节点和子节点的关系    beginWork实现，完成当前fiber要做的工作，总是返回循环处理中下一个工作的子节点或null</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'dowork, current fiber node is'</span>, node.instance.name);</span><br><span class="line">    <span class="keyword">const</span> children = node.instance.render();</span><br><span class="line">    <span class="keyword">return</span> createFiberTree(node, children);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从根节点开始，构造fiber链表  先序遍历+深搜</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">workLoop</span>(<span class="params">node</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> root = node;</span><br><span class="line">    <span class="keyword">let</span> current = node;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 总是得到当前节点的第一个子节点或null</span></span><br><span class="line">        <span class="keyword">let</span> child = doWork(current);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 如果有子节点，则继续处理子节点</span></span><br><span class="line">        <span class="keyword">if</span> (child) &#123;</span><br><span class="line">            current = child;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (current === root) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 没有子节点，处理兄弟节点</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// completeUnitOfWork实现</span></span><br><span class="line">        <span class="comment">// 如果当前节点已经没有兄弟节点, 说明父节点下所有节点都已处理完毕，需要向上回溯继续处理父节点的兄弟节点</span></span><br><span class="line">        <span class="keyword">while</span> (!current.sibling) &#123;</span><br><span class="line">            <span class="keyword">if</span> (current.return === root || !current.return) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 回溯到父节点继续处理</span></span><br><span class="line">            current = current.return;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果有兄弟节点，则处理兄弟节点</span></span><br><span class="line">        current = current.sibling;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> rootFiber = <span class="keyword">new</span> Fiber(a1);</span><br><span class="line">workLoop(rootFiber);</span><br></pre></td></tr></table></figure></p>
+<h2 id="commit阶段"><a href="#commit阶段" class="headerlink" title="commit阶段"></a>commit阶段</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 核心流程</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">commitRoot</span>(<span class="params">root, finishedWork</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// willUpdate</span></span><br><span class="line">    commitBeforeMutationLifecycles()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// dom更新</span></span><br><span class="line">    commitAllHostEffects();</span><br><span class="line">    root.current = finishedWork;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// didMount/didUpdate</span></span><br><span class="line">    commitAllLifeCycles();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 源码分析</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">commitRoot</span>(<span class="params">root, finishedWork</span>)</span>&#123;</span><br><span class="line">    isWorking = <span class="literal">true</span>;</span><br><span class="line">    isComitting = <span class="literal">true</span>;</span><br><span class="line">    root.pendingCommitExpirationTime = NoWork;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在调用生命周期钩子前更新当前正在提交工作的优先级</span></span><br><span class="line">    <span class="keyword">const</span> updateExpirationTimeBeforeCommit = finishedWork.expirationTime;</span><br><span class="line">    <span class="keyword">const</span> childExpirationTimeBeforeCommit = finishedWork.childExpirationTime;</span><br><span class="line">    <span class="keyword">const</span> earliestRemainingTimeBeforeCommit =</span><br><span class="line">        childExpirationTimeBeforeCommit &gt; updateExpirationTimeBeforeCommit</span><br><span class="line">        ? childExpirationTimeBeforeCommit</span><br><span class="line">        : updateExpirationTimeBeforeCommit;</span><br><span class="line">    markCommittedPriorityLevels(root, earliestRemainingTimeBeforeCommit);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 调用钩子前重置current为null</span></span><br><span class="line">    ReactCurrentOwner.current = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> firstEffect;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 根节点有副作用</span></span><br><span class="line">    <span class="keyword">if</span> (finishedWork.effectTag &gt; PerformedWork) &#123;</span><br><span class="line">        <span class="comment">// 一个fiber节点的副作用列表仅仅包含它的子节点，不包括其本身。如果root有副作用，需要把它添加到列表尾部。</span></span><br><span class="line">        <span class="keyword">if</span> (finishedWork.lastEffect !== <span class="literal">null</span>) &#123;</span><br><span class="line">            finishedWork.lastEffect.nextEffect = finishedWork;</span><br><span class="line">            firstEffect = finishedWork.firstEffect</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            firstEffect = finishedWork;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根节点上没有副作用</span></span><br><span class="line">        firstEffect = finishedWork.firstEffect;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在突变之前调用getSnapshotBeforeUpdate的钩子。</span></span><br><span class="line">    nextEffect = firstEffect;</span><br><span class="line">    <span class="keyword">while</span> (nextEffect != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> didError = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">let</span> error;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// commit前执行钩子</span></span><br><span class="line">            commitBeforeMutationLifecycles();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            didError = <span class="literal">true</span>;</span><br><span class="line">            error = e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (didError) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 捕获commit阶段的错误</span></span><br><span class="line">            captureCommitPhaseError(nextEffect, error);</span><br><span class="line">            <span class="comment">// clean-up</span></span><br><span class="line">            <span class="keyword">if</span> (nextEffect != <span class="literal">null</span>) &#123;</span><br><span class="line">                nextEffect = nextEffect.nextEffect;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在一棵树上commit所有的副作用。这个操作分为两个阶段</span></span><br><span class="line">    <span class="comment">// 第一个阶段执行所有host类型节点的插入，更新，删除和ref卸载。</span></span><br><span class="line">    nextEffect = firstEffect;</span><br><span class="line">    <span class="keyword">while</span> (nextEffect !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> didError = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">let</span> error;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 执行host类型的副作用，包括dom更新，增删等</span></span><br><span class="line">            commitAllHostEffects();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            didError = <span class="literal">true</span>;</span><br><span class="line">            error = e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (didError) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 捕获commit阶段的错误</span></span><br><span class="line">            captureCommitPhaseError(nextEffect, error);</span><br><span class="line">            <span class="keyword">if</span> (nextEffect != <span class="literal">null</span>) &#123;</span><br><span class="line">                nextEffect = nextEffect.nextEffect;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    resetAfterCommit(root.containerInfo);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在第一阶段执行完后，才设置work-in-progress树为当前current树。这样可以保证在执行willUnmount期间，current树仍然是之前</span></span><br><span class="line">    <span class="comment">// 的树；而在第二阶段开始后，didMount和didUpdate期间当前树是finishedWork</span></span><br><span class="line">    root.current = finishedWork;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第二阶段React会执行所有的生命周期钩子和ref回调。</span></span><br><span class="line">    <span class="comment">// 这些方法都被单独调用以便入口树上所有的替换，更新，删除操作都已经被执行。</span></span><br><span class="line">    <span class="comment">// 这个阶段还会触发任意的渲染器上具体的初始化副作用</span></span><br><span class="line">    nextEffect = firstEffect;</span><br><span class="line">    <span class="keyword">while</span> (nextEffect !== <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">let</span> didError = <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">let</span> error;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            commitAllLifeCycles(root, committedExpirationTime);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            didError = <span class="literal">true</span>;</span><br><span class="line">            error = e;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (didError) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 捕获commit阶段的错误</span></span><br><span class="line">            captureCommitPhaseError(nextEffect, error);</span><br><span class="line">            <span class="keyword">if</span> (nextEffect != <span class="literal">null</span>) &#123;</span><br><span class="line">                nextEffect = nextEffect.nextEffect;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    isCommitting = <span class="literal">false</span>;</span><br><span class="line">    isWorking = <span class="literal">false</span>;</span><br><span class="line">    onCommitRoot(finishedWork.stateNode);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> updateExpirationTimeAfterCommit = finishedWork.expirationTime;</span><br><span class="line">    <span class="keyword">const</span> childExpirationTimeAfterCommit = finishedWork.childExpirationTime;</span><br><span class="line">    <span class="keyword">const</span> earliestRemainingTimeAfterCommit =</span><br><span class="line">        childExpirationTimeAfterCommit &gt; updateExpirationTimeAfterCommit</span><br><span class="line">        ? childExpirationTimeAfterCommit</span><br><span class="line">        : updateExpirationTimeAfterCommit;</span><br><span class="line">    <span class="keyword">if</span> (earliestRemainingTimeAfterCommit === NoWork) &#123;</span><br><span class="line">        <span class="comment">// If there's no remaining work, we can clear the set of already failed</span></span><br><span class="line">        <span class="comment">// error boundaries.</span></span><br><span class="line">        legacyErrorBoundariesThatAlreadyFailed = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    onCommit(root, earliestRemainingTimeAfterCommit);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">
+            -------------本文结束
+            <i class="fa fa-paw"></i>
+            感谢您的阅读-------------
+        </div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"><i class="fa fa-tag"></i> react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/job/cms/" rel="next" title="活动专题系统搭建过程中我的一些思考">
+                <i class="fa fa-chevron-left"></i> 活动专题系统搭建过程中我的一些思考
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars2.githubusercontent.com/u/11572394?v=4"
+                alt="Alex" />
+            
+              <p class="site-author-name" itemprop="name">Alex</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/happy-alex" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:1335536581@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reconciliation阶段"><span class="nav-number">1.</span> <span class="nav-text">reconciliation阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#commit阶段"><span class="nav-number">2.</span> <span class="nav-text">commit阶段</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Alex</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

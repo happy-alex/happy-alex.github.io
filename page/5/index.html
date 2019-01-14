@@ -262,6 +262,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Alex">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alex的小站">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/node/module/" itemprop="url">node模块机制</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-10T19:01:00+08:00">
+                2017-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node/" itemprop="url" rel="index">
+                    <span itemprop="name">node</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          node采用commonJS实现模块管理
+module.exports
+node同一进程内只有一个上下文，不同文件内部只是node对js文件进行的封装，源代码被包裹在一个自执行函数中，文件内部的 require 和 module 等由node注入自执行函数中。
+标准的导出命令只有 module.exports, exports 其实是个语法糖，本质上 exports = module.export
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/node/module/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/css/transform/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1040,146 +1195,6 @@ js有两
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/book-list/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Alex">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars2.githubusercontent.com/u/11572394?v=4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alex的小站">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/js/book-list/" itemprop="url">js拓展阅读</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T00:00:00+08:00">
-                2017-05-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-js闭包优化–各引擎优化策略
-js的事件循环机制
-关于vdom的争论
-this的指向
-http://web.jobbole.com/86734/
-前端工程中的编译时优化
-immer tiny
-native和js交互
-
-
-          
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/js/book-list/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/setCursorPosition/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1471,7 +1486,7 @@ rem/em
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/mutationObserver/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/js/book-list/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -1490,7 +1505,7 @@ rem/em
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/other/mutationObserver/" itemprop="url">MutationObserver</a></h2>
+                <a class="post-title-link" href="/js/book-list/" itemprop="url">js拓展阅读</a></h2>
         
 
         <div class="post-meta">
@@ -1502,8 +1517,8 @@ rem/em
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-19T00:00:00+08:00">
-                2017-05-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-20T00:00:00+08:00">
+                2017-05-20
               </time>
             
 
@@ -1512,28 +1527,6 @@ rem/em
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/other/" itemprop="url" rel="index">
-                    <span itemprop="name">other</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -1564,12 +1557,21 @@ rem/em
       
         
           
-          MutationOberver可以检测 DOM 的变化。
-123456789101112131415161718192021222324252627// dom批量变化之后才会触发回调var observer = new MutationObserver(mutations =&gt; &#123;    mutations.forEach(item =&gt; &#123;        // 
-          ...
+          
+js闭包优化–各引擎优化策略
+js的事件循环机制
+关于vdom的争论
+this的指向
+http://web.jobbole.com/86734/
+前端工程中的编译时优化
+immer tiny
+native和js交互
+
+
+          
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/other/mutationObserver/#more" rel="contents">
+            <a class="btn" href="/js/book-list/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1624,7 +1626,7 @@ rem/em
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/new/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/other/shadowDom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -1643,7 +1645,7 @@ rem/em
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/other/new/" itemprop="url">new 关键字</a></h2>
+                <a class="post-title-link" href="/other/shadowDom/" itemprop="url">shadowDom</a></h2>
         
 
         <div class="post-meta">
@@ -1678,8 +1680,8 @@ rem/em
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/other/" itemprop="url" rel="index">
-                    <span itemprop="name">other</span>
+                  <a href="/categories/html/" itemprop="url" rel="index">
+                    <span itemprop="name">html</span>
                   </a>
                 </span>
 
@@ -1717,15 +1719,12 @@ rem/em
       
         
           
-          1234function Dog() &#123;    this.name = 'dog';&#125;var obj = new Dog();
-new 到底做了什么可以理解为123var obj = &#123;&#125;; obj.__proto__ = Dog.prototype;Dog.call(obj);
-
-初始化一个空对象obj
-将obj的proto指向Dog.prototype;
+          html5中有一个新标签：1&lt;template&gt;123&lt;/template&gt;
+它的特点包括：1.会隐藏内部节点，比如不会显示，也不会请求图片资源。2.要想获取template内部的文档片段documentfragment，，需要使用template.content属性（childNodes为[]），后续可以通过document.importNode(node,deep)方法
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/other/new/#more" rel="contents">
+            <a class="btn" href="/other/shadowDom/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1771,7 +1770,7 @@ new 到底做了什么可以理解为123var obj = &#123;&#125;; obj.__proto__ = 
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1821,7 +1820,7 @@ new 到底做了什么可以理解为123var obj = &#123;&#125;; obj.__proto__ = 
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">60</span>
+                  <span class="site-state-item-count">61</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1896,7 +1895,7 @@ new 到底做了什么可以理解为123var obj = &#123;&#125;; obj.__proto__ = 
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
