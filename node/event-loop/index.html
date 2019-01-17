@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/">
+<meta name="description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/     ┌───────────────────────────┐ ┌─&amp;gt;│           timers          │ │  └──────">
 <meta name="keywords" content="node">
 <meta property="og:type" content="article">
 <meta property="og:title" content="node中的事件循环">
 <meta property="og:url" content="https://happy-alex.github.io/node/event-loop/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/">
+<meta property="og:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/     ┌───────────────────────────┐ ┌─&amp;gt;│           timers          │ │  └──────">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-12-06T14:30:39.000Z">
+<meta property="og:updated_time" content="2019-01-17T14:28:47.889Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node中的事件循环">
-<meta name="twitter:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/">
+<meta name="twitter:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/     ┌───────────────────────────┐ ┌─&amp;gt;│           timers          │ │  └──────">
 
 
 
@@ -354,6 +354,38 @@
       
         <p>node 异步I/O的4要素：请求对象，线程池，观察者，事件循环</p>
 <p>event-loop 查看官网介绍    <a href="https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/" target="_blank" rel="noopener">https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/</a></p>
+<pre><code>
+   ┌───────────────────────────┐
+┌─&gt;│           timers          │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │
+│  └─────────────┬─────────────┘      ┌───────────────┐
+│  ┌─────────────┴─────────────┐      │   incoming:   │
+│  │           poll            │&lt;─────┤  connections, │
+│  └─────────────┬─────────────┘      │   data, etc.  │
+│  ┌─────────────┴─────────────┐      └───────────────┘
+│  │           check           │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │
+   └───────────────────────────┘
+</code></pre>
+
+<p>Note:</p>
+<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>1.计算它应该block和轮询I/O的时间<br>2.处理轮询队列中的事件。</p>
+<p>当事件循环进入poll阶段并且此前没有设置定时器时，有以下两种情况：</p>
+<p>1.如果轮询队列不为空，则事件循环将遍历并同步执行它们的回调队列，直到队列已用尽或者达到系统相关的硬限制。<br>2.如果轮询队列为空，则：<br>如果已经调用过setImmediate，则事件循环将结束轮询阶段并继续执行check阶段，来执行这些定时器。<br>如果没有调用过setImmediate，则事件循环将等待将定时器回调添加到队列后立即执行。<br>轮询队列为空后，事件循环将检查已达到时间阈值的计时器。如果一个或多个计时器准备就绪，事件循环将回到 timers 阶段来执行那些计时器的回调。</p>
+<h4 id="check"><a href="#check" class="headerlink" title="check"></a>check</h4><p>setTimeout/setInterval回调在timers阶段执行；而setImmediate在check阶段执行，总是在poll阶段完成后执行。</p>
+<p>执行定时器的顺序将根据调用它们的上下文而有所不同。</p>
+<p>在非I/O周期内调用时，受进行性能限制，执行顺序不确定<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo1: 打印顺序不定</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo2: 打印顺序：immediate, timeout</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line">fs.readFile(__filename, () =&gt; &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>使用setImmediate优于setTimeout的主要优点是setImmediate将始终在任何定时器之前执行（如果在I/O周期内调度），与存在多少定时器无关。</p>
+<h4 id="process-nextTick-vs-setImmediate"><a href="#process-nextTick-vs-setImmediate" class="headerlink" title="process.nextTick vs setImmediate"></a>process.nextTick vs setImmediate</h4><p>process.nextTick在同一阶段立即触发<br>setImmediate在事件循环的后续迭代或’tick’中触发</p>
+<p>官网上说这两个名字其实应该换一下，一般来讲process.nextTick比setImmediate更快地触发。</p>
+<p>process.nextTick中继续调用nextTick很容易导致饿死现象，官方推荐使用setImmediate</p>
 
       
     </div>
@@ -462,8 +494,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -543,6 +584,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#poll"><span class="nav-number">1.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#check"><span class="nav-number">2.</span> <span class="nav-text">check</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process-nextTick-vs-setImmediate"><span class="nav-number">3.</span> <span class="nav-text">process.nextTick vs setImmediate</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
