@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alex的小站">
 <meta property="og:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/     ┌───────────────────────────┐ ┌─&amp;gt;│           timers          │ │  └──────">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-17T14:28:47.889Z">
+<meta property="og:updated_time" content="2019-01-22T10:13:35.643Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node中的事件循环">
 <meta name="twitter:description" content="node 异步I/O的4要素：请求对象，线程池，观察者，事件循环 event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/     ┌───────────────────────────┐ ┌─&amp;gt;│           timers          │ │  └──────">
@@ -376,16 +376,19 @@
 </code></pre>
 
 <p>Note:</p>
-<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>1.计算它应该block和轮询I/O的时间<br>2.处理轮询队列中的事件。</p>
-<p>当事件循环进入poll阶段并且此前没有设置定时器时，有以下两种情况：</p>
-<p>1.如果轮询队列不为空，则事件循环将遍历并同步执行它们的回调队列，直到队列已用尽或者达到系统相关的硬限制。<br>2.如果轮询队列为空，则：<br>如果已经调用过setImmediate，则事件循环将结束轮询阶段并继续执行check阶段，来执行这些定时器。<br>如果没有调用过setImmediate，则事件循环将等待将定时器回调添加到队列后立即执行。<br>轮询队列为空后，事件循环将检查已达到时间阈值的计时器。如果一个或多个计时器准备就绪，事件循环将回到 timers 阶段来执行那些计时器的回调。</p>
+<h4 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h4><p>在node.js里，任何异步方法（除timer,close,setImmediate之外）完成时，都会将其callback加到轮询队列poll queue里,并立即执行。</p>
+<p>1.计算它应该block和轮询I/O的时间<br>2.处理轮询队列中的事件,执行定时器的回调。</p>
+<p>当event loop进入poll阶段并且此前代码中没有设置定时器时，有以下两种情况：</p>
+<p>1.如果轮询队列不为空，则事件循环将遍历并同步执行它们的回调，直到队列为空或者达到系统上限。<br>2.如果轮询队列为空，则：<br>如果已经调用过setImmediate，则事件循环将结束poll阶段并继续执行check阶段，来执行这些定时器。<br>如果没有调用过setImmediate，则事件循环将阻塞在该阶段，等待有定时器回调加入到poll queue后立即执行。</p>
+<p>当event loop进入poll阶段，并且代码设置了定时器：</p>
+<p>如果poll是空闲状态，事件循环将检查已达到时间阈值的定时器。如果一个或多个定时器准备就绪，事件循环将回到 timers 阶段来执行那些定时器回调。</p>
 <h4 id="check"><a href="#check" class="headerlink" title="check"></a>check</h4><p>setTimeout/setInterval回调在timers阶段执行；而setImmediate在check阶段执行，总是在poll阶段完成后执行。</p>
-<p>执行定时器的顺序将根据调用它们的上下文而有所不同。</p>
-<p>在非I/O周期内调用时，受进行性能限制，执行顺序不确定<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo1: 打印顺序不定</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo2: 打印顺序：immediate, timeout</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line">fs.readFile(__filename, () =&gt; &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>执行定时器的顺序将根据调用它们的上下文而有所不同, 原因详见(cnode讨论帖)[<a href="https://cnodejs.org/topic/57d68794cb6f605d360105bf]。" target="_blank" rel="noopener">https://cnodejs.org/topic/57d68794cb6f605d360105bf]。</a></p>
+<p>在非I/O周期内调用时，受进程性能限制，执行顺序不确定。（毕竟setTimeout的创建要涉及到红黑树等复杂操作）<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// demo1: 打印顺序不定</span></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo2: 打印顺序：immediate, timeout</span></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line">fs.readFile(__filename, () =&gt; &#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'timeout'</span>);</span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'immediate'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
 <p>使用setImmediate优于setTimeout的主要优点是setImmediate将始终在任何定时器之前执行（如果在I/O周期内调度），与存在多少定时器无关。</p>
-<h4 id="process-nextTick-vs-setImmediate"><a href="#process-nextTick-vs-setImmediate" class="headerlink" title="process.nextTick vs setImmediate"></a>process.nextTick vs setImmediate</h4><p>process.nextTick在同一阶段立即触发<br>setImmediate在事件循环的后续迭代或’tick’中触发</p>
-<p>官网上说这两个名字其实应该换一下，一般来讲process.nextTick比setImmediate更快地触发。</p>
-<p>process.nextTick中继续调用nextTick很容易导致饿死现象，官方推荐使用setImmediate</p>
+<h4 id="process-nextTick-vs-setImmediate"><a href="#process-nextTick-vs-setImmediate" class="headerlink" title="process.nextTick vs setImmediate"></a>process.nextTick vs setImmediate</h4><p>process.nextTick 在各个阶段的切换中间执行，可以理解为总是在当前阶段的末尾触发执行<br>setImmediate 只在check阶段执行，可以理解为在事件循环的后续迭代或’tick’中触发</p>
+<p>其实这两个名字应该换一下，一般来讲process.nextTick比setImmediate更快地触发。</p>
+<p>process.nextTick中继续调用nextTick很容易导致饿死现象，官方推荐使用setImmediate来实现异步。</p>
 
       
     </div>
@@ -430,8 +433,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/node/ssr/" rel="next" title="服务端渲染ssr">
-                <i class="fa fa-chevron-left"></i> 服务端渲染ssr
+              <a href="/node/cluster/" rel="next" title="cluster">
+                <i class="fa fa-chevron-left"></i> cluster
               </a>
             
           </div>
@@ -440,8 +443,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/node/koa-compose/" rel="prev" title="koa2中间件机制">
-                koa2中间件机制 <i class="fa fa-chevron-right"></i>
+              <a href="/job/event/" rel="prev" title="前后端同构在去哪儿项目中的实践">
+                前后端同构在去哪儿项目中的实践 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -523,7 +526,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -534,7 +537,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -545,7 +548,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

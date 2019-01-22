@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍">
+<meta name="description" content="守护进程区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所">
 <meta name="keywords" content="node">
 <meta property="og:type" content="article">
-<meta property="og:title" content="守护进程daemon">
+<meta property="og:title" content="区分几个进程相关概念">
 <meta property="og:url" content="https://happy-alex.github.io/node/process/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍">
+<meta property="og:description" content="守护进程区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-07T06:48:59.961Z">
+<meta property="og:updated_time" content="2019-01-22T11:19:36.360Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="守护进程daemon">
-<meta name="twitter:description" content="区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍">
+<meta name="twitter:title" content="区分几个进程相关概念">
+<meta name="twitter:description" content="守护进程区分3个概念：前台进程，后台进程，守护进程 前台进程: node index.js后台进程: node index.js &amp;amp;守护进程: nohup node index.js &amp;amp;  前台进程和后台进程二者的本质不同在于后台进程没有继承标准输入，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。后台进程继承了当前session的标准输出和标准错误，所以后台进程的所">
 
 
 
@@ -126,7 +126,7 @@
 
 
 
-  <title>守护进程daemon | Alex的小站</title>
+  <title>区分几个进程相关概念 | Alex的小站</title>
   
 
 
@@ -280,7 +280,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">守护进程daemon</h2>
+          <h2 class="post-title" itemprop="name headline">区分几个进程相关概念</h2>
         
 
         <div class="post-meta">
@@ -352,14 +352,22 @@
       
 
       
-        <p>区分3个概念：前台进程，后台进程，守护进程</p>
+        <h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><p>区分3个概念：前台进程，后台进程，守护进程</p>
 <p>前台进程: node index.js<br>后台进程: node index.js &amp;<br>守护进程: nohup node index.js &amp; </p>
 <h3 id="前台进程和后台进程"><a href="#前台进程和后台进程" class="headerlink" title="前台进程和后台进程"></a>前台进程和后台进程</h3><p>二者的本质不同在于<strong>后台进程没有继承标准输入</strong>，因此当开启一个后台进程后，用户还可以在控制终端上输入其他命令。<br>后台进程继承了当前session的标准输出和标准错误，所以后台进程的所有输出仍然可以在当前session中显示</p>
 <h3 id="守护进程不等于后台进程。"><a href="#守护进程不等于后台进程。" class="headerlink" title="守护进程不等于后台进程。"></a>守护进程不等于后台进程。</h3><p>node index.js &amp; 产生了一个后台进程。<br>但这个后台进程并不是一个守护进程，因为它没有脱离终端，如果关闭终端，这个进程还是会被杀死。</p>
-<h3 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h3><p>守护进程是在后台运行不受终端控制（输入，输出）的进程。一般的网络服务都是以守护进程的方式运行。<br>node项目常常需要用守护进程的方式启动服务，常见3种方式：nohup, forever, pm2。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup node index.js &amp;    <span class="comment">// nohup不能自动把前台进程变为后台进程，必须加&amp;</span></span><br><span class="line">forever start index.js</span><br><span class="line">pm2 start index.js</span><br></pre></td></tr></table></figure></p>
-<p>其中forever和pm2是node应用专有的启动工具，两者都能保证当进程意外退出时立即重启，但pm2提供比forever更强大的功能，日志收集和监控。</p>
+<h3 id="守护进程-1"><a href="#守护进程-1" class="headerlink" title="守护进程"></a>守护进程</h3><p>守护进程是在后台运行不受终端控制（输入，输出）的进程。一般的网络服务都是以守护进程的方式运行。<br>node项目常常需要用守护进程的方式启动服务，常见3种方式：nohup, forever, pm2。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup node index.js &amp;    <span class="comment">// 注意：nohup不能自动把前台进程变为后台进程，必须加&amp;</span></span><br><span class="line">forever start index.js</span><br><span class="line">pm2 start index.js</span><br></pre></td></tr></table></figure></p>
+<p>其中forever和pm2是node应用专有的启动工具，两者都能保证当进程意外退出时立即重启，但pm2提供比forever更强大的功能，包括日志收集和监控等。</p>
 <p>sudo service xx.sh start/stop 启动/停止执行脚本</p>
+<p><a href="https://cnodejs.org/topic/57adfadf476898b472247eac" target="_blank" rel="noopener">node实现一个守护进程</a></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>[<a href="http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html]" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2016/02/linux-daemon.html]</a></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h3><p>父进程先退出，子进程存活，子进程将被init进程收养，成为孤儿进程。</p>
+<p>当init进程接管了孤儿进程后，init会调用wait()来处理这些孤儿进程，从而释放它们所占用的资源。由此可见孤儿进程没有什么危害，在处理僵尸进程时可以考虑把它变为孤儿进程，进行回收。</p>
+<h3 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h3><p>子进程死亡，但是父进程并没有及时调用 wait() 或 waitpid() 来获取死亡进程的相关信息，子进程还有一个PCB残留在进程表，就称为僵尸进程。僵尸进程仍然会消耗一定的系统资源，并且还保留了一些信息供父进程查询子进程的状态，僵尸进程会一直等待父进程读取自己的退出状态码，一旦父进程得到了子进程的返回值，僵尸进程就会结束。</p>
+<p>如果僵尸进程过度，这些僵尸进程的PCB无法释放，将占用大量的进程描述符PID和进程表中的资源，严重的话系统运行缓慢，fork新进程时，系统将没有可用的PID来分配给新进程。</p>
+<p>此时可以将僵尸进程的父进程直接杀死，把所有的僵尸进程都变为孤儿进程。</p>
+<h3 id="守护进程挂了怎么办"><a href="#守护进程挂了怎么办" class="headerlink" title="守护进程挂了怎么办"></a>守护进程挂了怎么办</h3><p>如果守护进程挂掉了怎么办？比如使用pm2启动服务，master进程直接挂了。</p>
+<p>由于守护进程挂掉，那么其关联的子进程都将成为孤儿进程，同时被init进程接管。</p>
 
       
     </div>
@@ -497,7 +505,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">61</span>
+                  <span class="site-state-item-count">63</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -508,7 +516,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -519,7 +527,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -568,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前台进程和后台进程"><span class="nav-number">1.</span> <span class="nav-text">前台进程和后台进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程不等于后台进程。"><span class="nav-number">2.</span> <span class="nav-text">守护进程不等于后台进程。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程"><span class="nav-number">3.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程"><span class="nav-number">1.</span> <span class="nav-text">守护进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前台进程和后台进程"><span class="nav-number">1.1.</span> <span class="nav-text">前台进程和后台进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程不等于后台进程。"><span class="nav-number">1.2.</span> <span class="nav-text">守护进程不等于后台进程。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程-1"><span class="nav-number">1.3.</span> <span class="nav-text">守护进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充"><span class="nav-number">2.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#孤儿进程"><span class="nav-number">2.1.</span> <span class="nav-text">孤儿进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#僵尸进程"><span class="nav-number">2.2.</span> <span class="nav-text">僵尸进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#守护进程挂了怎么办"><span class="nav-number">2.3.</span> <span class="nav-text">守护进程挂了怎么办</span></a></li></ol></li></ol></div>
             
 
           </div>
