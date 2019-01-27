@@ -90,7 +90,7 @@
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event1.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/event/event2.png">
-<meta property="og:updated_time" content="2019-01-17T14:37:08.356Z">
+<meta property="og:updated_time" content="2019-01-27T12:44:30.495Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="前后端同构在去哪儿项目中的实践">
 <meta name="twitter:description" content="痛点传统开发模式：模板文件放在后端工程目录下，通过pom文件实现前端资源关联。 1.前后端在view层工作重复，前后端严重依赖vm文件2.前端依赖后端开发环境，mock数据停留在页面级别3.传统的客户端ajax异步请求数据，页面有明显loading时间4.前端无法有效推动后端工作 node如何解决痛点？1.view层彻底交给前端，后端只需要专注于复杂业务逻辑，提供数据2.node做中间层，摆脱对后">
@@ -363,7 +363,7 @@
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3><p>去哪儿内部的一个node框架叫做qxf，是基于express自研的。优点很明显：<br>1.通过插件的形式，打通了公司的其他环节，比如qconfig，watcher等<br>2.内置了服务启动脚本，业务不用更多的关注发布流程<br>3.内部自己人维护，可及时响应</p>
 <p>实际使用中也发现了一些问题，比如<br>1.没有明确的项目目录规范，各个团队各种写法都有。<br>2.多进程管理不够优雅，传统的fork进程写法容易侵入了业务代码中<br>3.不能有效区分多环境(local/beta/prod)<br>4.部分插件功能不够完善<br>5.在生产环境中如何确保系统的安全性，稳定性</p>
 <p>社区内也有一些知名企业级方案，像阿里的egg，360的think等。</p>
-<p>经过团队讨论，最后还是选择了阿里开源的egg</p>
+<p>经过团队讨论，出于社区生态的考虑，最后还是选择了阿里开源的egg</p>
 <h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>event立项之初，传统的项目发布方式对node并不友好，项目中常常需要写一个发布脚本，然后交给jekins执行。这带来了很多问题。比如一份脚本如何有效区分beta和prod环境？如何利用发布系统中的端口，部署路径等信息？尤其是写shell命令，大大增加了前端同学的学习成本。</p>
 <p>但实际上不同项目除了部署路径，端口等少部分信息不同外，逻辑大部分是相似的。经过百放老师的努力和推动，最终发布系统优化了jenkins的发布方式，使其对node项目更友好。现在只需要在项目下设置一个简单的start.sh文件（在sh文件中设置npm安装，启动node服务，只有几行命令)，然后在发布系统中选择node类型，然后填入端口，部署路径等信息即可。</p>
 <h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><h4 id="服务端如何引用前端组件，如何管理action"><a href="#服务端如何引用前端组件，如何管理action" class="headerlink" title="服务端如何引用前端组件，如何管理action"></a>服务端如何引用前端组件，如何管理action</h4><p><img src="//happy-alex.github.io/images/job/event/event.png" width="50%" height="50%"></p>
@@ -373,7 +373,7 @@
 <p>不妨换个思路，利用ip获取经纬度或者经纬度在请求模板html文件时作为参数传入</p>
 <h4 id="如何有效管理接口"><a href="#如何有效管理接口" class="headerlink" title="如何有效管理接口"></a>如何有效管理接口</h4><p>node需要访问java服务才能拿到数据，如何有效区分不同环境的接口地址？<br>我们把接口地址集中管理，放在一个全局文件下维护，借由egg提供的多环境机制可以很容易的做到环境隔离。</p>
 <h4 id="接口透传"><a href="#接口透传" class="headerlink" title="接口透传"></a>接口透传</h4><p>有些接口服务event只做最简单的透传工作，如果按照egg的设计，每个服务都要提供一个service层，那会造成极大的冗余浪费，能否优化？<br>统一封装透传接口，暴露给前端页面使用，前端通过访问服务端暴露出来的接口直接请求后端java数据，event无需再写相应的service</p>
-<h3 id="实践心得"><a href="#实践心得" class="headerlink" title="实践心得"></a>实践心得</h3><p>1.合理的利用缓存能够极大提高性能，比如缓存模板，缓存数据<br>2.中间件不是越多越好，数量越多，也就意味着处理链路越长，损耗越多<br>3.区分node环境和客户端环境。前后端同构的代码很可能会同时执行在服务端和客户端，但两者有些不同，部分变量服务端是没有的，比如window，dom等</p>
+<h3 id="实践心得"><a href="#实践心得" class="headerlink" title="实践心得"></a>实践心得</h3><p>1.合理的利用缓存能够极大提高性能，比如缓存模板，缓存数据<br>2.中间件不是越多越好，数量越多，也就意味着处理链路越长，损耗越多<br>3.区分node环境和客户端环境。前后端同构的代码很可能会同时执行在服务端和客户端，但两者有些不同，部分变量服务端是没有的，比如window，dom等<br>4.客户端可能存在cookie含非法字符的情况，所以后端在解析cookie时需要使用try/catch包裹</p>
 <h3 id="日志监控"><a href="#日志监控" class="headerlink" title="日志监控"></a>日志监控</h3><p>服务端的日志监控接入了去哪儿已有的kibanna + watcher服务<br>accesslog, 异常详情等信息都被统计到kibana上来可以实时预览<br>接口耗时，调用次数等信息被watcher打点记录。</p>
 <p>event监控结构<br><img src="//happy-alex.github.io/images/job/event/event1.png"></p>
 <p>event生态<br><img src="//happy-alex.github.io/images/job/event/event2.png"></p>
@@ -381,7 +381,7 @@
 <p>qconfig就是提供这种功能的一套服务。它具有多个特性，比如配置和代码相分离，集中管理所有的配置；热发布配置文件。失败回滚等等，在去哪儿内部广泛使用。</p>
 <p>event作为一个后端服务，免不了要和qconfig打交道。但qconfig提供的基本都是java接口。因此node需要自己实现访问qconfig的功能。</p>
 <h3 id="dubbo"><a href="#dubbo" class="headerlink" title="dubbo"></a>dubbo</h3><p>浏览器里js只需要关心http接口就可以，但是作为服务端语言，免不了要和其他RPC服务打交道。因此如何使用node访问其他RPC服务就是个问题。<br>部分后端服务是由dubbo提供的，因此node如何访问dubbo服务是event要解决的问题。</p>
-<p>遗憾的是这一点event做的不够好，因为场景里dubbo服务的数量不多，为了减少学习成本，有爱的后端同学直接帮忙把dubbo服务转为http形式了。<br>这是event后面要解决的问题</p>
+<p>遗憾的是这一点event做的不够好，因为场景里dubbo服务的数量不多，为了减少学习成本，后端同学直接帮忙把dubbo服务转为http形式了。<br>这是event后面要解决的问题</p>
 
       
     </div>
@@ -525,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">63</span>
+                  <span class="site-state-item-count">64</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
