@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://happy-alex.github.io/js/react/redux/</loc>
+    <lastmod>2019-02-14T10:48:22.145Z</lastmod>
+  </url>  <url>
+    <loc>https://happy-alex.github.io/js/react/flux/</loc>
+    <lastmod>2019-02-14T10:38:38.707Z</lastmod>
+  </url>  <url>
+    <loc>https://happy-alex.github.io/job/cms/</loc>
+    <lastmod>2019-02-14T03:28:55.032Z</lastmod>
+  </url>  <url>
+    <loc>https://happy-alex.github.io/js/es7/async/</loc>
+    <lastmod>2019-01-30T09:14:18.971Z</lastmod>
+  </url>  <url>
+    <loc>https://happy-alex.github.io/node/koa-compose/</loc>
+    <lastmod>2019-01-30T03:28:37.083Z</lastmod>
+  </url>  <url>
     <loc>https://happy-alex.github.io/other/excel-export/</loc>
     <lastmod>2019-01-27T12:46:05.501Z</lastmod>
   </url>  <url>
@@ -73,9 +88,6 @@
     <loc>https://happy-alex.github.io/js/es6/generator/</loc>
     <lastmod>2018-12-27T14:28:06.894Z</lastmod>
   </url>  <url>
-    <loc>https://happy-alex.github.io/js/es7/async/</loc>
-    <lastmod>2018-12-27T14:27:31.580Z</lastmod>
-  </url>  <url>
     <loc>https://happy-alex.github.io/js/es6/callback_exception/</loc>
     <lastmod>2018-12-27T05:58:43.904Z</lastmod>
   </url>  <url>
@@ -100,20 +112,11 @@
     <loc>https://happy-alex.github.io/job/dsp/</loc>
     <lastmod>2018-12-19T03:02:02.087Z</lastmod>
   </url>  <url>
-    <loc>https://happy-alex.github.io/job/cms/</loc>
-    <lastmod>2018-12-18T14:36:36.819Z</lastmod>
-  </url>  <url>
     <loc>https://happy-alex.github.io/js/base/extends/</loc>
     <lastmod>2018-12-18T08:41:25.858Z</lastmod>
   </url>  <url>
-    <loc>https://happy-alex.github.io/js/react/flux/</loc>
-    <lastmod>2018-12-17T13:10:09.841Z</lastmod>
-  </url>  <url>
     <loc>https://happy-alex.github.io/js/react/reconciliation/</loc>
     <lastmod>2018-12-17T12:21:17.291Z</lastmod>
-  </url>  <url>
-    <loc>https://happy-alex.github.io/js/react/redux/</loc>
-    <lastmod>2018-12-17T08:50:43.759Z</lastmod>
   </url>  <url>
     <loc>https://happy-alex.github.io/js/react/life/</loc>
     <lastmod>2018-12-17T08:49:32.876Z</lastmod>
@@ -168,9 +171,6 @@
   </url>  <url>
     <loc>https://happy-alex.github.io/css/image/</loc>
     <lastmod>2018-11-29T14:27:21.749Z</lastmod>
-  </url>  <url>
-    <loc>https://happy-alex.github.io/node/koa-compose/</loc>
-    <lastmod>2018-11-12T03:50:04.296Z</lastmod>
   </url>  <url>
     <loc>https://happy-alex.github.io/linux/scp/</loc>
     <lastmod>2018-10-26T06:20:35.055Z</lastmod>

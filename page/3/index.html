@@ -1493,7 +1493,7 @@ node如何解决痛点？1.view层彻底交给前端，后端只需要专注于�
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/event-loop/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/cluster/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -1512,7 +1512,7 @@ node如何解决痛点？1.view层彻底交给前端，后端只需要专注于�
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/node/event-loop/" itemprop="url">node中的事件循环</a></h2>
+                <a class="post-title-link" href="/node/cluster/" itemprop="url">cluster</a></h2>
         
 
         <div class="post-meta">
@@ -1586,16 +1586,15 @@ node如何解决痛点？1.view层彻底交给前端，后端只需要专注于�
       
         
           
-          node 异步I/O的4要素：请求对象，线程池，观察者，事件循环
-event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
-
-   ┌───────────────────────────┐
-┌─&gt;│           timers          │
-│  └──────
+          cluster模块 = net + child_process 组合应用
+进程管理最初的node多进程模型/抢占式：
+发送fd给所有worker: master通过执行cluster.fork()，fork出多个worker进程，worker执行listen()。进程间通过传递文件描述符fd完成通信，由于多个worker间存在竞争问题导致惊群现象。
+改进/Round-Robin：
+不直接将fd分发
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/node/event-loop/#more" rel="contents">
+            <a class="btn" href="/node/cluster/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1744,7 +1743,7 @@ event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-ti
         
           
           koa2中间件的核心实现：数组 + Promise + 递归
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859// koa1 使用generatorfunction compose(middleware) &#123;    re
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061// koa1 使用generatorfunction compose(middleware) &#123;  
           ...
           <!--noindex-->
           <div class="post-button text-center">

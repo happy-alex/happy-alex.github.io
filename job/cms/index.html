@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。后台(B端)用于配置活动，前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护。 CQ">
+<meta name="description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。搭建后台(B端)用于配置活动，渲染前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护">
 <meta name="keywords" content="work">
 <meta property="og:type" content="article">
 <meta property="og:title" content="活动专题系统搭建过程中我的一些思考">
 <meta property="og:url" content="https://happy-alex.github.io/job/cms/index.html">
 <meta property="og:site_name" content="Alex的小站">
-<meta property="og:description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。后台(B端)用于配置活动，前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护。 CQ">
+<meta property="og:description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。搭建后台(B端)用于配置活动，渲染前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/cms/cms1.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/cms/cms2.png">
 <meta property="og:image" content="https://happy-alex.github.io/images/job/cms/cms3.png">
-<meta property="og:updated_time" content="2018-12-18T14:36:36.819Z">
+<meta property="og:updated_time" content="2019-02-14T03:28:55.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="活动专题系统搭建过程中我的一些思考">
-<meta name="twitter:description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。后台(B端)用于配置活动，前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护。 CQ">
+<meta name="twitter:description" content="CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。 以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。 CMS系统分前后台两个项目。搭建后台(B端)用于配置活动，渲染前台(C端)渲染实际页面。 后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护">
 <meta name="twitter:image" content="https://happy-alex.github.io/images/job/cms/cms1.png">
 
 
@@ -358,13 +358,14 @@
       
         <p>CMS系统是由携程民宿(C)，去哪儿民宿(Q)，途家(T)共同维护的一个项目。运营在活动后台通过拖拽配置不同的功能模块，生成前台可直接访问的活动页面。</p>
 <p>以往的专题活动页往往需要前端人力开发，费事费力，CMS旨在减轻开发人员开发成本。</p>
-<p>CMS系统分前后台两个项目。后台(B端)用于配置活动，前台(C端)渲染实际页面。</p>
+<p>CMS系统分前后台两个项目。搭建后台(B端)用于配置活动，渲染前台(C端)渲染实际页面。</p>
 <p>后台共享一个配置后台系统，CQT活动均统一在配置系统内配置，功能模块统一维护。</p>
 <p>CQT前台共享一套UI，代码需要各自适配各自的业务逻辑。实际生成的活动页面，其入口域名，接口服务，登录判断等均需走各自接口和sdk。前端资源文件可选择途家部署或独立部署。</p>
 <p><strong>CMS的核心思想就是B端生成一份JSON，C端根据JSON渲染页面。B端和C端对每一个组件都做了数据格式约定。</strong></p>
 <p>我主要承担了B端组件的设计开发和后期维护工作，以及C端页面在去哪儿部分的适配工作。本文记录了自己的一些关于CMS的设计思考。</p>
-<h2 id="B端"><a href="#B端" class="headerlink" title="B端"></a>B端</h2><p>CMS需要支持图片，文本，红包，房屋列表，tab，楼层等多个常见活动页需要的功能。<br>我们把诸如图片，tab这样的具体业务逻辑组件叫做组件， 而封装了组件，同时加入了其他辅助功能的B端组件叫做模块。一般来说一个模块都对应一个组件。</p>
-<p>B端UI主要有三部分：待选组件列表，可视化展示(预览效果), 以及组件编辑区域。每个功能模块都应该包含这3部分。</p>
+<h2 id="B端"><a href="#B端" class="headerlink" title="B端"></a>B端</h2><p>CMS需要支持图片，文本，红包，房屋列表，tab，楼层等多个常见活动页需要的功能。</p>
+<p>主要区分3个概念：组件，模块，页面模板。<br>我们把诸如图片，tab这样的具体业务逻辑组件叫做组件， 而封装了组件，同时加入了其他辅助功能的B端组件叫做模块。一般来说一个模块都对应一个组件。页面模板则是为了减少每次搭建都需要从0开始选取组件的成本，而提供的一套默认集成了常见功能组件的模板效果。</p>
+<p>B端UI主要有三部分：待选组件列表，可视化展示(预览效果), 以及组件编辑区域。每个功能模块都应该包含这3部分，这里主要谈一下模块的相关思想。</p>
 <h3 id="模块的设计"><a href="#模块的设计" class="headerlink" title="模块的设计"></a>模块的设计</h3><p>每个模块有3部分组成：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">module</span><br><span class="line">|</span><br><span class="line">|-- config        模块基本数据，前后台约定的通信格式</span><br><span class="line">|-- view          可视化页面，是一个C端组件的缩略，同时负责B端模块编辑的可视化展示</span><br><span class="line">|-- controller    控制器，配置模块的基本信息，逻辑上可以认为是对config的操作，编辑组件</span><br></pre></td></tr></table></figure></p>
 <p>用户新增一个组件，CMS将根据该模块的config信息，初始化一个view组件和controller组件。用户编辑controller部分，view会实时更新。</p>
 <h3 id="虚拟模块"><a href="#虚拟模块" class="headerlink" title="虚拟模块"></a>虚拟模块</h3><p>上面我们说到，B端在实现上将图片，tab, 楼层这样的组件都视为一个模块。但是tab和楼层不是简单独立的，一般内部都是有嵌套其他组件的，比如tab可以切换不同的房屋列表，楼层还可以指定跳转到页面不同的位置。所以这里引入了一个“虚拟模块”的概念，我把tab等模块内部嵌套的子模块称之为“虚拟模块”。</p>
@@ -380,7 +381,7 @@
 <p>校验JSON的过程，其实就是个遍历操作，遍历过程我们能很容易的拿到出错组件的位置，错误内容等信息，这给我们提供一个全局的校验提示提供了可能。当发现校验失败时，我们把拿到的出错组件相关信息展示出来，帮助用户更好更快的定位到已有数据的问题，并将编辑区域直接切换为当前出错组件。</p>
 <h3 id="安全"><a href="#安全" class="headerlink" title="安全"></a>安全</h3><p>作为一个涉及大量表单操作的配置系统，很多输入可能都会直接输出到前台，比如文本组件需要直接输出文本到前台。如何防范常见web攻击，如xss攻击是必须要解决的问题。</p>
 <h2 id="C端"><a href="#C端" class="headerlink" title="C端"></a>C端</h2><p>文章开头我们说道C端的UI组件是三家共享的，但业务逻辑却彼此各不相同。因此如何开发组件，部署是个问题。</p>
-<h3 id="组件开发"><a href="#组件开发" class="headerlink" title="组件开发"></a>组件开发</h3><p>一个C端组件有两部分组成，UI组件和业务组价。这样三家共享一套UI, 维护各自的业务组件，只需要关心自己的业务就行了，极大的解耦。</p>
+<h3 id="组件开发"><a href="#组件开发" class="headerlink" title="组件开发"></a>组件开发</h3><p>一个C端组件有两部分组成，UI组件和业务组件。这样三家共享一套UI, 维护各自的业务组件，只需要关心自己的业务就行了，极大的解耦。</p>
 <h3 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h3><p>我主要介绍下去哪儿部分的部署方案。</p>
 <p>前端资源部署在途家cdn上，利用途家的jenkins统一打包。这样做的目的是为了尽量减少后期代码的维护成本，如果去哪儿独立部署，每次其他平台比如途家有需求变动或者修改了一个公共bug，去哪儿这边需要手动同步拷贝途家源代码到自己的项目中，然后再走去哪儿自己的项目发布流程，这个拷贝项目代码的过程很痛苦。</p>
 <p>前端资源虽然部署在了途家上，但后端服务还得走去哪儿自己的服务。因此前后端需要通过一个模板文件做关联。</p>
@@ -388,10 +389,17 @@
 <p>事实上jenkins发布之后，我们已经打出了一个项目模板文件，只要将这个模板文件放在后端工程下即可关联最新资源。但即使只需要手动拷贝一个模板文件，也很麻烦。每次发完前端，都需要手动拷贝模板，替换掉后端工程目录下的模板文件，然后再提交后端代码，发布后端。</p>
 <p>有没有更简单的？</p>
 <p>这里我写了一个小工具 <a href="https://npm.taobao.org/package/sync-file-cli" target="_blank" rel="noopener">sync-file-cli</a>, 以简化手动拷贝代码的工作，具体用法参见该包的readme说明。</p>
-<p>什么为什么要放在途家部署？业务原因，去哪儿民宿，携程民宿都是途家民宿业务矩阵的一部分。</p>
-<h2 id="其他思考"><a href="#其他思考" class="headerlink" title="其他思考"></a>其他思考</h2><p>后台组件和前台组件其实是一一对应的，能否利用同构的思想，前后台只维护一套组件库？肯定是可以的，只是这种方案不适合现有的业务场景。</p>
+<p>为什么要放在途家部署？业务原因，去哪儿民宿，携程民宿都是途家民宿业务矩阵的一部分。</p>
 <h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p>CMS从11月份以来开始开发，到现在基本稳定，已上线了多个活动页。<br><a href="https://bnb.qunar.com/tjbnb/front/promotion/cms?id=Q20181212112442&amp;fromForLog=6248" target="_blank" rel="noopener">这是一个通过CMS配置出来的活动</a></p>
 <p><img src="//happy-alex.github.io/images/job/cms/cms1.png" width="50%" height="50%"><br><img src="//happy-alex.github.io/images/job/cms/cms2.png" width="50%" height="50%"><br><img src="//happy-alex.github.io/images/job/cms/cms3.png" width="50%" height="50%"></p>
+<h2 id="其他思考"><a href="#其他思考" class="headerlink" title="其他思考"></a>其他思考</h2><h3 id="难点"><a href="#难点" class="headerlink" title="难点"></a>难点</h3><p>1.正确组织页面组件的层级嵌套关系</p>
+<p>要正确组织组件间嵌套关系，防止组件间错误嵌套导致渲染异常(比如一个行内元素嵌套了块级元素)或者逻辑错误(tab组件下嵌套了楼层组件)。<br>考虑到移动端的特点，组件UI的基本效果都是宽度铺满，高度不定，页面上下有滚动效果。所以渲染前台基本上是根据json配置数据从上到下依次渲染组件的。但不可避免有些复杂的业务组件，比如楼层，tab组件等存在嵌套的需求。搭建后台指定了一些组件间嵌套和约束规则，规定了楼层和tab组件的嵌套子组件允许类型。</p>
+<p>2.如何将搭建后台和渲染前台的前端渲染框架进行解耦</p>
+<p>基于json配置，前后台只通过json通信，互不关心对方技术实现。</p>
+<p>3.实时预览</p>
+<p>实现实时预览功能，我想到了两种解决方案：后台直接渲染和第三方渲染。后台直接渲染就是编辑器需要引入组件库组件源码，由后台模拟前台组件的真实渲染环境。这样的缺点就在于后台和前台的技术选型需要一致，同时后续组件库更新，前后台要同步更新。第三方渲染就是利用iframe嵌入真实效果页面或另开一个浏览器窗口打开真实效果页面。这其实相当于走了一遍整体流程，因此需要保证效果页的渲染速度。</p>
+<p>cms这两种方式兼而有之，后台可视化区域未加载真实数据，只是渲染了一个大致的缩略图/骨架屏效果，并没有引入真实组件渲染效果。如果需要查看真实数据效果，则打开一个预览窗口来完成真实的数据渲染。</p>
+<h3 id="可以优化的点"><a href="#可以优化的点" class="headerlink" title="可以优化的点"></a>可以优化的点</h3><p>1.后台组件和前台组件其实是一一对应的，能否利用同构的思想，前后台只维护一套组件库，这样每次新增组件，只是在后台动态添加组件就好，无需渲染侧前台进行发布改动？肯定是可以的，只是这种方案不适合现有的业务场景。</p>
 
       
     </div>
@@ -600,7 +608,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#B端"><span class="nav-number">1.</span> <span class="nav-text">B端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模块的设计"><span class="nav-number">1.1.</span> <span class="nav-text">模块的设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟模块"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多模块的管理"><span class="nav-number">1.3.</span> <span class="nav-text">多模块的管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据校验"><span class="nav-number">1.4.</span> <span class="nav-text">数据校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">1.5.</span> <span class="nav-text">安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C端"><span class="nav-number">2.</span> <span class="nav-text">C端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#组件开发"><span class="nav-number">2.1.</span> <span class="nav-text">组件开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">2.2.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他思考"><span class="nav-number">3.</span> <span class="nav-text">其他思考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">4.</span> <span class="nav-text">效果图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#B端"><span class="nav-number">1.</span> <span class="nav-text">B端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#模块的设计"><span class="nav-number">1.1.</span> <span class="nav-text">模块的设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟模块"><span class="nav-number">1.2.</span> <span class="nav-text">虚拟模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多模块的管理"><span class="nav-number">1.3.</span> <span class="nav-text">多模块的管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据校验"><span class="nav-number">1.4.</span> <span class="nav-text">数据校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">1.5.</span> <span class="nav-text">安全</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C端"><span class="nav-number">2.</span> <span class="nav-text">C端</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#组件开发"><span class="nav-number">2.1.</span> <span class="nav-text">组件开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署"><span class="nav-number">2.2.</span> <span class="nav-text">部署</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">3.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他思考"><span class="nav-number">4.</span> <span class="nav-text">其他思考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#难点"><span class="nav-number">4.1.</span> <span class="nav-text">难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可以优化的点"><span class="nav-number">4.2.</span> <span class="nav-text">可以优化的点</span></a></li></ol></li></ol></div>
             
 
           </div>

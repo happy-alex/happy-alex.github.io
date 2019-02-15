@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/cluster/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/event-loop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -281,7 +281,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/node/cluster/" itemprop="url">cluster</a></h2>
+                <a class="post-title-link" href="/node/event-loop/" itemprop="url">node中的事件循环</a></h2>
         
 
         <div class="post-meta">
@@ -355,15 +355,16 @@
       
         
           
-          cluster模块 = net + child_process 组合应用
-进程管理最初的node多进程模型/抢占式：
-发送fd给所有worker: master通过执行cluster.fork()，fork出多个worker进程，worker执行listen()。进程间通过传递文件描述符fd完成通信，由于多个worker间存在竞争问题导致惊群现象。
-改进/Round-Robin：
-不直接将fd分发
+          node 异步I/O的4要素：请求对象，线程池，观察者，事件循环
+event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
+
+   ┌───────────────────────────┐
+┌─&gt;│           timers          │
+│  └──────
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/node/cluster/#more" rel="contents">
+            <a class="btn" href="/node/event-loop/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
