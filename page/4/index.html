@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/event-loop/">
+    <link itemprop="mainEntityOfPage" href="https://happy-alex.github.io/node/koa-compose/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Alex">
@@ -281,7 +281,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/node/event-loop/" itemprop="url">node中的事件循环</a></h2>
+                <a class="post-title-link" href="/node/koa-compose/" itemprop="url">koa2中间件机制</a></h2>
         
 
         <div class="post-meta">
@@ -355,16 +355,12 @@
       
         
           
-          node 异步I/O的4要素：请求对象，线程池，观察者，事件循环
-event-loop 查看官网介绍    https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
-
-   ┌───────────────────────────┐
-┌─&gt;│           timers          │
-│  └──────
+          koa2中间件的核心实现：数组 + Promise + 递归
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061// koa1 使用generatorfunction compose(middleware) &#123;  
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/node/event-loop/#more" rel="contents">
+            <a class="btn" href="/node/koa-compose/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
