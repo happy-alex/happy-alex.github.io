@@ -88,7 +88,7 @@
 <meta property="og:description" content="组件的props.children其实本质是一个数组，JSX会把插入表达式数组中的JSX一个个罗列显示(map函数渲染列表的核心原理)。  推荐在有复杂状态的组件上使用key属性，确保根据key在合适的时机销毁和重建组件，提供性能（http://www.tuicool.com/articles/UVvaMz）。  更新style时不要直接去修改原始style对象，这会引起react的警告，更好的">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20180213144507338?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdGh6eDI2NWJvYm8=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2018-08-08T11:20:32.058Z">
+<meta property="og:updated_time" content="2019-02-22T03:34:45.956Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记录一些 react的相关tips">
 <meta name="twitter:description" content="组件的props.children其实本质是一个数组，JSX会把插入表达式数组中的JSX一个个罗列显示(map函数渲染列表的核心原理)。  推荐在有复杂状态的组件上使用key属性，确保根据key在合适的时机销毁和重建组件，提供性能（http://www.tuicool.com/articles/UVvaMz）。  更新style时不要直接去修改原始style对象，这会引起react的警告，更好的">
@@ -366,6 +366,7 @@
 <li><p>setState({}, cb); react会在setState完成后触发回调函数cb，从而可以拿掉更新后的state。</p>
 </li>
 </ol>
+<p>6.原型链<br>React推荐的构造类组件的写法是 class Card extends React.Component{};<br>从new Card()开始这条原型链如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Card()</span><br><span class="line">  → Card.prototype </span><br><span class="line">    → React.Component.prototype </span><br><span class="line">      → <span class="built_in">Object</span>.prototype</span><br></pre></td></tr></table></figure></p>
 
       
     </div>

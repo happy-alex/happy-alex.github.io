@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://happy-alex.github.io/js/react/setstate/</loc>
+    
+    <lastmod>2019-02-22T03:45:17.678Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/js/react/tips/</loc>
+    
+    <lastmod>2019-02-22T03:34:45.956Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/other/jiami/</loc>
+    
+    <lastmod>2019-02-18T10:28:58.776Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/js/base/extends/</loc>
+    
+    <lastmod>2019-02-16T07:51:41.122Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/js/base/prototype/</loc>
+    
+    <lastmod>2019-02-16T07:35:43.018Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://happy-alex.github.io/js/react/redux/</loc>
     
     <lastmod>2019-02-14T10:48:22.145Z</lastmod>
@@ -191,13 +226,6 @@
   </url>
   
   <url>
-    <loc>https://happy-alex.github.io/js/react/setstate/</loc>
-    
-    <lastmod>2019-01-08T06:44:06.369Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://happy-alex.github.io/other/other/</loc>
     
     <lastmod>2019-01-07T02:54:47.652Z</lastmod>
@@ -268,13 +296,6 @@
   </url>
   
   <url>
-    <loc>https://happy-alex.github.io/js/base/extends/</loc>
-    
-    <lastmod>2018-12-18T08:41:25.858Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://happy-alex.github.io/js/react/reconciliation/</loc>
     
     <lastmod>2018-12-17T12:21:17.291Z</lastmod>
@@ -317,13 +338,6 @@
   </url>
   
   <url>
-    <loc>https://happy-alex.github.io/other/jiami/</loc>
-    
-    <lastmod>2018-12-10T10:39:53.206Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://happy-alex.github.io/js/es6/event_loop/</loc>
     
     <lastmod>2018-12-10T10:38:47.358Z</lastmod>
@@ -341,13 +355,6 @@
     <loc>https://happy-alex.github.io/browser/passive/</loc>
     
     <lastmod>2018-12-10T10:32:40.737Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://happy-alex.github.io/js/base/prototype/</loc>
-    
-    <lastmod>2018-12-10T10:32:09.652Z</lastmod>
     
   </url>
   
@@ -429,9 +436,9 @@
   </url>
   
   <url>
-    <loc>https://happy-alex.github.io/js/react/tips/</loc>
+    <loc>https://happy-alex.github.io/tags/index.html</loc>
     
-    <lastmod>2018-08-08T11:20:32.058Z</lastmod>
+    <lastmod>2018-03-17T13:19:14.505Z</lastmod>
     
   </url>
   
@@ -444,13 +451,6 @@
   
   <url>
     <loc>https://happy-alex.github.io/categories/index.html</loc>
-    
-    <lastmod>2018-03-17T13:19:14.505Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://happy-alex.github.io/tags/index.html</loc>
     
     <lastmod>2018-03-17T13:19:14.505Z</lastmod>
     

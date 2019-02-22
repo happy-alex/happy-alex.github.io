@@ -88,7 +88,7 @@
 <meta property="og:description" content="一张图来说明：  总结：  只有函数才拥有prototype属性，构造函数的.prototype为一个对象 每个对象都有一个隐式的原型属性[[prototype]], 但由于[[prototype]]是内部属性，不能访问，用 proto 代替， 浏览器实现存在兼容性 每个对象的 proto 指向了其构造函数的原型对象，形成原型链，因此对象可以访问到不属于其定义的属性  Object.prototy">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://camo.githubusercontent.com/71cab2efcf6fb8401a2f0ef49443dd94bffc1373/68747470733a2f2f757365722d676f6c642d63646e2e786974752e696f2f323031382f332f31332f313632316538613962636230383732643f773d34383826683d35393026663d706e6726733d313531373232">
-<meta property="og:updated_time" content="2018-12-10T10:32:09.652Z">
+<meta property="og:updated_time" content="2019-02-16T07:35:43.018Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解析js中的原型">
 <meta name="twitter:description" content="一张图来说明：  总结：  只有函数才拥有prototype属性，构造函数的.prototype为一个对象 每个对象都有一个隐式的原型属性[[prototype]], 但由于[[prototype]]是内部属性，不能访问，用 proto 代替， 浏览器实现存在兼容性 每个对象的 proto 指向了其构造函数的原型对象，形成原型链，因此对象可以访问到不属于其定义的属性  Object.prototy">
@@ -366,7 +366,7 @@
 </li>
 <li><p>Object.prototype 是所有对象的爸爸，所有对象都可以通过 <strong>proto</strong> 找到它</p>
 </li>
-<li><p>Function 是所有函数的爸爸，所有函数都可以通过 <strong>proto</strong> 找到它</p>
+<li><p>Function.prototype 是所有函数的爸爸，所有函数都可以通过 <strong>proto</strong> 找到它</p>
 </li>
 <li><p>对象的 <strong>proto</strong> 指向原型， <strong>proto</strong> 将对象和原型连接起来组成了原型链, 所以准确的原型链描述应该是{}.<strong>proto</strong>.<strong>proto</strong>等等</p>
 </li>
