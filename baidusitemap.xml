@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://happy-alex.github.io/other/jiami/</loc>
+    <lastmod>2019-03-22T08:03:20.320Z</lastmod>
+  </url>  <url>
+    <loc>https://happy-alex.github.io/js/react/fiber/</loc>
+    <lastmod>2019-03-21T09:32:58.661Z</lastmod>
+  </url>  <url>
     <loc>https://happy-alex.github.io/js/react/setstate/</loc>
     <lastmod>2019-02-22T03:45:17.678Z</lastmod>
   </url>  <url>
     <loc>https://happy-alex.github.io/js/react/tips/</loc>
     <lastmod>2019-02-22T03:34:45.956Z</lastmod>
-  </url>  <url>
-    <loc>https://happy-alex.github.io/other/jiami/</loc>
-    <lastmod>2019-02-18T10:28:58.776Z</lastmod>
   </url>  <url>
     <loc>https://happy-alex.github.io/js/base/extends/</loc>
     <lastmod>2019-02-16T07:51:41.122Z</lastmod>
@@ -84,9 +87,6 @@
   </url>  <url>
     <loc>https://happy-alex.github.io/css/book-list/</loc>
     <lastmod>2019-01-17T14:31:02.990Z</lastmod>
-  </url>  <url>
-    <loc>https://happy-alex.github.io/js/react/fiber/</loc>
-    <lastmod>2019-01-16T14:03:55.477Z</lastmod>
   </url>  <url>
     <loc>https://happy-alex.github.io/js/react/book_list/</loc>
     <lastmod>2019-01-14T13:06:08.160Z</lastmod>

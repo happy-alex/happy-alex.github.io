@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alex的小站">
 <meta property="og:description" content="背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。简单说就是：diff + patch。 react 执行render()和setState()进行渲染时主要有两个阶段：调">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-16T14:03:55.477Z">
+<meta property="og:updated_time" content="2019-03-21T09:32:58.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fiber">
 <meta name="twitter:description" content="背景React15react核心思想：内存中维护一颗虚拟DOM树，数据变化时（setState），自动更新虚拟DOM，得到一颗新树，然后diff新老虚拟DOM树，找到有变化的部分，得到一个change(patch)，将这个patch加入队列，最终批量更新这些path到DOM中。简单说就是：diff + patch。 react 执行render()和setState()进行渲染时主要有两个阶段：调">
@@ -393,7 +393,7 @@
 <p>将每个fiber节点作为最小工作单位，通过自顶向下逐个遍历fiber node，构造workInProgress tree(一颗新的fiber tree), 得到patch结果。<br>这一过程总是从顶层的HostRoot节点开始遍历，但React会跳过那些已经处理过的Fiber节点，直到找到未完成工作或者需要处理的节点。源码中的入口函数是renderRoot。</p>
 <p>具体过程如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. 如果当前节点不需要更新，直接<span class="built_in">clone</span> 子节点， 跳到步骤5；如果需要更新，则修改tag，记录更新类型</span><br><span class="line">2. 更新当前节点状态，context，props，state等</span><br><span class="line">3. 调用shouldComponentUpdate, 如果返回值为<span class="literal">false</span>，则跳转步骤5</span><br><span class="line">4. 调用组件实例的render方法，得到一个新的子节点，同时为子节点创建Fiber Node（会尽量复用现有fiber，子节点的增删也发生在这里）</span><br><span class="line">5. 如果没有产生child fiber, 该工作单元结束，把effect list归并到<span class="built_in">return</span>上，并把当前FiberNode的sibling作为下一个工作单元。如果有child fiber，将child指向作为下一个工作单元。</span><br><span class="line">6. 检查有没有剩余时间，如果有继续执行下一个工作单元；如果没有，等到下一次主线程空闲时再开始执行下一个工作单元</span><br><span class="line">7. 如果没有下一个工作单元，回到workInProgress tree 根节点，reconciliation节点结束，进入pendingCommit状态。</span><br></pre></td></tr></table></figure></p>
 <p>从上述过程可以看出，1-6的实际执行逻辑其实是一个work loop，每执行完一次loop，都要检查有没有剩余时间，进行控制权的交换。<br>由于每做完一个loop，都要把effect list向上归并到return，因此等到loop结束时，workInProgress根节点上的effect list就是收集到的所有effect。</p>
-<p><strong>构建workInProgress tree的过程就是diff的过程</strong>。<br>通过requestIdleCallback来调度执行一个任务，每完成一个任务，都回来检查下有没有优先级更高的任务。每完成一个任务，都要把时间控制权交换给主线程，直到下一个requestIdleCallback回调再继续构建workInProgress tree.(requestIdleCallback本身有兼容性问题，react团队通过requestAnimationFrame实现了requestIdleCallback的效果)。</p>
+<p><strong>构建workInProgress tree的过程就是diff的过程</strong>。<br>通过requestIdleCallback来调度执行一个任务，每完成一个任务，都回来检查下有没有优先级更高的任务。每完成一个任务，都要把时间控制权交换给主线程，直到下一个requestIdleCallback回调再继续构建workInProgress tree.(requestIdleCallback本身有兼容性问题，react团队通过MessageChannel + requestAnimationFrame实现了requestIdleCallback的效果)。</p>
 <p>PS.Fiber之前的Reconciler被叫做Stack Reconciler，就是因为这些调度上下文信息是由系统堆栈来保存的，以便和Fiber Reconciler区分开。</p>
 <p>这一阶段执行的生命周期方法有：<br>componentWillMount、<br>componentWillReceiveProps、<br>shouldComponentUpdate、<br>componentWillUpdate</p>
 <p>由于Reconciliation阶段是可中断的，因此处在这一阶段的生命周期钩子函数可能被多次调用，存在副作用，从而引起bug。所以版本16之后会逐渐废除掉这些API（不包括scu函数）</p>
