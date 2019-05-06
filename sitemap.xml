@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://happy-alex.github.io/about/index.html</loc>
+    
+    <lastmod>2019-05-06T15:37:32.264Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://happy-alex.github.io/server/nsq/</loc>
+    
+    <lastmod>2019-05-06T15:34:38.134Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://happy-alex.github.io/other/jiami/</loc>
     
     <lastmod>2019-03-22T08:03:20.320Z</lastmod>
@@ -159,13 +173,6 @@
     <loc>https://happy-alex.github.io/js/react/fiber_how_work/</loc>
     
     <lastmod>2019-01-17T14:44:45.479Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://happy-alex.github.io/about/index.html</loc>
-    
-    <lastmod>2019-01-17T14:41:11.019Z</lastmod>
     
   </url>
   
